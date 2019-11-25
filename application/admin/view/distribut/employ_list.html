@@ -1,0 +1,254 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>使用分润订单</h3>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="操作提示">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+     <ul>
+      <li>查看使用分润统计可在 数据 --> 统计 查看</li>
+    </ul>
+  </div>
+  <div class="flexigrid">
+    <div class="mDiv">
+    	<div class="ftitle">
+        <h5>共 {$count} 条记录</h5> 
+      </div>
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+   
+	  <form class="navbar-form form-inline"  method="post" action=""  name="search-form2" id="search-form2">  
+      <div class="sDiv">
+      	<div class="sDiv2">
+			<select class="select" id="status" name="type">
+                <option value=""<if condition="$_REQUEST['type'] eq ''">selected</if>>全部类型</option>
+                <option value="1"<if condition="$_REQUEST['type'] eq 1">selected</if>>投资人分润</option>
+                <option value="2"<if condition="$_REQUEST['type'] eq 2">selected</if>>酒店分润</option>
+                <option value="3"<if condition="$_REQUEST['type'] eq 3">selected</if>>技术分润</option>
+                <option value="4"<if condition="$_REQUEST['type'] eq 4">selected</if>>运营分润</option>
+                <option value="5"<if condition="$_REQUEST['type'] eq 5">selected</if>>合伙人分润</option>
+                <option value="6"<if condition="$_REQUEST['type'] eq 6">selected</if>>直推分润</option>
+                <option value="7"<if condition="$_REQUEST['type'] eq 7">selected</if>>间推分润</option>
+            </select>
+		</div>
+		<div class="sDiv2">	 
+			<input type="text" size="30" id="user_id" placeholder="获佣用户id"  value="{$user_id}" name="user_id" class="qsbox">
+		</div>
+		
+		<div class="sDiv2" style="margin-right: 10px;">
+			<input type="text" size="30" name="start_time" id="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+			<input type="button" class="btn" value="起始时间">
+		</div>
+		<div class="sDiv2" style="margin-right: 10px;">
+			<input type="text" size="30" name="end_time" id="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+			<input type="button" class="btn" value="截止时间">
+		</div>
+		
+        <div class="sDiv2">	 
+          <input type="submit" class="btn" value="搜索" >
+        </div>
+      </div>
+     </form>
+    </div>
+    <div class="hDiv">
+      <div class="hDivBox" id="ajax_return">
+        <table cellspacing="0" cellpadding="0">
+          <thead>
+	        	<tr>
+	              	<th class="sign" axis="col0">
+	                	<div style="width: 24px;"><i class="ico-check"></i></div>
+	              	</th>
+	              	<th align="left" abbr="order_sn" axis="col3" class="">
+	                	<div style="text-align: left; width: 40px;" class="">订单ID</div>
+	              	</th>
+	              	<th align="left" abbr="order_sn" axis="col3" class="">
+	                	<div style="text-align: left; width: 120px;" class="">设备号</div>
+	              	</th>
+	              	<th align="left" abbr="consignee" axis="col4" class="">
+	                	<div style="text-align: left; width: 120px;" class="">返润会员</div>
+	              	</th>
+	              	<th align="left" abbr="consignee" axis="col4" class="">
+	                	<div style="text-align: left; width: 120px;" class="">下单会员</div>
+	              	</th>
+	              	<th align="center" abbr="article_show" axis="col5" class="">
+	                	<div style="text-align: center; width: 160px;" class="">订单编号</div>
+	              	</th>
+	              	<th align="center" abbr="article_time" axis="col6" class="">
+	                	<div style="text-align: center; width: 120px;" class="">订单金额</div>
+	              	</th>
+	              	<th align="center" abbr="article_time" axis="col6" class="">
+	                	<div style="text-align: center; width: 120px;" class="">获佣金额</div>
+	              	</th>
+					<th align="center" abbr="article_time" axis="col6" class="">
+						<div style="text-align: center; width: 120px;" class="">备注</div>
+					</th>
+	              	<th align="center" abbr="article_time" axis="col6" class="">
+	                	<div style="text-align: center; width: 160px;" class="">记录生成时间</div>
+	              	</th>
+	              	<th style="width:100%" axis="col7">
+	                	<div></div>
+	              	</th>
+	            </tr>
+	          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="bDiv" style="height: auto;">
+      	<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+        	<table cellspacing="0" cellpadding="0">
+	          	<tbody>
+		          	<if condition="empty($order_list) eq true">
+			 			<tr data-id="0">
+					        <td class="no-data" align="center" axis="col0" colspan="50">
+					        	<i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+					        </td>
+				     	</tr>
+					<else/>
+			          	<volist name="order_list" id="v">
+				        	<tr>
+				              	<td class="sign" axis="col0">
+				                	<div style="width: 24px;"><i class="ico-check"></i></div>
+				              	</td>
+				              	<td align="left" abbr="order_sn" axis="col3" class="">
+				                	<div style="text-align: left; width: 40px;" class="">{$v.orderid}</div>
+				              	</td>
+				              	<td align="left" abbr="order_sn" axis="col3" class="">
+				                	<div style="text-align: left; width: 120px;" class="">{$v.e_no}</div>
+				              	</td>
+				              	<td align="left" abbr="consignee" axis="col4" class="">
+					                <div style="text-align: left; width: 120px;" class="">
+										<a href="{:U('Admin/user/detail',array('id'=>$v[user_id]))}">
+								     		<if condition="$v.user.nickname neq ''">
+			                                    <img src="{$v.user.head_pic}" style="width:30px"> &nbsp{$v.user.nickname}
+			                                <else />
+			                              		未定义
+			                          		</if>
+										</a>
+									</div>
+				              	</td>
+				              	<td align="left" abbr="consignee" axis="col4" class="">
+					                <div style="text-align: left; width: 120px;" class="">
+										<a href="{:U('Admin/user/detail',array('id'=>$v[employ_id]))}">
+								     		<if condition="$v.employ_user.nickname neq ''">
+			                                    <img src="{$v.employ_user.head_pic}" style="width:30px"> &nbsp{$v.employ_user.nickname}
+			                                <else />
+			                              		未定义
+			                          		</if>
+										</a>
+									</div>
+				              	</td>
+				              	<td align="center" abbr="article_show" axis="col5" class="">
+				                 	<div style="text-align: center; width: 160px;" class="">
+		                           		{$v.ordersn}
+		                          	</div>
+				              	</td>
+				              	<td align="center" abbr="article_time" axis="col6" class="">
+				                	<div style="text-align: center; width: 120px;" class="">{$v.pay_price}</div>
+				              	</td>
+					            <td align="center" abbr="article_time" axis="col6" class="">
+					                <div style="text-align: center; width: 120px;" class="">{$v.price}</div>
+					            </td>
+								<td align="center" abbr="article_time" axis="col6" class="">
+				                	<div style="text-align: center; width: 160px;" class="">{$v.remark}</div>
+				              	</td>
+				              	
+				              	<td align="center" abbr="article_time" axis="col6" class="">
+				                	<div style="text-align: center; width: 120px;" class="">{$v.createtime|date="Y-m-d H:i:s",###}</div>
+				              	</td>
+				              	<td style="width:100%" axis="col7">
+				                	<div></div>
+				              	</td>
+				            </tr>
+				        </volist>
+			    	</if>
+		    	</tbody>
+	    	</table>
+      	</div>
+      	<div class="iDiv" style="display: none;"></div>
+    </div>
+    <!--分页位置--> 
+    <div class="row">
+	    <div class="col-sm-6 text-left"></div>
+	    <div class="col-sm-6 text-right">{$show}</div>
+	</div>
+   	</div>
+</div>
+<script type="text/javascript">
+
+    function add_edit_type(orderid) {
+        var url = '/index.php?m=Admin&c=Distribut&a=type';
+        if (orderid) {
+            url += '&id=' + orderid;
+        }
+        layer.open({
+            type: 2,
+            title: '分润详情)',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+            cancel: function () {
+                $('#goods_type').trigger('change');
+            }
+        });
+    }
+
+    function add_edit_type1(orderid) {
+        var url = '/index.php?m=Admin&c=Distribut&a=destroytype';
+        if (orderid) {
+            url += '&id=' + orderid;
+        }
+        layer.open({
+            type: 2,
+            title: '分润销毁详情)',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+            cancel: function () {
+                $('#goods_type').trigger('change');
+            }
+        });
+    }
+	 
+    $(document).ready(function(){	
+	   
+      
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+		
+		$('#start_time').layDate(1); 
+     	$('#end_time').layDate(1);
+		 
+		$('.ico-check ' , '.hDivBox').click(function(){
+			$('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
+	    		var hasClass = $(this).hasClass('trSelected');
+	    		$('tr' , '#flexigrid').each(function(){
+	    			if(hasClass){
+	    				$(this).addClass('trSelected');
+	    			}else{
+	    				$(this).removeClass('trSelected');
+	    			}
+	    		});  
+	    	});
+		});
+	});
+    
+    
+</script>
+</body>
+</html>

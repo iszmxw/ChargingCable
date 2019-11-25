@@ -1,0 +1,185 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>酒店录入</h3>
+                <h5>添加酒店</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="delivery-form" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit" colspan="2">
+                    <label class="" for="s_region">酒店位置</label>
+                </dt>
+                <dd class="opt">
+                    <div id="gcategory">
+                        <select name="province_id" id="province_id" onChange="get_city(this)">
+                            <option value="">所有省</option>
+                            <foreach name="province" item="v" key="k">
+                                <option value="{$v['id']}"
+                                <if condition="$v[id] eq $date[province_id]"> selected="selected"</if>
+                                >{$v['name']}</option>
+                            </foreach>
+                        </select>
+
+                        <select name="city_id" id="city" onChange="get_area(this)">
+                            <option value="0">所有市</option>
+                            <foreach name="city" item="vc" key="kc">
+                                <option value="{$vc['id']}"
+                                <if condition="$vc[id] eq $date[city_id]">selected="selected"</if>
+                                >{$vc['name']}</option>
+                            </foreach>
+                        </select>
+
+
+                        <select name="area_id" id="district">
+                            <option value="0">所有区/镇</option>
+                            <foreach name="district" item="va" key="ka">
+                                <option value="{$va['id']}"
+                                <if condition="$va[id] eq $date[area_id]"> selected="selected"</if>
+                                >{$va['name']}</option>
+                            </foreach>
+                        </select>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">酒店名称</dt>
+                <dd class="opt">
+                    <input  name="name" value="{$date['name']}" class="input-txt" type="text">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">营业时间</dt>
+                <dd class="opt">
+                    <input  name="hours_time" value="{$date['hours_time']}" class="input-txt" type="text">
+                    <p class="notic">格式：00:00 - 23:00</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">联系方式</dt>
+                <dd class="opt">
+                    <input  name="mobile" value="{$date['mobile']}" class="input-txt" type="text">
+                </dd>
+            </dl>
+            <dl class="row">
+	            <dt class="tit">
+	                <label>图片上传</label>
+	            </dt>
+	            <dd class="opt">
+	                <div class="input-file-show">
+	                        <span class="show">
+	                            <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$date.thumb}">
+	                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$date.thumb}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+	                            </a>
+	                        </span>
+	           	            <span class="type-file-box">
+	                            <input type="text" id="thumb" name="thumb" value="{$date.thumb}" class="type-file-text">
+	                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+	                            <input class="type-file-file" onClick="GetUploadify(1,'','article','img_call_back')" size="30" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+	                        </span>
+	                </div>
+	                <span class="err"></span>
+	                <p class="notic">请上传图片格式文件</p>
+	            </dd>
+	        </dl>
+            <dl class="row">
+                <dt class="tit">酒店管理员</dt>
+                <dd class="opt">
+                    <input id="user_id" name="user_id" value="{$user['user_id']}" class="input-txt" type="hidden">
+                    <input id="user_name" name="user_name" value="{$user['nickname']}" class="input-txt" type="text">
+                    <a class="btn" id="new_type_info"><i class="fa fa-plus"></i>搜索</a>
+                    <p class="notic">分润使用</p>
+                </dd>
+        
+            </dl>
+            <dl class="row">
+                <dt class="tit">经纬度</dt>
+                <dd class="opt">
+                    <input type="hidden" id="lat" name="lat" value="{$date['lat']}">
+                    <input type="hidden" id="lng" name="lng" value="{$date['lng']}">
+                    <input id="location" name="address" value="{$date['address']}" class="input-txt" type="text">
+                    <a class="btn" id="new_type_location"><i class="fa fa-plus"></i>定位</a>
+                </dd>
+        
+            </dl>
+            <input  name="id" value="{$date['id']}" class="input-txt" type="hidden">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="accountForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+
+    $(document).on('click', '#new_type_info', function () {
+        var url = '/index.php?m=Admin&c=Hotel&a=type';
+        var title = '搜索酒店管理员(只能搜索酒店管理员级别';
+        add_edit_type(0,url,title);
+    });
+
+    $(document).on('click', '#new_type_location', function () {
+
+        var url = '/index.php?m=Admin&c=Hotel&a=location';
+        var title = '搜索经纬度';
+        add_edit_type(0,url,title);
+    });
+
+    function add_edit_type(type_id,url,title) {
+        
+        if (type_id) {
+            url += '&id=' + type_id;
+        }
+        layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+            cancel: function () {
+                $('#goods_type').trigger('change');
+            }
+        });
+    }
+
+    function clearInput(id){
+        $('#'+id).val(0);
+    }
+    function accountForm(){
+        $.ajax({
+            type:'post',
+            data:$('#delivery-form').serialize(),
+            url: "{:U('Admin/Hotel/add_hotel')}",
+            dataType:'JSON',
+            success: function(data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {icon: 1},function () {
+                        window.location.href=data.url;
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+            error:function(){
+                layer.alert('网络连接失败，请稍后再试！', {icon: 2});
+            }
+        });
+    }
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#thumb").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    
+</script>
+</body>
+</html>

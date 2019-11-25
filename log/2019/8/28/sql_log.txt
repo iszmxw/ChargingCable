@@ -1,0 +1,2 @@
+2019-08-28 12:46:33 orderid:1 msg:Missing argument 1 for think\db\Query::execute(), called in /www/wwwroot/ht.chinawenjun.com/application/common/model/ScanCommission.php on line 502 and defined
+2019-08-28 13:13:39 orderid:1 msg:SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ht_chinawenjun_c.sd_user' doesn't exist

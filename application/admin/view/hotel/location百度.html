@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>根据地址查询经纬度</title>
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=gVNM7VnRHRcZkOLZTeZW6oEf"></script>
+
+</head>
+
+<body style="background:#CBE1FF">
+<div style="width:730px;margin:auto;">   
+    要查询的地址：<input id="text_" type="text" value="深圳" style="margin-right:100px;"/>
+    查询结果(经纬度)：<input id="result_" type="text" />
+    <input type="button" value="查询" onclick="searchByStationName();"/>
+    <input type="button" value="确定" onclick="clears();"/>
+    <div id="container" 
+        style="position: absolute;
+            margin-top:30px; 
+            width: 730px; 
+            height: 590px; 
+            top: 50; 
+            border: 1px solid gray;
+            overflow:hidden;">
+    </div>
+</div>
+<script type="text/javascript">
+    var map = new BMap.Map("container");
+    var city = parent.document.getElementById("location").value;
+
+    if(city == ''){
+        city = '深圳';
+    }
+    document.getElementById("text_").value = city;
+    map.centerAndZoom(city, 12);
+    map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
+    map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+
+    map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+    map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+    map.addControl(new BMap.OverviewMapControl({ isOpen: true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));   //右下角，打开
+
+    var localSearch = new BMap.LocalSearch(map);
+    localSearch.enableAutoViewport(); //允许自动调节窗体大小
+    function searchByStationName() {
+        map.clearOverlays();//清空原来的标注
+        var keyword = document.getElementById("text_").value;
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            var poi = searchResult.getPoi(0);
+            document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+            parent.document.getElementById('lat').value=poi.point.lat;
+            parent.document.getElementById('lng').value=poi.point.lng;
+            parent.document.getElementById('location').value=keyword;
+            map.centerAndZoom(poi.point, 13);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+            map.addOverlay(marker);
+            var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
+            var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
+            marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+            //marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        });
+        localSearch.search(keyword);
+    }
+
+    searchByStationName();
+    function clears(){
+        parent.document.getElementsByTagName('body')[0].querySelector('.layui-layer-close').click()
+    }
+</script>
+</body>
+</html>

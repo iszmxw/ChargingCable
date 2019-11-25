@@ -1,0 +1,41 @@
+<form class="form-horizontal" id="postForm" action="/index.php/admin/Subcommission/device_mode">
+    <div class="ncap-form-default">
+        <dl class="row">
+            <dt class="tit">
+                <label>设备模式</label>
+                <input type="hidden" name="number" value="{$number}">
+            </dt>
+            <dd class="opt">
+                <input value="0" name="model_type" id="model_type0" type="radio"
+                <if condition="$mode_type eq '0'">checked</if>
+                >
+                <label for="model_type0">默认模式</label>
+                <input value="1" name="model_type" id="model_type1" type="radio"
+                <if condition="$mode_type eq '1'">checked</if>
+                >
+                <label for="model_type1">免费模式</label>
+                <span class="err"></span>
+            </dd>
+        </dl>
+        <div class="bot"><a class="ncap-btn-big ncap-btn-green" onclick="switch_mode()">确认切换</a></div>
+    </div>
+</form>
+
+
+<script>
+    // 切换设备模式
+    function switch_mode() {
+        let url = window.location.origin + $("#postForm").attr('action');
+        let data = $("#postForm").serialize();
+        $.post(url, data, function (res) {
+            if (res.code === 200) {
+                layer.alert(res.msg, function (index) {
+                    layer.close(index);
+                    window.location.reload();
+                });
+            } else {
+                alert(res.msg)
+            }
+        })
+    }
+</script>

@@ -1,0 +1,127 @@
+<include file="public/layout"/>
+<style>
+
+    .btn {
+        display: inline-block;
+        padding: 3px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .ys-btn-close {
+        position: relative !important;
+        top: -12px;
+        left: -16px;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ccc;
+        line-height: 18px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 50%;
+        z-index: 1;
+        background-color: #fff;
+        cursor: pointer;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page" style="padding-top: 0px">
+    <div class="ncap-form-default tab_div_1">
+        
+        <!-- 列表-->
+        <div class="flexigrid">
+            <div class="hDiv">
+                <div class="hDivBox">
+                    <table cellpadding="0" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th axis="col3">
+                                <div style="text-align: center; width: 24px;"></div>
+                            </th>
+                            <th axis="col3">
+                                <div style="text-align: center; width: 40px;">会员ID</div>
+                            </th>
+                            <th align="center" axis="col2">
+                                <div style="text-align: center; width: 80px;">会员头像</div>
+                            </th>
+                            <th axis="col3">
+                                <div style="text-align: center; width: 120px;">昵称</div>
+                            </th>
+                            <th axis="col3">
+                                <div style="text-align: center; width: 70px;">类型</div>
+                            </th>
+                            <th align="center" axis="col5">
+                                <div style="text-align: center; width: 60px;">分润金额</div>
+                            </th>
+                            <th align="center" axis="col5">
+                                <div style="text-align: center; width: 270px;">备注</div>
+                            </th>   
+                            <th align="center" axis="col5">
+                                <div style="text-align: center; "></div>
+                            </th>  
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="bDiv" style="height: auto;" id="ajax_return">
+                <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                    <table>
+                        <tbody>
+                        <volist name="userList" id="list">
+                            <tr data-id="{$list['user_id']}">
+                                <td class="sign">
+                                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 40px;">{$list.user_id}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 80px;"><img src="{$list.head_pic}" style="width: 40px;top:-5px"></div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 120px;">{$list.nickname}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 70px;">{$list.type}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 60px;">{$list.price}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 270px;">{$list.remark}</div>
+                                </td>
+                                <td align="" class="" style="width: 100%;">
+                                    <div>&nbsp;</div>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- 列表-->
+    </div>
+</div>
+
+
+</body>
+</html>

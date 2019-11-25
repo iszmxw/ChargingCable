@@ -1,0 +1,130 @@
+<include file="public/layout"/>
+<style>
+
+    .btn {
+        display: inline-block;
+        padding: 3px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .ys-btn-close {
+        position: relative !important;
+        top: -12px;
+        left: -16px;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ccc;
+        line-height: 18px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 50%;
+        z-index: 1;
+        background-color: #fff;
+        cursor: pointer;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page" style="padding-top: 0px">
+    <div class="ncap-form-default tab_div_1">
+        <form class="navbar-form form-inline" method="get" id="formData">
+            <div class="sDiv">
+                <div class="sDiv2">
+                    <input type="text" size="30" name="keywords" class="qsbox" placeholder="手机号码/昵称">
+                    <input type="button" class="btn" onclick="ajax_get_table('search-form2',1)" value="搜索">
+                </div>
+            </div>
+        </form>
+        <!-- 列表-->
+        <div class="flexigrid">
+            <div class="hDiv">
+                <div class="hDivBox">
+                    <table cellpadding="0" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th axis="col3">
+                                <div style="text-align: center; width: 24px;"></div>
+                            </th>
+                            <th axis="col3">
+                                <div style="text-align: center; width: 40px;">会员ID</div>
+                            </th>
+                            <th axis="col3">
+                                <div style="text-align: center; width: 150px;">会员名称</div>
+                            </th>
+                            <th align="center" axis="col2">
+                                <div style="text-align: center; width: 120px;">会员头像</div>
+                            </th>
+                            <th align="center" axis="col5">
+                                <div style="text-align: center; width: 170px;">手机号码</div>
+                            </th>
+                            <th align="center" class="handle-s" axis="col1">
+                                <div style="text-align: center; width: 60px;">操作</div>
+                            </th>
+                            
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="bDiv" style="height: auto;" id="ajax_return">
+                
+            </div>
+        </div>
+        <!-- 列表-->
+    </div>
+</div>
+
+<!--添加属性模板-->
+<table id="spec_attribute_div" style="display: none">
+    <tbody>
+
+    </tbody>
+</table>
+<!--添加属性模板end -->
+<script>
+
+    // ajax 抓取页面
+    function ajax_get_table(tab,page){
+        var search_key = $.trim($('#search_key').val());
+        var search_type = $.trim($('#search_type').val());
+        if(search_key.length > 0){
+            if(search_type == 'search_key'){
+                $('#account').val(search_key);
+                $('#nickname').val('');
+            }else{
+                $('#nickname').val(search_key);
+                $('#account').val('');
+            }
+        }
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Hotel/ajaxindex/p/"+page,//+tab,
+            data : $('#formData').serialize(),// 你的formid
+            success: function(data){
+                $("#ajax_return").html('');
+                $("#ajax_return").append(data);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<include file="public/layout" />
+
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>套餐列表 - 编辑套餐列表</h3>
+                <h5>网站系统套餐列表管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post" enctype="multipart/form-data" >
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="id" value="{$info.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="package_name"><em>*</em>套餐名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="package_name" value="{$info.package_name}" id="package_name" class="input-txt">
+                    <span class="err" id="err_package_name">套餐名称不能为空!!</span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="default">是否默认</label>
+                </dt>
+                <dd class="opt">
+                    <input type="radio" class="default" name="default" value="0" checked="">否&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" class="default" name="default" value="1">是 &nbsp;&nbsp;&nbsp;&nbsp;
+                </dd>
+            </dl>
+
+            <!-- 时间段start-->
+            <div class="flexigrid">
+                <div class="hDiv">
+                    <div class="hDivBox">
+                        <table cellpadding="0" cellspacing="0" style="font-size: 14px">
+                            <thead>
+                            <tr>
+                                <th axis="col3">
+                                    <div style="text-align: center; width: 100px;">时间段（小时）</div>
+                                </th>
+
+                                <th align="center" axis="col5">
+                                    <div style="text-align: center; width: 200px;">图片</div>
+                                </th>
+                                <th axis="col4">
+                                    <div style="text-align: center; width: 150px;">价格（元）</div>
+                                </th>
+                                <th axis="co16">
+                                    <div style="text-align: center; width: 150px;">赠送环保电量（分钟）</div>
+                                </th>
+                                <th align="center" class="handle-s" axis="col1">
+                                    <div style="text-align: center; width: 120px;">备注</div>
+                                </th>
+                                <th axis="col6" style="text-align: center;">
+                                    <div></div>
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="tDiv">
+                    <div class="tDiv2">
+                        <div class="fbutton">
+                            <div class="add" title="新增时间段" id="add_spec"><span><i class="fa fa-plus"></i>新增时间段</span></div>
+
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+
+                </div>
+                <div class="bDiv tdDivs" style="height: auto;margin-bottom:20px;min-height:100px;">
+                    <table class="table-bordered" cellpadding="0" cellspacing="0">
+                        <tbody id="spec_list">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 时间段end-->
+
+            <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    //添加规格
+    $(document).on('click', '#add_spec', function () {
+
+        var spec_list = $('#spec_list');
+        var spec_length = spec_list.find('tr').length;
+        if(spec_length >= 4){
+            layer.open({icon: 2, content: '时间段最多可添加4个'});
+            return;
+        }
+        var spec_item_div =
+            '<tr data-index='+spec_length+'> <td> <div><input type="number" name="spec['+spec_length+'][time]" maxlength="20"  style="margin-top: 5px; margin-left: 8px; vertical-align: middle;"></div> </td> ' +
+            '<td> <div><input type="file" name="image"  style="margin-top: 5px; margin-left: 8px; vertical-align: middle;"></div> </td> ' +
+            '<td> <div><input type="number" name="spec['+spec_length+'][price]" maxlength="20"  style="margin-top: 5px; margin-left: 20px; vertical-align: middle;"></div> </td> ' +
+            '<td> <div><input type="number" name="spec['+spec_length+'][green_power]" maxlength="20"  style="margin-top: 5px; margin-left: 8px; vertical-align: middle;"></div> </td> ' +
+            '<td> <div><input type="text" name="spec['+spec_length+'][remark]" maxlength="20"  style="margin-top: 5px; margin-left: 8px; vertical-align: middle;"></div> </td>'+
+            '<td class="handle-s"> <div>' +
+            '<a href="javascript:void(0);" class="btn red delete_spec" ><i class="fa fa-trash-o"></i>删除</a></div> </td></tr>';
+        spec_list.append(spec_item_div);
+    });
+    //删除规格
+    $(document).on('click', '.delete_spec', function () {
+        var obj = $(this);
+        if (obj.data('id') > 0) {
+
+        } else {
+            obj.parent().parent().parent().remove();
+        }
+    });
+
+
+    function verifyForm(){
+        if($('#package_name').val() == ''){
+
+            $('span.err').show();return;
+        }
+
+        var spec_list = $('#spec_list');
+        var spec_length = spec_list.find('tr').length;
+
+        if(spec_length < 1){
+            layer.open({icon: 2, content: '请添加时间段'});
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Subcommission/add_package')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = "{:U('Admin/Subcommission/package_price')}";
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

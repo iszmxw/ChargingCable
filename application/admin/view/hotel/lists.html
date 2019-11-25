@@ -1,0 +1,250 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>酒店列表管理</h3>
+                <h5>酒店录入记录</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>维护卡操作记录</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>维护卡操作记录列表</h3>
+                <h5>(共{$pager->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form" action="" method="post" onsubmit="return check_form();">
+                <input type="hidden" name="timegap" id="timegap" value="{$timegap}">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time" value="{$begin}" placeholder="起始时间" class="qsbox">
+                        <input type="button" class="btn" value="起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="end_time" value="{$end}" placeholder="截止时间" class="qsbox">
+                        <input type="button" class="btn" value="截止时间">
+                    </div>
+                    <input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 50px;" class="">酒店ID</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">酒店名称</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 40px;" class="">图片</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 200px;" class="">酒店位置</div>
+                        </th>
+                        <!--<th align="center" abbr="article_show" axis="col5" class="">-->
+                        <!--<div style="text-align: center; width: 50px;" class="">VIP充值</div>-->
+                        <!--</th>-->
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">酒店管理员</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">录入管理员</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 200px;" class="">经纬度</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">定位地址</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">时间</div>
+                        </th>
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="lists" id="list">
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 50px;">{$list.id}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$list.name}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 40px;"><if condition="$list.thumb neq ''"><img style="width:30px" src="{$list.thumb}"></if></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 200px;">
+                                    {$list.province_name}-{$list.city_name}-{$list.area_name}
+
+                                </div>
+                            </td>
+
+
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$list.user_id}</div>
+                            </td>
+
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$list.admin}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 200px;">lat：{$list.lat} &nbsp lng：{$list.lng}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$list.address}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$list.time|date="Y-m-d H:i",###}</div>
+                            </td>
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 150px; max-width:150px;">
+                                    <a href="javascript:void(0)" data-id="{$list['id']}" class="btn blue type_info"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                    <a href="javascript:void(0)" data-id="{$list['id']}" class="btn red delete_type" ><i class="fa fa-trash-o"></i>删除</a>
+                                </div>
+                            </td>
+
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+<script>
+
+
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+        // $('#start_time').layDate();
+        // $('#end_time').layDate();
+        laydate.render({
+            theme: "molv",
+            type: "datetime",
+            elem: "#start_time"
+        })
+        laydate.render({
+            theme: "molv",
+            type: "datetime",
+            elem: "#end_time"
+        })
+    });
+
+    $(document).on('click', '.delete_type', function () {
+        var type_id = $(this).data('id');
+
+        delete_type(type_id);
+    });
+    $(document).on('click', '.type_info', function () {
+        var type_id = $(this).data('id');
+        add_edit_type(type_id);
+    });
+
+    function delete_type(type_id) {
+        $.ajax({
+            type: "POST",
+            url: '/index.php?m=Admin&c=Hotel&a=deleteType',
+            data: {id: type_id},
+            dataType: "json",
+            success: function (data) {
+                if(data.status == 1){
+                    layer.open({icon: 1, content: data.msg, time: 1000,end:function(){
+                            location.reload();
+                        }});
+                }else{
+                    layer.open({icon: 2, content: data.msg, time: 1000});
+                }
+            }
+        });
+    }
+
+    function add_edit_type(type_id) {
+        var url = '/index.php?m=Admin&c=Hotel&a=add_hotel';
+        if(type_id){
+            url += '&id='+type_id;
+        }
+        layer.open({
+            type: 2,
+            title: '编辑酒店模型',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['1065px', '664px'],
+            content: url,
+        });
+    }
+
+    function save_type_call_back()
+    {
+        layer.closeAll();
+        location.reload();
+    }
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#timegap').val(start_time+","+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#timegap').val('');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<include file="public/layout" />
+<script type="text/javascript" src="//api.map.baidu.com/api?ak=iR2qhnXd5vrFI9wUuIRG9AWGIqykVNok&v=2.0"></script>
+<link href="__PUBLIC__/static/css/timePicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery-timepicker.js"></script>
+<style>
+    .select-business-map {
+        width: 485px;
+        height: 270px;
+    }
+    .ncap-form-default dt.tit {
+        text-align: right;
+        width: 15%;
+        padding-right: 1%;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>分润规则及人员设置</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleForm">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>扫码充电总代理可获得分润百分比(%)</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="agent" value="{$subcommission.agent}" maxlength="16" class="input-txt">
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>* 免费模式扫码充电总代理可获得分润百分比(%)</em></label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="agent_free" value="{$subcommission.agent_free}" maxlength="16" class="input-txt">
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>新用户可送环保电量</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="power" value="{$subcommission.power}" maxlength="16" class="input-txt">
+                    <p class="notic"></p>
+                    <span class="err" id=""></span>
+                </dd>
+            </dl>
+
+            <!--<dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>扫码充电分销商可获得分润百分比</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="direct_three" value="{$subcommission.distributor}" maxlength="16" class="input-txt">
+                    <p class="notic"></p>
+                    <span class="err" id=""></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>扫码充电酒店负责人可获得分润(%)</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="hotel" value="{$subcommission.hotel}" class="input-txt" >
+                    <span class="err" id=""></span>
+                </dd>
+            </dl>-->
+
+
+
+
+
+            <div class="bot"><a class="ncap-btn-big ncap-btn-green" id="submit">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(document).on("click", '#submit', function (e) {
+            $('#submit').attr('disabled',true);
+            verifyForm();
+        })
+    })
+    function verifyForm(){
+        $.ajax({
+            type:'post',
+            data:$('#handleForm').serialize(),
+            url: "{:U('Admin/Subcommission/index')}",
+            dataType:'JSON',
+            success: function(data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {icon: 1},function () {
+                        window.location.href=data.url;
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+            error:function(){
+                layer.alert('网络连接失败，请稍后再试！', {icon: 2});
+            }
+        });
+    }
+/*    function verifyForm(){
+        var url = "{:U('Subcommission/index')}";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $('#handleForm').serialize(),
+            async:false,
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg,{icon: 1,time: 2000},function(){
+                        location.href = "{:U('Shop/index')}";
+                    });
+                } else {
+                    $('#submit').attr('disabled',false);
+                    $.each(data.result, function (index, item) {
+                        $('span.err').show();
+                        var id = index.replace('[]','');
+                        $('#err_'+id).text(item);
+                    });
+                    layer.msg(data.msg, {icon: 2,time: 3000});
+                }
+            }
+        });
+    }*/
+
+
+
+</script>
+</body>
+</html>

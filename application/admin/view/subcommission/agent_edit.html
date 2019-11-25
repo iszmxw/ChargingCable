@@ -1,0 +1,118 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回酒店列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>总代理信息管理</h3>
+                <h5>信息编辑</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="delivery-form" method="post">
+        <div class="ncap-form-default">
+
+            <dl class="row">
+                <dt class="tit">手机号</dt>
+                <dd class="opt">
+                    <input  name="mobile" value="{$list.mobile}" class="input-txt" type="text">
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">真实姓名</dt>
+                <dd class="opt">
+                    <input  name="username" value="{$list.username}" class="input-txt" type="text">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">微信号码</dt>
+                <dd class="opt">
+                    <input  name="wx_number" value="{$list.wx_number}" class="input-txt" type="text">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">身份证号码</dt>
+                <dd class="opt">
+                    <input  name="code_id" value="{$list.code_id}" class="input-txt" type="text">
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>总代理拥有<font style="color: #2eff70">默认模式</font>分成</label>
+                </dt>
+                <dd class="opt">
+                    <select id="pack_id" name="one_level">
+                        <option value="100" <if condition="$list['one_level'] eq 100">selected=""</if>>100%</option>
+                        <option value="90" <if condition="$list['one_level'] eq 90">selected=""</if>>90%</option>
+                        <option value="80" <if condition="$list['one_level'] eq 80">selected=""</if>>80%</option>
+                        <option value="70" <if condition="$list['one_level'] eq 70">selected=""</if>>70%</option>
+                        <option value="60" <if condition="$list['one_level'] eq 60">selected=""</if>>60%</option>
+                        <option value="50" <if condition="$list['one_level'] eq 50">selected=""</if>>50%</option>
+                        <option value="40" <if condition="$list['one_level'] eq 40">selected=""</if>>40%</option>
+                        <option value="30" <if condition="$list['one_level'] eq 30">selected=""</if>>30%</option>
+                        <option value="20" <if condition="$list['one_level'] eq 20">selected=""</if>>20%</option>
+                        <option value="10" <if condition="$list['one_level'] eq 10">selected=""</if>>10%</option>
+                        <option value="5" <if condition="$list['one_level'] eq 5">selected=""</if>>5%</option>
+                    </select>
+                </dd>
+                <p>更改的总分成不能小于酒店的分成</p>
+            </dl>
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>总代理拥有<font style="color: #f00">免费模式</font>分成</label>
+                </dt>
+                <dd class="opt">
+                    <select id="pack_id_free" name="one_level_free">
+                        <option value="100" <if condition="$list['one_level_free'] eq 100">selected=""</if>>100%</option>
+                        <option value="90" <if condition="$list['one_level_free'] eq 90">selected=""</if>>90%</option>
+                        <option value="80" <if condition="$list['one_level_free'] eq 80">selected=""</if>>80%</option>
+                        <option value="70" <if condition="$list['one_level_free'] eq 70">selected=""</if>>70%</option>
+                        <option value="60" <if condition="$list['one_level_free'] eq 60">selected=""</if>>60%</option>
+                        <option value="50" <if condition="$list['one_level_free'] eq 50">selected=""</if>>50%</option>
+                        <option value="40" <if condition="$list['one_level_free'] eq 40">selected=""</if>>40%</option>
+                        <option value="30" <if condition="$list['one_level_free'] eq 30">selected=""</if>>30%</option>
+                        <option value="20" <if condition="$list['one_level_free'] eq 20">selected=""</if>>20%</option>
+                        <option value="10" <if condition="$list['one_level_free'] eq 10">selected=""</if>>10%</option>
+                        <option value="5" <if condition="$list['one_level_free'] eq 5">selected=""</if>>5%</option>
+                    </select>
+                </dd>
+                <p>更改的总分成不能小于门店的分成</p>
+            </dl>
+
+            <input name="id" value="{$list.id}" type="hidden">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="accountForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function clearInput(id){
+        $('#'+id).val(0);
+    }
+    function accountForm(){
+        $.ajax({
+            type:'post',
+            data:$('#delivery-form').serialize(),
+            url: "{:U('Admin/Subcommission/distributor_edit')}",
+            dataType:'JSON',
+            success: function(data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {icon: 1});
+                }else{
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+            error:function(){
+                layer.alert('网络连接失败，请稍后再试！', {icon: 2});
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<include file="public/layout"/>
+<!--物流配置 css -start-->
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    ul.group-list {
+        width: 96%;
+        min-width: 1000px;
+        margin: auto 5px;
+        list-style: disc outside none;
+    }
+
+    .err {
+        color: #F00;
+        display: none;
+    }
+
+    ul.group-list li {
+        white-space: nowrap;
+        float: left;
+        width: 150px;
+        height: 25px;
+        padding: 3px 5px;
+        list-style-type: none;
+        list-style-position: outside;
+        border: 0px;
+        margin: 0px;
+    }
+
+    .row .table-bordered td .btn, .row .table-bordered td img {
+        vertical-align: middle;
+    }
+
+    .row .table-bordered td {
+        padding: 8px;
+        line-height: 1.42857143;
+    }
+
+    .table-bordered {
+        width: 100%
+    }
+
+    .table-bordered tr td {
+        border: 1px solid #f4f4f4;
+    }
+
+    .btn-success {
+        color: #fff;
+        background-color: #449d44;
+        border-color: #398439 solid 1px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .col-xs-8 {
+        width: 66%;
+    }
+
+    .col-xs-4 {
+        width: 33%;
+    }
+
+    .col-xs-4, .col-xs-8 {
+        float: left;
+    }
+
+    .row .tab-pane h4 {
+        padding: 10px 0;
+    }
+
+    .row .tab-pane h4 input {
+        vertical-align: middle;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .ncap-form-default .title {
+        border-bottom: 0
+    }
+
+    .ncap-form-default dl.row, .ncap-form-all dd.opt {
+        /*border-color: #F0F0F0;*/
+        border: none;
+    }
+
+    .ncap-form-default dl.row:hover, .ncap-form-all dd.opt:hover {
+        border: none;
+        box-shadow: inherit;
+    }
+
+    .addprine {
+        display: inline;
+    }
+
+    .alisth {
+        margin-top: 10px
+    }
+
+    .p_plus strong {
+        cursor: pointer;
+        margin-left: 4px;
+    }
+
+    .freight_template {
+        font-size: 14px;
+        display: inline-block;
+        padding: 0px 10px;
+    }
+
+    .err {
+        color: #F00;
+        display: none;
+    }
+</style>
+<!--物流配置 css -end-->
+<!--以下是在线编辑器 代码 -->
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<!--以上是在线编辑器 代码  end-->
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <!--表单数据-->
+    <form method="post" id="addEditGoodsForm">
+        <div>
+            <dl class="row">
+                <dd class="opt">
+                    <textarea class="span12 ckeditor" id="goods_content" name="doc_content" title="">{$content}</textarea>
+                    <span class="err" id="err_goods_content"></span>
+                </dd>
+            </dl>
+        </div>
+        <div class="ncap-form-default">
+            <div class="bot">
+                <a href="JavaScript:void(0);" id="submit" class="ncap-btn-big ncap-btn-green">确认提交</a>
+                <span class="err" id="err_goods_id"></span>
+            </div>
+        </div>
+    </form>
+    <!--表单数据-->
+</div>
+<script>
+    //提交
+    $(function () {
+        $(document).on("click", '#submit', function () {
+            $.ajax({
+                type: "POST",
+                url: "{:U('System/agreement')}",
+                data: $("#addEditGoodsForm").serialize(),
+                async: false,
+                dataType: "json",
+                error: function () {
+                    layer.alert("服务器繁忙, 请联系管理员!");
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.msg(data.msg, {icon: 1, time: 2000}, function () {
+                            if (is_distribut > 0) {
+                                location.href = "{:U('System/agreement')}";
+                            } else {
+                                location.href = "{:U('System/agreement')}";
+                            }
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 2, time: 3000});
+                    }
+                }
+            });
+        })
+    });
+
+    var url = "{:url('Admin/Ueditor/index',array('savePath'=>'goods'))}";
+    var ue = UE.getEditor('goods_content', {
+        toolbars: [[
+            'fullscreen', 'source', '|', 'undo', 'redo', '|',
+            'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+            'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+            'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+            'directionalityltr', 'directionalityrtl', 'indent', '|',
+            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+            'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+            'simpleupload', 'insertimage', 'emotion', 'scrawl', 'music', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
+            'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+            'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+            'print', 'preview', 'searchreplace', 'drafts', 'help'
+        ]],
+        serverUrl: url,
+        zIndex: 999,
+        initialFrameWidth: "100%", //初化宽度
+        initialFrameHeight: 300, //初化高度
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain: false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+</script>
+</body>
+</html>

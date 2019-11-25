@@ -1,0 +1,60 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>设置</h3>
+                <h5>维护卡总池充值</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="delivery-form" method="post">
+        <div class="ncap-form-default">
+
+            <dl class="row">
+                <dt class="tit">总池维护卡</dt>
+                <dd class="opt">
+                    <select id="point_act_type" name="currency_type">
+                        <option value="1">增加</option>
+                        <option value="0">减少</option>
+                    </select>
+                    <input  name="all_pay_currency" value="0" class="input-txt" type="text">可用总池维护卡数量：{$subcommission.all_pay_currency}
+                    <p class="notic">整数</p>
+                </dd>
+            </dl>
+
+            <div class="bot"><a href="JavaScript:void(0);" onclick="accountForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function clearInput(id){
+        $('#'+id).val(0);
+    }
+    function accountForm(){
+        $.ajax({
+            type:'post',
+            data:$('#delivery-form').serialize(),
+            url: "{:U('Admin/Subcommission/add_pay_currency')}",
+            dataType:'JSON',
+            success: function(data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {icon: 1},function () {
+                        window.location.href=data.url;
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+            error:function(){
+                layer.alert('网络连接失败，请稍后再试！', {icon: 2});
+            }
+        });
+    }
+</script>
+</body>
+</html>

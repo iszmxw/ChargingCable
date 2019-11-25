@@ -1,0 +1,33 @@
+
+    <!--选择属性的弹窗-s-->
+        <input type="hidden" name="goods_id" value="{$goods.goods_id}"><!-- 商品id -->
+        <input type="hidden" name="activity_is_on" value="{$goods.activity_is_on}"><!-- 活动是否进行中 -->
+        <input type="hidden" name="goods_prom_type" value="{$goods.prom_type}"/><!-- 活动类型 -->
+        <input type="hidden" name="shop_price" value="{$goods.shop_price}"/><!-- 活动价格 -->
+        <input type="hidden" name="store_count" value="{$goods.store_count}"/><!-- 活动库存 -->
+        <input type="hidden" name="market_price" value="{$goods.market_price}"/><!-- 商品原价 -->
+        <input type="hidden" name="start_time" value="{$goods.start_time}"/><!-- 活动开始时间 -->
+        <input type="hidden" name="end_time" value="{$goods.end_time}"/><!-- 活动结束时间 -->
+        <input type="hidden" name="activity_title" value="{$goods.activity_title}"/><!-- 活动标题 -->
+        <input type="hidden" name="item_id" value="{$Request.param.item_id}"/><!-- 商品规格id -->
+        <input type="hidden" name="prom_id" value="{$goods.prom_id}"/><!-- 活动ID -->
+        <input type="hidden" name="exchange_integral" value="{$goods.exchange_integral}"/><!-- 积分 -->
+        <input type="hidden" name="point_rate" value="{$point_rate}"/><!-- 积分兑换比 -->
+        <input type="hidden" name="is_virtual" value="{$goods.is_virtual}"/><!-- 是否是虚拟商品 -->
+        <input type="hidden" name="virtual_limit" id="virtual_limit" value="{$goods.virtual_limit|default=0}"/>
+        <input type="hidden" name="deposit_price" value=""/><!-- 订金 -->
+        <input type="hidden" name="balance_price" value=""/><!-- 尾款 -->
+        <input type="hidden" name="ing_amount" value=""/><!-- 已预订了多少 -->
+        <div class="choose_shop_aready p">
+            <!--商品信息1-s-->
+            <div class="shop-top-under p">
+                <div class="maleri30">
+                    <div class="shopprice">
+                        <div class="img_or fl"><img id="zoomimg" src="{$goods.original_img}"></div>
+                        <div class="fon_or fl">
+                            <h2 class="similar-product-text">{$goods.goods_name}</h2>
+                            <input type="hidden" id="goods_name" name="goods_id" value="{$goods.goods_id}">
+                            <div class="price_or" id="goods_price"><span>￥</span><span>{$goods.shop_price}</span></div>
+                            <div class="dqkc_or"><span>剩余库存：</span><span id="spec_store_count">{$goods.store_count}</span></div>
+                            <div class="dqkc_or buy_limit" style="display: none"><span>限购：</span><span id="buy_limit">{$goods.virtual_limit}</span></div>
+                            <div class="price_or team-pies p" style="displa

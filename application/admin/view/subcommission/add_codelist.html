@@ -1,0 +1,88 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>设备管理</h3>
+                <h5>设备编号批量生成,编号由批次号+6位数字组成</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="delivery-form" method="post">
+        <div class="ncap-form-default">
+
+            <dl class="row">
+                <dt class="tit">密钥</dt>
+                <dd class="opt">
+                    <input  name="secret_key" value="" class="input-txt" type="text">请输入生成的设备密钥
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">设备编号</dt>
+                <dd class="opt">
+                    <input  name="number" value="" class="input-txt" type="text">请输入生成的设备编号
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">酒店身份负责人手机号（入驻酒店时填写的手机号码）</dt>
+                <dd class="opt">
+                    <input  name="j_mobile" value="" class="input-txt" type="text">请输入手机号码
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">分销商手机号（入驻分销商时填写的手机号码）</dt>
+                <dd class="opt">
+                    <input  name="f_mobile" value="" class="input-txt" type="text">请输入手机号码
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>选择套餐</label>
+                </dt>
+                <dd class="opt">
+                    <select id="pack_id" name="pack_id">
+                        <option value="0" selected="">默认套餐</option>
+                        <foreach name="package" item="vo" key="k" >
+                            <option value="{$vo.pid}">{$vo.title}</option>
+                        </foreach>
+                    </select>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="accountForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function clearInput(id){
+        $('#'+id).val(0);
+    }
+    function accountForm(){
+        $.ajax({
+            type:'post',
+            data:$('#delivery-form').serialize(),
+            url: "{:U('Admin/Subcommission/add_codelist')}",
+            dataType:'JSON',
+            success: function(data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {icon: 1},function () {
+                        window.location.href=data.url;
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+            error:function(){
+                layer.alert('网络连接失败，请稍后再试！', {icon: 2});
+            }
+        });
+    }
+</script>
+</body>
+</html>

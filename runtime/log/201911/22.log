@@ -1,0 +1,425 @@
+---------------------------------------------------------------
+[ 2019-11-22T18:18:31+08:00 ] 183.13.191.99 GET /index.php/admin/System/cleanCache/quick/1
+[ info ] gking008.com/index.php/admin/System/cleanCache/quick/1 [运行时间：0.054209s][吞吐率：18.45req/s] [内存消耗：4,367.35kb] [文件加载：60]
+[ info ] [ LANG ] /www/wwwroot/jdx/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'admin',
+    1 => 'System',
+    2 => 'cleanCache',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'gking008.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+  'referer' => 'http://gking008.com/index.php/Admin/Index/index',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=lor1hg3uq15t72v9djiq438oj4; admin_type=1; workspaceParam=code_list%7CSubcommission',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+  'quick' => '1',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ CACHE ] INIT File
+[ info ] [ RUN ] app\admin\controller\System->cleanCache[ /www/wwwroot/jdx/application/admin/controller/System.php ]
+[ info ] [ LOG ] INIT File
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/common/logic/Saas.php:48]
+[ error ] [8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/jdx/application/common/logic/Saas.php:49]
+[ error ] [8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/jdx/application/common/logic/Saas.php:50]
+[ error ] [8]未定义数组索引: SAAS[/www/wwwroot/jdx/application/common/logic/Saas.php:51]
+[ error ] [8]未定义数组索引: cleanCache[/www/wwwroot/jdx/application/admin/common.php:81]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000447s ] mysql:host=127.0.0.1;port=3306;dbname=jdx_thirmen_com;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_config` [ RunTime:0.000732s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_config` [ RunTime:0.000328s ]
+---------------------------------------------------------------
+[ 2019-11-22T18:18:31+08:00 ] 183.13.191.99 GET /index.php/Admin/Index/index
+[ info ] gking008.com/index.php/Admin/Index/index [运行时间：0.052633s][吞吐率：19.00req/s] [内存消耗：4,582.93kb] [文件加载：66]
+[ info ] [ LANG ] /www/wwwroot/jdx/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'Admin',
+    1 => 'Index',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'gking008.com',
+  'connection' => 'keep-alive',
+  'cache-control' => 'max-age=0',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+  'referer' => 'http://gking008.com/index.php/Admin/Index/index',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=lor1hg3uq15t72v9djiq438oj4; admin_type=1; workspaceParam=code_list%7CSubcommission',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ CACHE ] INIT File
+[ info ] [ RUN ] app\admin\controller\Index->index[ /www/wwwroot/jdx/application/admin/controller/Index.php ]
+[ info ] [ VIEW ] ./application/admin/view/index/index.html [ array (
+  0 => 'action',
+  1 => 'template_now_time',
+  2 => 'start_time',
+  3 => 'end_time',
+  4 => 'tpshop_config',
+  5 => 'navigate_admin',
+  6 => 'order_amount',
+  7 => 'admin_info',
+  8 => 'menu',
+) ]
+[ info ] [ LOG ] INIT File
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/common/logic/Saas.php:48]
+[ error ] [8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/jdx/application/common/logic/Saas.php:49]
+[ error ] [8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/jdx/application/common/logic/Saas.php:50]
+[ error ] [8]未定义数组索引: SAAS[/www/wwwroot/jdx/application/common/logic/Saas.php:51]
+[ error ] [8]未定义变量: class[/www/wwwroot/jdx/thinkphp/helper.php:630]
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/admin/common.php:124]
+[ error ] [8]未定义变量: upgradeMsg[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:66]
+[ error ] [8]未定义变量: upgradeMsg[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:67]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:125]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ error ] [8]Use of undefined constant child - assumed 'child'[/www/wwwroot/jdx/runtime/temp/ec1208308dff7362ea252b1785fba243.php:130]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000459s ] mysql:host=127.0.0.1;port=3306;dbname=jdx_thirmen_com;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_config` [ RunTime:0.000709s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_config` [ RunTime:0.000365s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_admin` [ RunTime:0.000653s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.000276s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_order` [ RunTime:0.000755s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `sd_order` WHERE  (  order_status=0 and (pay_status=1 or pay_code='cod') ) LIMIT 1 [ RunTime:0.000270s ]
+---------------------------------------------------------------
+[ 2019-11-22T18:18:31+08:00 ] 183.13.191.99 POST /index.php/Admin/System/login_task
+[ info ] gking008.com/index.php/Admin/System/login_task [运行时间：0.060139s][吞吐率：16.63req/s] [内存消耗：4,378.96kb] [文件加载：62]
+[ info ] [ LANG ] /www/wwwroot/jdx/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'Admin',
+    1 => 'System',
+    2 => 'login_task',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'gking008.com',
+  'connection' => 'keep-alive',
+  'content-length' => '23',
+  'accept' => '*/*',
+  'origin' => 'http://gking008.com',
+  'x-requested-with' => 'XMLHttpRequest',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'referer' => 'http://gking008.com/index.php/Admin/Index/index',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=lor1hg3uq15t72v9djiq438oj4; admin_type=1; workspaceParam=code_list%7CSubcommission',
+)
+[ info ] [ PARAM ] array (
+  'timestamp' => '1574417910000',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ CACHE ] INIT File
+[ info ] [ RUN ] app\admin\controller\System->login_task[ /www/wwwroot/jdx/application/admin/controller/System.php ]
+[ info ] [ LOG ] INIT File
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/common/logic/Saas.php:48]
+[ error ] [8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/jdx/application/common/logic/Saas.php:49]
+[ error ] [8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/jdx/application/common/logic/Saas.php:50]
+[ error ] [8]未定义数组索引: SAAS[/www/wwwroot/jdx/application/common/logic/Saas.php:51]
+[ error ] [8]未定义数组索引: login_task[/www/wwwroot/jdx/application/admin/common.php:81]
+[ error ] [8]未定义变量: class[/www/wwwroot/jdx/thinkphp/helper.php:630]
+[ error ] [8]未定义变量: class[/www/wwwroot/jdx/thinkphp/helper.php:630]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000705s ] mysql:host=127.0.0.1;port=3306;dbname=jdx_thirmen_com;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_cart` [ RunTime:0.001150s ]
+[ sql ] [ SQL ] DELETE FROM `sd_cart`    WHERE  (  user_id = 0 and  add_time < 1574414311 ) [ RunTime:0.000388s ]
+[ sql ] [ SQL ] DELETE FROM `sd_cart`    WHERE  (  add_time < 1571825911 ) [ RunTime:0.000293s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_sms_log` [ RunTime:0.000743s ]
+[ sql ] [ SQL ] DELETE FROM `sd_sms_log`    WHERE  (  add_time < 1571825911 ) [ RunTime:0.000275s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_config` [ RunTime:0.000725s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_config` WHERE  `inc_type` = 'shopping' [ RunTime:0.000493s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_order` [ RunTime:0.001129s ]
+[ sql ] [ SQL ] SELECT `order_id` FROM `sd_order` WHERE  (  order_status = 1 and shipping_status = 1 and shipping_time < 1574331511 ) [ RunTime:0.000398s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_config` WHERE  `inc_type` = 'distribut' [ RunTime:0.000451s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_rebate_log` [ RunTime:0.000964s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_rebate_log` WHERE  (  status = 2 and (1574417911 - confirm) >  86400 ) [ RunTime:0.000461s ]
+---------------------------------------------------------------
+[ 2019-11-22T18:18:31+08:00 ] 183.13.191.99 GET /index.php?m=Admin&c=Subcommission&a=code_list
+[ info ] gking008.com/index.php?m=Admin&c=Subcommission&a=code_list [运行时间：0.075108s][吞吐率：13.31req/s] [内存消耗：4,990.13kb] [文件加载：66]
+[ info ] [ LANG ] /www/wwwroot/jdx/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'Admin',
+    1 => 'Subcommission',
+    2 => 'code_list',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'gking008.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+  'referer' => 'http://gking008.com/index.php/Admin/Index/index',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=lor1hg3uq15t72v9djiq438oj4; admin_type=1; workspaceParam=code_list%7CSubcommission',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+  'm' => 'Admin',
+  'c' => 'Subcommission',
+  'a' => 'code_list',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ CACHE ] INIT File
+[ info ] [ RUN ] app\admin\controller\Subcommission->code_list[ /www/wwwroot/jdx/application/admin/controller/Subcommission.php ]
+[ info ] [ VIEW ] ./application/admin/view/subcommission/code_list.html [ array (
+  0 => 'action',
+  1 => 'template_now_time',
+  2 => 'start_time',
+  3 => 'end_time',
+  4 => 'tpshop_config',
+  5 => 'navigate_admin',
+  6 => 'admin_id',
+  7 => 'page',
+  8 => 'pager',
+  9 => 'lists',
+) ]
+[ info ] [ LOG ] INIT File
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/common/logic/Saas.php:48]
+[ error ] [8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/jdx/application/common/logic/Saas.php:49]
+[ error ] [8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/jdx/application/common/logic/Saas.php:50]
+[ error ] [8]未定义数组索引: SAAS[/www/wwwroot/jdx/application/common/logic/Saas.php:51]
+[ error ] [8]未定义数组索引: admin/subcommission[/www/wwwroot/jdx/application/admin/common.php:80]
+[ error ] [8]未定义数组索引: admin/subcommission[/www/wwwroot/jdx/application/admin/common.php:81]
+[ error ] [8]未定义变量: timegap[/www/wwwroot/jdx/runtime/temp/bee67b528b6ab870806af584b7639a78.php:213]
+[ error ] [8]未定义变量: begin[/www/wwwroot/jdx/runtime/temp/bee67b528b6ab870806af584b7639a78.php:216]
+[ error ] [8]未定义变量: end[/www/wwwroot/jdx/runtime/temp/bee67b528b6ab870806af584b7639a78.php:220]
+[ error ] [8]未定义变量: bank[/www/wwwroot/jdx/runtime/temp/bee67b528b6ab870806af584b7639a78.php:223]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000446s ] mysql:host=127.0.0.1;port=3306;dbname=jdx_thirmen_com;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_lc_equipment_number` [ RunTime:0.000827s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `sd_lc_equipment_number` LIMIT 1 [ RunTime:0.000273s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_lc_equipment_number` ORDER BY time desc LIMIT 0,10 [ RunTime:0.000297s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_lc_apply` [ RunTime:0.000664s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 230 LIMIT 1 [ RunTime:0.000276s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 227 LIMIT 1 [ RunTime:0.000231s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 47 LIMIT 1 [ RunTime:0.000194s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 10 LIMIT 1 [ RunTime:0.000226s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 47 LIMIT 1 [ RunTime:0.000184s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 10 LIMIT 1 [ RunTime:0.000213s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 47 LIMIT 1 [ RunTime:0.000220s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 10 LIMIT 1 [ RunTime:0.000189s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 230 LIMIT 1 [ RunTime:0.000202s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 227 LIMIT 1 [ RunTime:0.000215s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 257 LIMIT 1 [ RunTime:0.000202s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 252 LIMIT 1 [ RunTime:0.000256s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 257 LIMIT 1 [ RunTime:0.000244s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 252 LIMIT 1 [ RunTime:0.000209s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 257 LIMIT 1 [ RunTime:0.000198s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 252 LIMIT 1 [ RunTime:0.000206s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 257 LIMIT 1 [ RunTime:0.000242s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 252 LIMIT 1 [ RunTime:0.000244s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 200 LIMIT 1 [ RunTime:0.000207s ]
+[ sql ] [ SQL ] SELECT `username`,`mobile` FROM `sd_lc_apply` WHERE  `user_id` = 3 LIMIT 1 [ RunTime:0.000209s ]
+---------------------------------------------------------------
+[ 2019-11-22T18:18:33+08:00 ] 183.13.191.99 GET /index.php/admin/Admin/logout
+[ info ] gking008.com/index.php/admin/Admin/logout [运行时间：0.044688s][吞吐率：22.38req/s] [内存消耗：4,611.92kb] [文件加载：67]
+[ info ] [ LANG ] /www/wwwroot/jdx/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'admin',
+    1 => 'Admin',
+    2 => 'logout',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'gking008.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+  'referer' => 'http://gking008.com/index.php/Admin/Index/index',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=lor1hg3uq15t72v9djiq438oj4; admin_type=1; workspaceParam=code_list%7CSubcommission',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ CACHE ] INIT File
+[ info ] [ RUN ] app\admin\controller\Admin->logout[ /www/wwwroot/jdx/application/admin/controller/Admin.php ]
+[ info ] [ VIEW ] ./application/admin/view/public/dispatch_jump.html [ array (
+  0 => 'action',
+  1 => 'template_now_time',
+  2 => 'start_time',
+  3 => 'end_time',
+  4 => 'tpshop_config',
+  5 => 'navigate_admin',
+  6 => 'code',
+  7 => 'msg',
+  8 => 'data',
+  9 => 'url',
+  10 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/common/logic/Saas.php:48]
+[ error ] [8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/jdx/application/common/logic/Saas.php:49]
+[ error ] [8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/jdx/application/common/logic/Saas.php:50]
+[ error ] [8]未定义数组索引: SAAS[/www/wwwroot/jdx/application/common/logic/Saas.php:51]
+[ error ] [8]未定义数组索引: logout[/www/wwwroot/jdx/application/admin/common.php:81]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000472s ] mysql:host=127.0.0.1;port=3306;dbname=jdx_thirmen_com;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_config` [ RunTime:0.000700s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_config` [ RunTime:0.000326s ]
+---------------------------------------------------------------
+[ 2019-11-22T18:18:37+08:00 ] 183.13.191.99 GET /index.php/Admin/Admin/login
+[ info ] gking008.com/index.php/Admin/Admin/login [运行时间：0.276552s][吞吐率：3.62req/s] [内存消耗：4,599.45kb] [文件加载：65]
+[ info ] [ LANG ] /www/wwwroot/jdx/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'Admin',
+    1 => 'Admin',
+    2 => 'login',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'gking008.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+  'referer' => 'http://gking008.com/index.php/admin/Admin/logout',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=lor1hg3uq15t72v9djiq438oj4; admin_type=1; workspaceParam=code_list%7CSubcommission',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ CACHE ] INIT File
+[ info ] [ RUN ] app\admin\controller\Admin->login[ /www/wwwroot/jdx/application/admin/controller/Admin.php ]
+[ info ] [ VIEW ] ./application/admin/view/admin/login.html [ array (
+  0 => 'action',
+  1 => 'template_now_time',
+  2 => 'start_time',
+  3 => 'end_time',
+  4 => 'tpshop_config',
+  5 => 'navigate_admin',
+) ]
+[ info ] [ LOG ] INIT File
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/common/logic/Saas.php:48]
+[ error ] [8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/jdx/application/common/logic/Saas.php:49]
+[ error ] [8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/jdx/application/common/logic/Saas.php:50]
+[ error ] [8]未定义数组索引: SAAS[/www/wwwroot/jdx/application/common/logic/Saas.php:51]
+[ error ] [8]未定义数组索引: login[/www/wwwroot/jdx/application/admin/common.php:81]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000459s ] mysql:host=127.0.0.1;port=3306;dbname=jdx_thirmen_com;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `sd_config` [ RunTime:0.000751s ]
+[ sql ] [ SQL ] SELECT * FROM `sd_config` [ RunTime:0.000373s ]
+---------------------------------------------------------------
+[ 2019-11-22T18:18:37+08:00 ] 183.13.191.99 GET /index.php/admin/Admin/vertify
+[ info ] gking008.com/index.php/admin/Admin/vertify [运行时间：0.039827s][吞吐率：25.11req/s] [内存消耗：4,230.20kb] [文件加载：60]
+[ info ] [ LANG ] /www/wwwroot/jdx/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'admin',
+    1 => 'Admin',
+    2 => 'vertify',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'gking008.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+  'accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
+  'referer' => 'http://gking008.com/index.php/Admin/Admin/login',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=lor1hg3uq15t72v9djiq438oj4; admin_type=1; workspaceParam=code_list%7CSubcommission',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ CACHE ] INIT File
+[ info ] [ RUN ] app\admin\controller\Admin->vertify[ /www/wwwroot/jdx/application/admin/controller/Admin.php ]
+[ info ] [ LOG ] INIT File
+[ error ] [8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/jdx/application/common/logic/Saas.php:48]
+[ error ] [8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/jdx/application/common/logic/Saas.php:49]
+[ error ] [8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/jdx/application/common/logic/Saas.php:50]
+[ error ] [8]未定义数组索引: SAAS[/www/wwwroot/jdx/application/common/logic/Saas.php:51]
+[ error ] [8]未定义数组索引: vertify[/www/wwwroot/jdx/application/admin/common.php:81]
+[ error ] [8]ob_clean(): failed to delete buffer. No buffer to delete[/www/wwwroot/jdx/thinkphp/library/think/Verify.php:178]

@@ -1,0 +1,96 @@
+<include file="public/layout" />
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>干衣机使用协议</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post" enctype="multipart/form-data" >
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="id" value="{$info.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="title"><em>*</em>协议标题</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="title" value="{$info.title}" id="title" class="input-txt">
+                    <span class="err" id="err_title">协议标题不能为空!!</span>
+                </dd>
+            </dl>
+            
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>协议内容</label>
+                </dt>
+                <dd class="opt">          
+                    <textarea class="span12 ckeditor" id="post_content" name="content" title="">
+                        {$info.content}
+                    </textarea>          
+                    <span class="err"  id="err_content"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            
+            <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    // 表单编辑器
+    var url="{:url('Ueditor/index',array('savePath'=>'article'))}";
+    var ue = UE.getEditor('post_content',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "80%", //初化宽度
+        initialFrameHeight: 300, //初化高度            
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+
+    function verifyForm(){
+
+        if($('#title').val() == ''){
+            $('span.err').show();return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/protocol/clothes')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = "{:U('Admin/protocol/clothes')}";
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

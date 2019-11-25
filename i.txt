@@ -1,0 +1,1 @@
+{"server_url":"http:\/\/gking008.com\/index.php\/api\/FreeMode\/callback_fsws","key":"24bc832a05ee11ea88f600163e0a5c35","develop_appid":"jbh200163e0488d6","auth_open_id":"ooha95r21fdMXvXuzz9GhMwim3KM","bidding":"60","appid":"wxc23f088c4a4f9dde","appname":"\u8ffd\u68a6\u5c0f\u5c4b","nickname":"\u6731\u5148\u751f"}

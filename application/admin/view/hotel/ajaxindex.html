@@ -1,0 +1,64 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table>
+        <tbody>
+        <volist name="userList" id="list">
+            <tr data-id="{$list['user_id']}">
+                <td class="sign">
+                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 40px;">{$list.user_id}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 150px;">{$list.nickname}</div>
+                </td>
+                
+                <td align="left" class="">
+                    <div style="text-align: center; width: 120px;"><img src="{$list.head_pic}" style="width: 40px;top:-5px"></div>
+                </td>
+
+                <td align="left" class="">
+                    <div style="text-align: center; width: 170px;">{$list.mobile}
+                        <if condition="($list['mobile_validated'] eq 0) AND ($list['mobile'])">
+                            (未验证)
+                        </if>
+                    </div>
+                </td>
+                <td align="center" class="handle">
+                    <div style="text-align: center; width: 60; max-width:250px;">
+                        <a class="btn blue" onclick="addval({$list.user_id},'{$list.nickname}',{$list.mobile})"><i class="fa fa-pencil-square-o"></i>选择</a>
+                    </div>
+                </td>
+                <td align="" class="" style="width: 100%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<!--分页位置-->
+{$pager->show()}
+<script>
+    
+
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid >table>tbody>tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        $('#user_count').empty().html("{$pager->totalRows}");
+    });
+
+
+function addval(a,b,c){
+	parent.document.getElementById('user_id').value=a;
+	parent.document.getElementById('user_name').value=b+'/'+c;
+	parent.document.getElementsByTagName('body')[0].querySelector('.layui-layer-close').click()
+}
+
+</script>
