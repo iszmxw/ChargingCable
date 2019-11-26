@@ -771,15 +771,15 @@ class User extends Base
             return returnBad('酒店名称不能为空！');
         }
         $data['hotel_name'] = $post['hotel_name'];
-        // 验证身份证
-        if (empty($post['code_id'])) {
-            return returnBad('身份证号码不能为空！');
-        }
-        $str = strlen($post['code_id']);
-        if ($str != 18) {
-            return returnBad('身份证号码错误！');
-        }
-        $data['code_id'] = $post['code_id'];
+//        // 验证身份证
+//        if (empty($post['code_id'])) {
+//            return returnBad('身份证号码不能为空！');
+//        }
+//        $str = strlen($post['code_id']);
+//        if ($str != 18) {
+//            return returnBad('身份证号码错误！');
+//        }
+//        $data['code_id'] = $post['code_id'];
         if (empty($post['region'])) {
             return returnBad('请填写区域！');
         }
