@@ -54,7 +54,7 @@ class User extends Base
         }
 
         if ($user['level'] == 5) {//总代
-            //查找总代下面的所有分代user_id,和酒店user_id
+            //查找总代下面的所有分代user_id,和门店user_id
             $equipment = M("lc_apply")->where(['entry_uid' => $user_id])->field("user_id")->select();
             //查找下面绑定的所有设备array('level' => ["in", "1,2,3"])     $cart_ids = explode(",",$cart_ids);
             $arr = array();
@@ -64,7 +64,7 @@ class User extends Base
                 }
                 if ($arr) {
                     $uid_string = implode(",", $arr);
-                    //查找出所有该分代及酒店绑定的设备
+                    //查找出所有该分代及门店绑定的设备
                     $lc_equipment_number = M("lc_equipment_number")->where(array('j_user_id' => ["in", $uid_string]))->whereor(array('f_user_id' => ["in", $uid_string]))->field("number")->group("number")->select();
                     if ($lc_equipment_number) {
                         foreach ($lc_equipment_number as $key => $val) {
@@ -125,7 +125,7 @@ class User extends Base
                  }
              }*/
         } elseif ($user['level'] == 4) {//分代
-            //查找出所有该分代及酒店绑定的设备
+            //查找出所有该分代及门店绑定的设备
             $lc_equipment_number = M("lc_equipment_number")->where(array('f_user_id' => $user_id))->field("number")->group("number")->select();
             if ($lc_equipment_number) {
                 foreach ($lc_equipment_number as $key => $val) {
@@ -153,8 +153,8 @@ class User extends Base
                     }
                 }
             }
-        } elseif ($user['level'] == 3) {//酒店
-            //查找出所有该分代及酒店绑定的设备
+        } elseif ($user['level'] == 3) {//门店
+            //查找出所有该分代及门店绑定的设备
             $lc_equipment_number = M("lc_equipment_number")->where(array('j_user_id' => $user_id))->field("number")->group("number")->select();
             if ($lc_equipment_number) {
                 foreach ($lc_equipment_number as $key => $val) {
@@ -287,7 +287,7 @@ class User extends Base
             $count = M("power_order")->where(array('id' => ["in", $arrs_id]))->count();
             if ($order) {
                 foreach ($order as $k => $v) {
-                    //查找设备对应的酒店名称
+                    //查找设备对应的门店名称
                     $hotel                   = M("lc_equipment_number")->where(array('number' => $v['number']))->field("hotel_name")->find();
                     $order[$k]['hotel_name'] = $hotel['hotel_name'];
                     $order[$k]['use_time']   = $v['time'] / 60;
@@ -320,7 +320,7 @@ class User extends Base
             $count = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2))->count();
             if ($order) {
                 foreach ($order as $k => $v) {
-                    //查找设备对应的酒店名称
+                    //查找设备对应的门店名称
                     $hotel = M("lc_equipment_number")->where(array('number' => $v['number']))->field("hotel_name")->find();
                     if ($v['status'] == 1) {
                         $order[$k]['hotel_name'] = $hotel['hotel_name'] . '(备注：已退款)';
@@ -356,7 +356,7 @@ class User extends Base
             $count = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2))->count();
             if ($order) {
                 foreach ($order as $k => $v) {
-                    //查找设备对应的酒店名称
+                    //查找设备对应的门店名称
                     $hotel                   = M("lc_equipment_number")->where(array('number' => $v['number']))->field("hotel_name")->find();
                     $order[$k]['hotel_name'] = $hotel['hotel_name'];
                     $order[$k]['pay_time']   = date('Y-m-d H:i:s', $v['pay_time']);
@@ -370,7 +370,7 @@ class User extends Base
         return returnOk($data);
     }
 
-    //我的酒店列表
+    //我的门店列表
     public function my_hotel()
     {
         $page = I('page', 1);
@@ -381,7 +381,7 @@ class User extends Base
         if ($uid) {
             $this->user_id = $uid;
         }
-        //查找出所有绑定的酒店名称
+        //查找出所有绑定的门店名称
         $level = M("users")->where(['user_id' => $uid])->value('level');
         if ($level == 5) {
             //查找所有下级分销商array('level' => ["in", "1,2,3"])     $cart_ids = explode(",",$cart_ids);
@@ -437,7 +437,7 @@ class User extends Base
 
     }
 
-    //酒店编辑获得酒店数据
+    //门店编辑获得门店数据
     public function hotel_data()
     {
         $data = I('post.');
@@ -455,7 +455,7 @@ class User extends Base
         return returnOk($list);
     }
 
-    //酒店编辑提交数据接口
+    //门店编辑提交数据接口
     public function hotel_data_Submission()
     {
         $data = I('post.');
@@ -469,13 +469,13 @@ class User extends Base
             $hotel_fc = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
         if ($date['one_level'] > $hotel_fc) {
-            return returnBad('"修改失败，酒店分成不能大于代理总分成~"' . $hotel_fc . '%', 302);
+            return returnBad('"修改失败，门店分成不能大于代理总分成~"' . $hotel_fc . '%', 302);
         }
         $result = M('lc_apply')->where(['id' => $data['id']])->save($data);
         return returnOk("修改成功");
     }
 
-    //删除酒店
+    //删除门店
     public function hotel_del()
     {
         $data = I('post.');
@@ -507,7 +507,7 @@ class User extends Base
         }
         //查找所有的分销商
         $trun = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 4])->field("username,mobile,user_id")->select();
-        //查找所有的酒店
+        //查找所有的门店
         $hotel = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 3])->field("hotel_name,username,mobile,user_id")->select();
         $data  = array(
             'distributor_list' => $trun,
@@ -526,7 +526,7 @@ class User extends Base
         $type              = I('type', 1);
         $data['j_user_id'] = I('hotel_user_id');
         if (empty($data['j_user_id'])) {
-            return returnBad('缺少酒店参数！！', 302);
+            return returnBad('缺少门店参数！！', 302);
         }
         $data['number'] = I('number');
         if (empty($data['number'])) {
@@ -686,7 +686,7 @@ class User extends Base
     }
 
 
-    // 添加酒店获取我的团队接口接口
+    // 添加门店获取我的团队接口接口
     public function hotelagent_trun()
     {
         if (empty($this->user_id)) {
@@ -736,7 +736,7 @@ class User extends Base
     }
 
 
-    // 添加酒店
+    // 添加门店
     public function add_hotel()
     {
         if (empty($this->user_id)) {
@@ -768,7 +768,7 @@ class User extends Base
         }
         $data['wx_number'] = $post['wx_number'];
         if (empty($post['hotel_name'])) {
-            return returnBad('酒店名称不能为空！');
+            return returnBad('门店名称不能为空！');
         }
         $data['hotel_name'] = $post['hotel_name'];
 //        // 验证身份证
@@ -796,15 +796,15 @@ class User extends Base
         if ($level == 4) {
             $agent = M("lc_apply")->where(['user_id' => $this->user_id])->value("one_level");
             if ($agent < $post['one_level']) {
-                return returnBad('酒店分成,不能超过' . $agent . '%');
+                return returnBad('门店分成,不能超过' . $agent . '%');
             }
         } elseif ($level == 5) {
-            if ($post['types'] == 2) {//给团队下面的人添加酒店
+            if ($post['types'] == 2) {//给团队下面的人添加门店
                 $users_ids = $post['user_ids'];
                 $one_level = M("lc_apply")->where(['user_id' => $users_ids])->value('one_level');
                 $total     = intval($one_level);
                 if ($total < $post['one_level']) {
-                    return returnBad('酒店分成,不能超过' . $total . '%');
+                    return returnBad('门店分成,不能超过' . $total . '%');
                 }
             } else {
                 $f_level = M("users")->where(['user_id' => $this->user_id])->value('agent_f');
@@ -813,7 +813,7 @@ class User extends Base
                     $agent = M("lc_subcommission")->where(['id' => 1])->value("agent");
                 }
                 if ($agent < $post['one_level']) {
-                    return returnBad('酒店分成,不能超过' . $agent . '%');
+                    return returnBad('门店分成,不能超过' . $agent . '%');
                 }
             }
 
@@ -823,7 +823,7 @@ class User extends Base
 
         $data['type']    = 3;
         $data['user_id'] = $member['user_id'];
-        //判断是否已存在该酒店
+        //判断是否已存在该门店
         $apply = M("lc_apply")->where(['mobile' => $data['mobile']])->count();
         if ($apply > 0) {
             return returnBad('用户已有身份！！');
@@ -843,7 +843,7 @@ class User extends Base
         $data['admin']       = $user['username'];
         $data['entry_uid']   = $this->user_id;
         $data['entry_level'] = $user['level'];
-        if ($post['types'] == 2) {//给团队下面的人添加酒店
+        if ($post['types'] == 2) {//给团队下面的人添加门店
             $data['entry_uid']   = $post['user_ids'];
             $data['entry_level'] = M("users")->where(['user_id' => $data['entry_uid']])->value('level');
         }
@@ -877,8 +877,8 @@ class User extends Base
             $list  = M("lc_equipment_number")->where(['number' => ['in', $arrs]])->field("id,number,mode_type,hotel_name,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
             $count = M("lc_equipment_number")->where(['number' => ['in', $arrs]])->count();
         } elseif ($level == 5) {
-            //查找总代下面的所有分代user_id,和酒店user_id
-            //查找出所有该分代及酒店绑定的设备
+            //查找总代下面的所有分代user_id,和门店user_id
+            //查找出所有该分代及门店绑定的设备
             $list  = M("lc_equipment_number")->where(['number' => ['in', $arrs]])->order("time desc")->field("id,number,mode_type,hotel_name,time")->group("number")->limit(($page - 1) * 10, 10)->select();
             $count = M("lc_equipment_number")->where(['number' => ['in', $arrs]])->count();
         }
@@ -1022,7 +1022,7 @@ class User extends Base
         if ($type == 1) {
             //今日订单
             if ($arr) {
-                //酒店名称，时间，金额，设备号
+                //门店名称，时间，金额，设备号
                 $data  = M("power_order")->where(array('number' => ["in", $arr], 'pay_status' => 2, 'pay_time' => ['gt', $start]))->field("pay_price,create_time,number")->order("create_time desc")->limit(($page - 1) * 10, 10)->select();
                 $count = M("power_order")->where(array('number' => ["in", $arr], 'pay_status' => 2, 'pay_time' => ['gt', $start]))->count();
                 if ($data) {
@@ -1190,10 +1190,10 @@ class User extends Base
         }
         $list = M("lc_apply")->where(['id' => $id])->find();
 
-        // 更改的总分成不能小于酒店的分成
+        // 更改的总分成不能小于门店的分成
         $hotel_fc = M("lc_apply")->where(['entry_uid' => $list['user_id'], 'type' => 3, 'one_level' => ['gt', 0]])->order("one_level asc")->value("one_level");
         if ($date['one_level'] < $hotel_fc) {
-            return returnBad('修改失败，代理总分成不能小于酒店最低分成~' . $hotel_fc . '%', 302);
+            return returnBad('修改失败，代理总分成不能小于门店最低分成~' . $hotel_fc . '%', 302);
         }
         $result = M('lc_apply')->where(['id' => $date['id']])->save($date);
         return returnOk("修改成功！！");
@@ -1208,7 +1208,7 @@ class User extends Base
             return returnBad('参数缺失', 302);
         }
 
-        //1.删除收益记录，删除绑定设备，删除添加记录，删除绑定的酒店,身份改为会员
+        //1.删除收益记录，删除绑定设备，删除添加记录，删除绑定的门店,身份改为会员
         $data['id'] = M("lc_apply")->where(['user_id' => $data['user_id']])->value("id");
         $user_id    = $data['user_id'];
         //M("shou_log")->where(['user_id' => $user_id])->delete();
@@ -1228,7 +1228,7 @@ class User extends Base
     }
 
 
-    /* //代理商分销商-我的酒店接口
+    /* //代理商分销商-我的门店接口
      public function my_hotel(){
 
          $page = I('page',1);
@@ -1253,10 +1253,10 @@ class User extends Base
                      $arr[] = $v['user_id'];
                  }
                  $string = explode(",",$arr);
-                 //查找该分销商下面的酒店array('level' => ["in", "1,2,3"])
+                 //查找该分销商下面的门店array('level' => ["in", "1,2,3"])
                  $hotel = M("lc_equipment_number")->where(array('f_user_id' => ["in",$string]))->field('j_user_id')->group("j_user_id")->limit(($page-1)*10,10)->select();
                  $count = M("lc_equipment_number")->where(array('f_user_id' => ["in",$string]))->field('j_user_id')->group("j_user_id")->count();
-                 //查询酒店头像收入
+                 //查询门店头像收入
                  if($hotel){
                      foreach($hotel as $key=>$val){
                          $users = M("users")->where(['user_id'=>$val['j_user_id']])->field('nickname,head_pic')->find();
@@ -1271,11 +1271,11 @@ class User extends Base
              }
 
 
-             //分销商查找设备绑定的所有酒店
+             //分销商查找设备绑定的所有门店
          }elseif($level == 4){
              $hotel = M("lc_equipment_number")->where(array('f_user_id' =>$uid))->field('j_user_id')->group("j_user_id")->limit(($page-1)*10,10)->select();
              $count = M("lc_equipment_number")->where(array('f_user_id' =>$uid))->field('j_user_id')->group("j_user_id")->count();
-             //查询酒店头像收入
+             //查询门店头像收入
              if($hotel){
                  foreach($hotel as $key=>$val){
                      $users = M("users")->where(['user_id'=>$val['j_user_id']])->field('nickname,head_pic')->find();
@@ -2603,7 +2603,7 @@ class User extends Base
     {
         vendor('phpqrcode.phpqrcode');
         $user_id = $this->user_id;
-        //查询用户是否有生成分享二维码及用户身份是否为酒店，分销商，总代理
+        //查询用户是否有生成分享二维码及用户身份是否为门店，分销商，总代理
         $users = M("users")->where(['user_id' => $user_id])->field('level,ewm')->find();
         if ($users['level'] < 3) {
             return returnBad('身份错误！');
@@ -2691,7 +2691,7 @@ class User extends Base
     }
 
 
-    //查找所有酒店的金纬度
+    //查找所有门店的金纬度
     public function get_tude()
     {
         $lc_apply = M("lc_apply")->where("type=3 AND status=2")->field("jd,wd")->select();
