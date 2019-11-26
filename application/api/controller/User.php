@@ -743,8 +743,8 @@ class User extends Base
             return returnBad('登录超时请重新登录', 302);
         }
         $user = M("users")->where(['user_id' => $this->user_id])->find();
-        //姓名。联系电话。微信号，身份证号码。申请区域，详细地址
-        $post = I('post.'); //接收提交信息
+        // 姓名。联系电话。微信号，身份证号码。申请区域，详细地址
+        $post = I('post.'); // 接收提交信息
         if (empty($post['username'])) {
             return returnBad('姓名不能为空！');
         }
@@ -752,12 +752,12 @@ class User extends Base
         if (empty($post['mobile'])) {
             return returnBad('手机号码不能为空！');
         }
-        //验证手机号码
+        // 验证手机号码
         $match = $this->isMobile($post['mobile']);
         if (!$match) {
             return returnBad('手机号码格式错误！');
         }
-        //查找是否有这个手机号的用户
+        // 查找是否有这个手机号的用户
         $member = M("users")->where(['mobile' => $post['mobile']])->find();
         if (!$member) {
             return returnBad('未找到该手机号下的用户！');
@@ -771,11 +771,10 @@ class User extends Base
             return returnBad('酒店名称不能为空！');
         }
         $data['hotel_name'] = $post['hotel_name'];
-
+        // 验证身份证
         if (empty($post['code_id'])) {
             return returnBad('身份证号码不能为空！');
         }
-        //验证身份证
         $str = strlen($post['code_id']);
         if ($str != 18) {
             return returnBad('身份证号码错误！');
