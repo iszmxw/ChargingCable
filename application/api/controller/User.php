@@ -693,7 +693,7 @@ class User extends Base
             return returnBad('登录超时请重新登录', 302);
         }
         //查找所有的分销商
-        $trun = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 4])->field("username,mobile,user_id,one_level")->select();
+        $trun = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 4])->field("username,mobile,user_id,one_level,one_level_free")->select();
 
         $data = array(
             'distributor_list' => $trun,
