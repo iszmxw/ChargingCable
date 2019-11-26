@@ -454,7 +454,7 @@ class User extends Base
         if ($fire_one_level == 0) {
             $fire_one_level = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
-        $list                   = M("lc_apply")->where(['id' => $data['id']])->field("id,username,mobile,wx_number,hotel_name,one_level,one_hour,three_hour,ten_hour,entry_uid")->find();
+        $list                   = M("lc_apply")->where(['id' => $data['id']])->field("id,username,mobile,wx_number,hotel_name,one_level,one_level_free,one_hour,three_hour,ten_hour,entry_uid")->find();
         $list['fire_one_level'] = $fire_one_level;
         return returnOk($list);
     }
