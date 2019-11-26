@@ -784,10 +784,13 @@ class User extends Base
             return returnBad('请填写区域！');
         }
         if (empty($post['one_level'])) {
-            return returnBad('请选择代理分成比例！');
+            return returnBad('请选择代理默认模式分成比例！');
         }
-        $data['one_level'] = $post['one_level'];
-
+        if (empty($post['one_level_free'])) {
+            return returnBad('请选择代理免费模式分成比例！');
+        }
+        $data['one_level']      = $post['one_level'];
+        $data['one_level_free'] = $post['one_level_free'];
         //判断当前用户身份
         $level = M("users")->where(['user_id' => $this->user_id])->value('level');
         if ($level == 4) {
