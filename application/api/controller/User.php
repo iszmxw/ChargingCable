@@ -198,7 +198,7 @@ class User extends Base
         return returnOk($data);
     }
 
-    //提现规则接口
+    // 提现规则接口
     public function wendit_system()
     {
         if (empty($this->user_id)) {
@@ -213,7 +213,7 @@ class User extends Base
         return returnOk($data);
     }
 
-    //提现提交接口
+    // 提现提交接口
     public function wendit()
     {
 
@@ -270,7 +270,7 @@ class User extends Base
     }
 
 
-    //租借中的列表详情
+    // 租借中的列表详情
     public function lease_list()
     {
         $page = I('page', 1);
@@ -303,7 +303,7 @@ class User extends Base
     }
 
 
-    //总订单列表
+    // 总订单列表
     public function total_order_list()
     {
         $page = I('page', 1);
@@ -370,7 +370,7 @@ class User extends Base
         return returnOk($data);
     }
 
-    //我的门店列表
+    // 我的门店列表
     public function my_hotel()
     {
         $page = I('page', 1);
@@ -437,7 +437,7 @@ class User extends Base
 
     }
 
-    //门店编辑获得门店数据
+    // 门店编辑获得门店数据
     public function hotel_data()
     {
         $data = I('post.');
@@ -455,34 +455,34 @@ class User extends Base
         return returnOk($list);
     }
 
-    //门店编辑提交数据接口
+    // 门店编辑提交数据接口
     public function hotel_data_Submission()
     {
         $data = I('post.');
         if (empty($data['id'])) {
             return returnBad('参数缺失', 302);
         }
-        $list = M("lc_apply")->where(['id' => $id])->find();
-        //更改的总分成不能大于分销的分成
+        $list = M("lc_apply")->where(['id' => $data['id']])->find();
+        // 更改的总分成不能大于分销的分成
         $hotel_fc = M("lc_apply")->where(['user_id' => $list['entry_uid']])->value("one_level");
         if ($hotel_fc == 0) {
             $hotel_fc = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
-        if ($date['one_level'] > $hotel_fc) {
+        if ($data['one_level'] > $hotel_fc) {
             return returnBad('"修改失败，门店分成不能大于代理总分成~"' . $hotel_fc . '%', 302);
         }
         $result = M('lc_apply')->where(['id' => $data['id']])->save($data);
         return returnOk("修改成功");
     }
 
-    //删除门店
+    // 删除门店
     public function hotel_del()
     {
         $data = I('post.');
         if (empty($data['id'])) {
             return returnBad('参数缺失', 302);
         }
-        //1.删除收益记录，删除绑定设备，删除添加记录，身份改为会员
+        // 1.删除收益记录，删除绑定设备，删除添加记录，身份改为会员
         $user_id = M("lc_apply")->where(['id' => $data['id']])->value("user_id");
         // M("shou_log")->where(['user_id'=>$user_id])->delete();
         M("lc_equipment_number")->where(['j_user_id' => $user_id])->delete();
@@ -499,15 +499,15 @@ class User extends Base
     }
 
 
-    //总代设备绑定获取我的团队接口接口
+    // 总代设备绑定获取我的团队接口接口
     public function agent_trun()
     {
         if (empty($this->user_id)) {
             return returnBad('登录超时请重新登录', 302);
         }
-        //查找所有的分销商
+        // 查找所有的分销商
         $trun = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 4])->field("username,mobile,user_id")->select();
-        //查找所有的门店
+        // 查找所有的门店
         $hotel = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 3])->field("hotel_name,username,mobile,user_id")->select();
         $data  = array(
             'distributor_list' => $trun,
@@ -516,7 +516,7 @@ class User extends Base
         return returnOk($data);
     }
 
-    //设备绑定提交接口
+    // 设备绑定提交接口
     public function agent_binding()
     {
         vendor('phpqrcode.phpqrcode');
@@ -642,32 +642,39 @@ class User extends Base
         $data['address'] = $post['address'];
 
         if (empty($post['one_level'])) {
-            return returnBad('请选择代理分成比例！');
+            return returnBad('请选择代理默认模式分成比例！');
         }
-        //查找可选择的分成总份额
-        $f_level = M("users")->where(['user_id' => $this->user_id])->value('agent_f');
-        $agent   = intval($f_level);
+        if (empty($post['one_level_free'])) {
+            return returnBad('请选择代理免费模式分成比例！');
+        }
+        // 查找可选择的分成总份额
+        $f_level    = M("users")->where(['user_id' => $this->user_id])->value('agent_f');
+        $agent      = intval($f_level);
+        $agent_free = intval($f_level);
         if ($agent == 0) {
-            $agent = M("lc_subcommission")->where(['id' => 1])->value("agent");
+            $agent      = M("lc_subcommission")->where(['id' => 1])->value("agent");
+            $agent_free = M("lc_subcommission")->where(['id' => 1])->value("agent_free");
         }
-
         if ($agent < $post['one_level']) {
-            return returnBad('代理分成,不能超过' . $agent . '%');
+            return returnBad('代理默认模式分成,不能超过' . $agent . '%');
+        }
+        if ($agent_free < $post['one_level_free']) {
+            return returnBad('代理免费模式分成,不能超过' . $agent_free . '%');
         }
 
-        $data['one_level'] = $post['one_level'];
+        $data['one_level']      = $post['one_level'];
+        $data['one_level_free'] = $post['one_level_free'];
 
         $data['jurisdiction'] = $post['jurisdiction'];
 
         $data['type'] = 4;
 
         $data['user_id'] = $member['user_id'];
-        //判断是否已存在该代理
+        // 判断是否已存在该代理
         $apply = M("lc_apply")->where(['mobile' => $data['mobile']])->count();
         if ($apply > 0) {
             return returnBad('代理已存在！！');
         }
-
 
         $data['create_time'] = time();
         $data['time']        = time();
