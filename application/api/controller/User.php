@@ -686,7 +686,7 @@ class User extends Base
     }
 
 
-    //添加酒店获取我的团队接口接口
+    // 添加酒店获取我的团队接口接口
     public function hotelagent_trun()
     {
         if (empty($this->user_id)) {
@@ -736,7 +736,7 @@ class User extends Base
     }
 
 
-    //添加酒店
+    // 添加酒店
     public function add_hotel()
     {
         if (empty($this->user_id)) {
