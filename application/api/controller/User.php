@@ -156,7 +156,7 @@ class User extends Base
                     }
                 }
             }
-        } elseif ($user['level'] == 3) {//门店
+        } elseif ($user['level'] == 3) { // 门店
             //查找出所有该分代及门店绑定的设备
             $lc_equipment_number = M("lc_equipment_number")->where(array('j_user_id' => $user_id))->field("number")->group("number")->select();
             if ($lc_equipment_number) {
