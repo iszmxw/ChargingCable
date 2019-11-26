@@ -578,8 +578,10 @@ class User extends Base
 
     /**
      * 验证手机号是否正确
-     * @param number $mobile
-     * @author honfei
+     * @param $mobile
+     * @return bool
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/11/26 15:42
      */
     public function isMobile($mobile)
     {
@@ -589,7 +591,7 @@ class User extends Base
         return preg_match('#^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$#', $mobile) ? true : false;
     }
 
-    //添加代理
+    // 添加代理
     public function add_proxy()
     {
         if (empty($this->user_id)) {
@@ -620,8 +622,6 @@ class User extends Base
             return returnBad('微信号不能为空！');
         }
         $data['wx_number'] = $post['wx_number'];
-
-
 //        if (empty($post['code_id'])) {
 //            return returnBad('身份证号码不能为空！');
 //        }
@@ -630,7 +630,7 @@ class User extends Base
 //        if ($str != 18) {
 //            return returnBad('身份证号码错误！');
 //        }
-        $data['code_id'] = $post['code_id'];
+//        $data['code_id'] = $post['code_id'];
         if (empty($post['region'])) {
             return returnBad('请填写区域！');
         }
@@ -794,26 +794,46 @@ class User extends Base
         //判断当前用户身份
         $level = M("users")->where(['user_id' => $this->user_id])->value('level');
         if ($level == 4) {
+            // 默认模式百分比判断
             $agent = M("lc_apply")->where(['user_id' => $this->user_id])->value("one_level");
             if ($agent < $post['one_level']) {
-                return returnBad('门店分成,不能超过' . $agent . '%');
+                return returnBad('门店默认模式分成,不能超过' . $agent . '%');
+            }
+            // 免费模式百分比判断
+            $agent_free = M("lc_apply")->where(['user_id' => $this->user_id])->value("one_level_free");
+            if ($agent_free < $post['one_level_free']) {
+                return returnBad('门店免费模式分成,不能超过' . $agent_free . '%');
             }
         } elseif ($level == 5) {
             if ($post['types'] == 2) {//给团队下面的人添加门店
                 $users_ids = $post['user_ids'];
+                // 默认模式判断
                 $one_level = M("lc_apply")->where(['user_id' => $users_ids])->value('one_level');
                 $total     = intval($one_level);
                 if ($total < $post['one_level']) {
-                    return returnBad('门店分成,不能超过' . $total . '%');
+                    return returnBad('门店默认模式分成,不能超过' . $total . '%');
                 }
+
+                // 免费模式判断
+                $one_level_free = M("lc_apply")->where(['user_id' => $users_ids])->value('one_level_free');
+                $total_free     = intval($one_level_free);
+                if ($total_free < $post['one_level_free']) {
+                    return returnBad('门店免费模式分成,不能超过' . $total_free . '%');
+                }
+
             } else {
-                $f_level = M("users")->where(['user_id' => $this->user_id])->value('agent_f');
-                $agent   = intval($f_level);
+                $f_level    = M("users")->where(['user_id' => $this->user_id])->value('agent_f');
+                $agent      = intval($f_level);
+                $agent_free = intval($f_level);
                 if ($agent == 0) {
-                    $agent = M("lc_subcommission")->where(['id' => 1])->value("agent");
+                    $agent      = M("lc_subcommission")->where(['id' => 1])->value("agent");
+                    $agent_free = M("lc_subcommission")->where(['id' => 1])->value("agent_free");
                 }
                 if ($agent < $post['one_level']) {
-                    return returnBad('门店分成,不能超过' . $agent . '%');
+                    return returnBad('门店默认模式分成,不能超过' . $agent . '%');
+                }
+                if ($agent_free < $post['one_level_free']) {
+                    return returnBad('门店免费模式分成,不能超过' . $agent_free . '%');
                 }
             }
 
