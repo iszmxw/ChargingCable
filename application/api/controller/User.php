@@ -448,14 +448,19 @@ class User extends Base
         if (empty($data['id'])) {
             return returnBad('参数缺失', 302);
         }
-
         $user_id        = $this->user_id;
         $fire_one_level = M("lc_apply")->where(['user_id' => $user_id])->value("one_level");
         if ($fire_one_level == 0) {
             $fire_one_level = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
-        $list                   = M("lc_apply")->where(['id' => $data['id']])->field("id,username,mobile,wx_number,hotel_name,one_level,one_level_free,one_hour,three_hour,ten_hour,entry_uid")->find();
-        $list['fire_one_level'] = $fire_one_level;
+
+        $fire_one_level_free = M("lc_apply")->where(['user_id' => $user_id])->value("one_level_free");
+        if ($fire_one_level_free == 0) {
+            $fire_one_level_free = M("lc_subcommission")->where(['id' => 1])->value("agent_free");
+        }
+        $list                        = M("lc_apply")->where(['id' => $data['id']])->field("id,username,mobile,wx_number,hotel_name,one_level,one_level_free,one_hour,three_hour,ten_hour,entry_uid")->find();
+        $list['fire_one_level']      = $fire_one_level;
+        $list['fire_one_level_free'] = $fire_one_level_free;
         return returnOk($list);
     }
 
@@ -467,14 +472,24 @@ class User extends Base
             return returnBad('参数缺失', 302);
         }
         $list = M("lc_apply")->where(['id' => $data['id']])->find();
-        // 更改的总分成不能大于分销的分成
+        // 默认模式判断 更改的总分成不能大于分销的分成
         $hotel_fc = M("lc_apply")->where(['user_id' => $list['entry_uid']])->value("one_level");
         if ($hotel_fc == 0) {
             $hotel_fc = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
         if ($data['one_level'] > $hotel_fc) {
-            return returnBad('"修改失败，门店分成不能大于代理总分成~"' . $hotel_fc . '%', 302);
+            return returnBad('"修改失败，门店默认模式分成不能大于代理总分成~"' . $hotel_fc . '%', 302);
         }
+
+        // 免费模式判断 更改的总分成不能大于分销的分成
+        $hotel_fc_free = M("lc_apply")->where(['user_id' => $list['entry_uid']])->value("one_level_free");
+        if ($hotel_fc_free == 0) {
+            $hotel_fc_free = M("lc_subcommission")->where(['id' => 1])->value("agent_free");
+        }
+        if ($data['one_level_free'] > $hotel_fc_free) {
+            return returnBad('"修改失败，门店免费模式分成不能大于代理总分成~"' . $hotel_fc_free . '%', 302);
+        }
+
         $result = M('lc_apply')->where(['id' => $data['id']])->save($data);
         return returnOk("修改成功");
     }
@@ -925,7 +940,7 @@ class User extends Base
         return returnOk($data);
     }
 
-    //删除设备
+    // 删除设备
     public function number_del()
     {
         $post = I("post.");
@@ -1139,7 +1154,7 @@ class User extends Base
     }
 
 
-    //代理商团队-团队接口
+    // 代理商团队-团队接口
     public function my_trun()
     {
         $page = I('page', 1);
@@ -1205,13 +1220,19 @@ class User extends Base
         if ($fire_one_level == 0) {
             $fire_one_level = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
-        $list                   = M("lc_apply")->where(['user_id' => $data['user_id'], 'type' => 4])->field("id,username,mobile,wx_number,code_id,one_level,one_level_free")->find();
-        $list['fire_one_level'] = $fire_one_level;
+
+        $fire_one_level_free = M("lc_apply")->where(['user_id' => $user_id, 'type' => 5])->value("one_level_free");
+        if ($fire_one_level_free == 0) {
+            $fire_one_level_free = M("lc_subcommission")->where(['id' => 1])->value("agent_free");
+        }
+        $list                        = M("lc_apply")->where(['user_id' => $data['user_id'], 'type' => 4])->field("id,username,mobile,wx_number,code_id,one_level,one_level_free")->find();
+        $list['fire_one_level']      = $fire_one_level;
+        $list['fire_one_level_free'] = $fire_one_level_free;
         return returnOk($list);
     }
 
 
-    //总代理我的团队-修改分销商
+    // 总代理我的团队-修改分销商
     public function distributor_edit()
     {
         $date = I('post.');
@@ -1221,17 +1242,24 @@ class User extends Base
         }
         $list = M("lc_apply")->where(['id' => $id])->find();
 
-        // 更改的总分成不能小于门店的分成
+        // 默认模式  更改的总分成不能小于门店的分成
         $hotel_fc = M("lc_apply")->where(['entry_uid' => $list['user_id'], 'type' => 3, 'one_level' => ['gt', 0]])->order("one_level asc")->value("one_level");
         if ($date['one_level'] < $hotel_fc) {
-            return returnBad('修改失败，代理总分成不能小于门店最低分成~' . $hotel_fc . '%', 302);
+            return returnBad('修改失败，代理默认模式总分成不能小于门店最低分成~' . $hotel_fc . '%', 302);
         }
+
+        // 免费模式  更改的总分成不能小于门店的分成
+        $hotel_fc_free = M("lc_apply")->where(['entry_uid' => $list['user_id'], 'type' => 3, 'one_level' => ['gt', 0]])->order("one_level asc")->value("one_level_free");
+        if ($date['one_level_free'] < $hotel_fc_free) {
+            return returnBad('修改失败，代理免费模式总分成不能小于门店最低分成~' . $hotel_fc_free . '%', 302);
+        }
+
         $result = M('lc_apply')->where(['id' => $date['id']])->save($date);
         return returnOk("修改成功！！");
     }
 
 
-    //删除我的团队-代理接口
+    // 删除我的团队-代理接口
     public function my_trun_del()
     {
         $data = I('post.');
@@ -1239,10 +1267,10 @@ class User extends Base
             return returnBad('参数缺失', 302);
         }
 
-        //1.删除收益记录，删除绑定设备，删除添加记录，删除绑定的门店,身份改为会员
+        // 1.删除收益记录，删除绑定设备，删除添加记录，删除绑定的门店,身份改为会员
         $data['id'] = M("lc_apply")->where(['user_id' => $data['user_id']])->value("id");
         $user_id    = $data['user_id'];
-        //M("shou_log")->where(['user_id' => $user_id])->delete();
+        // M("shou_log")->where(['user_id' => $user_id])->delete();
         M("lc_equipment_number")->where(['f_user_id' => $user_id])->delete();
         M('lc_apply')->where(['entry_uid' => $user_id, 'type' => 3])->delete();
         $r     = M('lc_apply')->where(['id' => $data['id']])->delete();
