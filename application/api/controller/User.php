@@ -1193,7 +1193,7 @@ class User extends Base
     }
 
 
-    //总代理我的团队-编辑代理获取数据接口
+    // 总代理我的团队-编辑代理获取数据接口
     public function my_trun_data()
     {
         $data = I('post.');
@@ -1205,7 +1205,7 @@ class User extends Base
         if ($fire_one_level == 0) {
             $fire_one_level = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
-        $list                   = M("lc_apply")->where(['user_id' => $data['user_id'], 'type' => 4])->field("id,username,mobile,wx_number,code_id,one_level")->find();
+        $list                   = M("lc_apply")->where(['user_id' => $data['user_id'], 'type' => 4])->field("id,username,mobile,wx_number,code_id,one_level,one_level_free")->find();
         $list['fire_one_level'] = $fire_one_level;
         return returnOk($list);
     }
