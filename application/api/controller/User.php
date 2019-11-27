@@ -42,7 +42,8 @@ class User extends Base
         // 查找租借中的设备数量
         $num            = 0;    // 使用中的设备数量
         $orderarr       = [];   // 使用中的订单id数组
-        $money          = 0;    // 订单总金额
+        $money          = 0;    // 订单总金额=>默认收费模式
+        $money_free     = 0;    // 订单总金额=>免费模式
         $number_num     = 0;    // 我的设备台数
         $arrs           = [];   // 我的设备数组
         $one_level      = "80";
@@ -77,8 +78,9 @@ class User extends Base
                         $hourtime = strtotime(date("Y-m-d H:i:s", strtotime("-10 hour")));
                         $order    = M("power_order")->where("pay_status=2 AND pay_time>$hourtime")->field("time,id,pay_time,number")->select();
                         //查找全部订单
-                        $arrs_id = implode(",", $arrs);
-                        $money   = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
+                        $arrs_id    = implode(",", $arrs);
+                        $money      = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
+                        $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
                         //我的设备台数
                         $number_num = count($arrs);
                         if ($order) {
@@ -138,8 +140,9 @@ class User extends Base
                 $hourtime = strtotime(date("Y-m-d H:i:s", strtotime("-10 hour")));
                 $order    = M("power_order")->where("pay_status=2 AND pay_time>$hourtime")->field("time,id,pay_time,number")->select();
                 //查找全部订单
-                $arrs_id = implode(",", $arrs);
-                $money   = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
+                $arrs_id    = implode(",", $arrs);
+                $money      = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
+                $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
                 //我的设备台数
                 $number_num = count($arrs);
                 if ($order) {
@@ -167,8 +170,9 @@ class User extends Base
                 $hourtime = strtotime(date("Y-m-d H:i:s", strtotime("-10 hour")));
                 $order    = M("power_order")->where("pay_status=2 AND pay_time>$hourtime")->field("time,id,pay_time,number")->select();
                 //查找全部订单
-                $arrs_id = implode(",", $arrs);
-                $money   = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
+                $arrs_id    = implode(",", $arrs);
+                $money      = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
+                $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
                 //我的设备台数
                 $number_num = count($arrs);
                 if ($order) {
@@ -194,6 +198,7 @@ class User extends Base
             'use_num'        => $num,
             'orderarr'       => $orderarr,
             'money'          => $money,
+            'money_free'     => $money_free,
             'number_num'     => $number_num,
             'arrs'           => $arrs,
             'one_level'      => $one_level,
