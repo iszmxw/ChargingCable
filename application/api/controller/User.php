@@ -80,7 +80,7 @@ class User extends Base
                         //查找全部订单
                         $arrs_id    = implode(",", $arrs);
                         $money      = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
-                        $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'status' => ['neq', 1]))->sum("pay_price");
+                        $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2))->sum("pay_price");
                         //我的设备台数
                         $number_num = count($arrs);
                         if ($order) {
@@ -142,7 +142,7 @@ class User extends Base
                 //查找全部订单
                 $arrs_id    = implode(",", $arrs);
                 $money      = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
-                $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'status' => ['neq', 1]))->sum("pay_price");
+                $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2))->sum("pay_price");
                 //我的设备台数
                 $number_num = count($arrs);
                 if ($order) {
@@ -172,7 +172,7 @@ class User extends Base
                 //查找全部订单
                 $arrs_id    = implode(",", $arrs);
                 $money      = M("power_order")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2, 'status' => ['neq', 1]))->sum("pay_price");
-                $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'status' => ['neq', 1]))->sum("pay_price");
+                $money_free = M("power_order_free")->where(array('number' => ["in", $arrs_id], 'pay_status' => 2))->sum("pay_price");
                 //我的设备台数
                 $number_num = count($arrs);
                 if ($order) {
