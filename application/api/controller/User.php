@@ -1048,7 +1048,8 @@ class User extends Base
     }
 
 
-    //1:今日订单，2今日收入，3昨日收入，4近七天收入，5，近一月收入，6今年收益
+    // 1:今日订单，2今日收入，3昨日收入，4近七天收入，5，近一月收入，6今年收益
+    // 免费模式 ===>    7昨日收益，8最近七天收益，9最近一月收益，10今年收益
     public function order_detail_list()
     {
         $type = I("post.type", 1);
@@ -1066,9 +1067,9 @@ class User extends Base
         $start = mktime(0, 0, 0, date("m", $t), date("d", $t), date("Y", $t));
         $end   = mktime(23, 59, 59, date("m", $t), date("d", $t), date("Y", $t));
         if ($type == 1) {
-            //今日订单
+            // 默认收费模式今日订单
             if ($arr) {
-                //门店名称，时间，金额，设备号
+                // 门店名称，时间，金额，设备号
                 $data  = M("power_order")->where(array('number' => ["in", $arr], 'pay_status' => 2, 'pay_time' => ['gt', $start]))->field("pay_price,create_time,number")->order("create_time desc")->limit(($page - 1) * 10, 10)->select();
                 $count = M("power_order")->where(array('number' => ["in", $arr], 'pay_status' => 2, 'pay_time' => ['gt', $start]))->count();
                 if ($data) {
@@ -1080,7 +1081,7 @@ class User extends Base
                     unset($k, $v);
                 }
             }
-        } elseif ($type == 2) {//今日收入
+        } elseif ($type == 2) {// 今日收入=>不区分模式的
             $count = M("shou_log")->where("user_id=$user_id AND time>$start")->count();
             $data  = M("shou_log")->where("user_id=$user_id AND time>$start")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
             if ($data) {
@@ -1091,12 +1092,12 @@ class User extends Base
                 }
                 unset($k, $v);
             }
-        } elseif ($type == 3) {//昨日收入
-            //昨日开始和结束时间戳
+        } elseif ($type == 3) {// 默认收费模式 => 昨日收入 order_type=0
+            // 昨日开始和结束时间戳
             $beginYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
             $endYesterday   = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
-            $count          = M("shou_log")->where("user_id=$user_id AND time>$beginYesterday AND time<$endYesterday")->count();
-            $data           = M("shou_log")->where("user_id=$user_id AND time>$beginYesterday AND time<$endYesterday")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            $count          = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$beginYesterday AND time<$endYesterday")->count();
+            $data           = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$beginYesterday AND time<$endYesterday")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
             if ($data) {
                 foreach ($data as $k => $v) {
                     $data[$k]['number']      = M("power_order")->where(['order_sn' => $v['order_sn']])->value("number");
@@ -1105,10 +1106,10 @@ class User extends Base
                 }
                 unset($k, $v);
             }
-        } elseif ($type == 4) {//近七天收入
+        } elseif ($type == 4) {// 默认收费模式 => 近七天收入 order_type=0
             $seven = strtotime('-7 days');// 获得的是时间戳
-            $count = M("shou_log")->where("user_id=$user_id AND time>$seven")->count();
-            $data  = M("shou_log")->where("user_id=$user_id AND time>$seven")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            $count = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$seven")->count();
+            $data  = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$seven")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
             if ($data) {
                 foreach ($data as $k => $v) {
                     $data[$k]['number']      = M("power_order")->where(['order_sn' => $v['order_sn']])->value("number");
@@ -1117,11 +1118,10 @@ class User extends Base
                 }
                 unset($k, $v);
             }
-
-        } elseif ($type == 5) {//近一个月收入
+        } elseif ($type == 5) {// 默认收费模式 => 近一个月收入 order_type=0
             $month = strtotime('-28 days');// 获得的是时间戳
-            $count = M("shou_log")->where("user_id=$user_id AND time>$month")->count();
-            $data  = M("shou_log")->where("user_id=$user_id AND time>$month")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            $count = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$month")->count();
+            $data  = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$month")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
             if ($data) {
                 foreach ($data as $k => $v) {
                     $data[$k]['number']      = M("power_order")->where(['order_sn' => $v['order_sn']])->value("number");
@@ -1130,10 +1130,10 @@ class User extends Base
                 }
                 unset($k, $v);
             }
-        } elseif ($type == 6) {//今年收益
+        } elseif ($type == 6) {// 默认收费模式 => 今年收益 order_type=0
             $begin_year = strtotime(date("Y", time()) . "-1" . "-1"); //本年开始
-            $count      = M("shou_log")->where("user_id=$user_id AND time>$begin_year")->count();
-            $data       = M("shou_log")->where("user_id=$user_id AND time>$begin_year")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            $count      = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$begin_year")->count();
+            $data       = M("shou_log")->where("order_type=0 AND user_id=$user_id AND time>$begin_year")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
             if ($data) {
                 foreach ($data as $k => $v) {
                     $data[$k]['number']      = M("power_order")->where(['order_sn' => $v['order_sn']])->value("number");
@@ -1142,15 +1142,62 @@ class User extends Base
                 }
                 unset($k, $v);
             }
-
+        } elseif ($type == 7) { // 免费模式 => 昨日收入 order_type=1
+            // 昨日开始和结束时间戳
+            $beginYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+            $endYesterday   = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+            $count          = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$beginYesterday AND time<$endYesterday")->count();
+            $data           = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$beginYesterday AND time<$endYesterday")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            if ($data) {
+                foreach ($data as $k => $v) {
+                    $data[$k]['number']      = M("power_order_free")->where(['order_sn' => $v['order_sn']])->value("number");
+                    $data[$k]['hotel_name']  = M("lc_equipment_number")->where(['number' => $data[$k]['number']])->value("hotel_name");
+                    $data[$k]['create_time'] = date("Y-m-d H:i:s", $v['time']);
+                }
+                unset($k, $v);
+            }
+        } elseif ($type == 8) { // 免费模式 => 最近七天收益 order_type=1
+            $seven = strtotime('-7 days');// 获得的是时间戳
+            $count = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$seven")->count();
+            $data  = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$seven")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            if ($data) {
+                foreach ($data as $k => $v) {
+                    $data[$k]['number']      = M("power_order_free")->where(['order_sn' => $v['order_sn']])->value("number");
+                    $data[$k]['hotel_name']  = M("lc_equipment_number")->where(['number' => $data[$k]['number']])->value("hotel_name");
+                    $data[$k]['create_time'] = date("Y-m-d H:i:s", $v['time']);
+                }
+                unset($k, $v);
+            }
+        } elseif ($type == 9) {// 免费模式 => 最近一月收益 order_type=1
+            $month = strtotime('-28 days');// 获得的是时间戳
+            $count = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$month")->count();
+            $data  = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$month")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            if ($data) {
+                foreach ($data as $k => $v) {
+                    $data[$k]['number']      = M("power_order_free")->where(['order_sn' => $v['order_sn']])->value("number");
+                    $data[$k]['hotel_name']  = M("lc_equipment_number")->where(['number' => $data[$k]['number']])->value("hotel_name");
+                    $data[$k]['create_time'] = date("Y-m-d H:i:s", $v['time']);
+                }
+                unset($k, $v);
+            }
+        } elseif ($type == 10) {// 免费模式 => 今年收益 order_type=1
+            $begin_year = strtotime(date("Y", time()) . "-1" . "-1"); //本年开始
+            $count      = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$begin_year")->count();
+            $data       = M("shou_log")->where("order_type=1 AND user_id=$user_id AND time>$begin_year")->field("allf_money,order_sn,time")->order("time desc")->limit(($page - 1) * 10, 10)->select();
+            if ($data) {
+                foreach ($data as $k => $v) {
+                    $data[$k]['number']      = M("power_order_free")->where(['order_sn' => $v['order_sn']])->value("number");
+                    $data[$k]['hotel_name']  = M("lc_equipment_number")->where(['number' => $data[$k]['number']])->value("hotel_name");
+                    $data[$k]['create_time'] = date("Y-m-d H:i:s", $v['time']);
+                }
+                unset($k, $v);
+            }
         }
         $datas = array(
             'list'  => $data,
             'count' => $count
         );
         return returnOk($datas);
-
-
     }
 
 
