@@ -255,7 +255,7 @@ class FreeMode extends Controller
         } else {
             file_put_contents('where.txt', json_encode($where));
             file_put_contents('order.txt', json_encode($order));
-            return returnBad("数据不存在，请您重新扫描设备", 500);
+            return returnBad("网络错误，请您重新扫描设备", 500);
         }
     }
 
