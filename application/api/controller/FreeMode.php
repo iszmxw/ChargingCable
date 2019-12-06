@@ -253,8 +253,20 @@ class FreeMode extends Controller
         if ($order) {
             return returnOk(['qrcode_url' => $order['qrcode_url'], 'code' => $order['code']]);
         } else {
-            file_put_contents('where.txt', json_encode($where));
-            file_put_contents('order.txt', json_encode($order));
+            $where_txt = file_get_contents('where.txt', true);
+            $order_txt = file_get_contents('order.txt', true);
+            if (false === $where_txt) {
+                $where_hr = chr(0xEF) . chr(0xBB) . chr(0xBF) . '时间：' . date('Y-m-d H:i:s') . "======>\r\n";// 时间换行
+            } else {
+                $where_hr = "\r\n" . '时间：' . date('Y-m-d H:i:s') . "======>\r\n";// 时间换行
+            }
+            if (false === $order_txt) {
+                $order_hr = chr(0xEF) . chr(0xBB) . chr(0xBF) . '时间：' . date('Y-m-d H:i:s') . "======>\r\n";// 时间换行
+            } else {
+                $order_hr = "\r\n" . '时间：' . date('Y-m-d H:i:s') . "======>\r\n";// 时间换行
+            }
+            file_put_contents("where.txt", $where_txt . $where_hr . json_encode($where));
+            file_put_contents('order.txt', $order_txt . $order_hr . json_encode($order));
             return returnBad("网络错误，请您重新扫描设备", 500);
         }
     }
