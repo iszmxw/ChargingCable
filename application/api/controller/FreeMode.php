@@ -334,9 +334,7 @@ class FreeMode extends Controller
                 return json(['code' => 500, 'msg' => '获取密码失败，请传入openid']);
             }
         } catch (\Exception $e) {
-            file_put_contents('iszmxw.txt', json_encode($e));
-            dump($param);
-            dump($e);
+            IszmxwLog('iszmxw.txt', json_encode($e));
         }
     }
 
