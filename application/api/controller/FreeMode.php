@@ -254,7 +254,7 @@ class FreeMode extends Controller
             return returnOk(['qrcode_url' => $order['qrcode_url'], 'code' => $order['code']]);
         } else {
             // 打印日志到文件
-            IszmxwLog('iszmxw.txt', json_encode($where));
+            IszmxwLog('where.txt', json_encode($where));
             IszmxwLog('order.txt', json_encode($order));
             return returnBad("网络错误，请您重新扫描设备", 500);
         }
