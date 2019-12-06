@@ -253,6 +253,8 @@ class FreeMode extends Controller
         if ($order) {
             return returnOk(['qrcode_url' => $order['qrcode_url'], 'code' => $order['code']]);
         } else {
+            file_put_contents('where.txt', json_encode($where));
+            file_put_contents('order.txt', json_encode($order));
             return returnBad("数据不存在，请您重新扫描设备", 500);
         }
     }
