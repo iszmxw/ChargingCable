@@ -165,7 +165,7 @@ class FreeMode extends Controller
                     die("网络错误！！");
                 }
             } else {
-                IszmxwLog('ip.txt', get_client_ip());
+                IszmxwLog('iszmxw.txt', get_client_ip());
                 // 没有请求到二维码，获取二维码失败，返回默认页面
                 // 这里处理为，走默认的扫码支付模式
                 $url = "http://{$_SERVER['HTTP_HOST']}/index.php/api/Login/ChargeMode?number={$number}&index={$index}";
