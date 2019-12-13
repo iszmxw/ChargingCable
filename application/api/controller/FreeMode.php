@@ -165,7 +165,14 @@ class FreeMode extends Controller
                     die("网络错误！！");
                 }
             } else {
-                IszmxwLog('iszmxw.txt', get_client_ip());
+                IszmxwLog('iszmxw.txt', $ip);
+                if ($ip == "112.97.52.91" || $ip == "183.42.60.112") {
+                    // 没有免费的资源了，直接跳转到显示密码页面，并且携带上密码参数
+                    $password = 1234;
+                    $url      = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getOrderInfo?password=$password";
+                    Header("location:" . $url);
+                    die;
+                }
                 // 没有请求到二维码，获取二维码失败，返回默认页面
                 // 这里处理为，走默认的扫码支付模式
                 $url = "http://{$_SERVER['HTTP_HOST']}/index.php/api/Login/ChargeMode?number={$number}&index={$index}";
@@ -264,12 +271,18 @@ class FreeMode extends Controller
 
     /**
      * 获取充电订单信息
+     * @param Request $request
      * @author: iszmxw <mail@54zm.com>
-     * @Date：2019/11/14 18:05
+     * @Date：2019/12/13 15:34
      */
-    public function getOrderInfo()
+    public function getOrderInfo(Request $request)
     {
-        $redirectUrl             = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getPassword";
+        $password = $request->get('password');
+        if ($password) {
+            $redirectUrl = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getPassword?password=$password";
+        } else {
+            $redirectUrl = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getPassword";
+        }
         $urlObj["appid"]         = config('APPID');
         $urlObj["redirect_uri"]  = "$redirectUrl";
         $urlObj["response_type"] = "code";
