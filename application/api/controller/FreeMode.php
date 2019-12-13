@@ -298,6 +298,7 @@ class FreeMode extends Controller
     {
         // 获取code
         $code                 = $request->get('code');
+        $password             = $request->get('password');
         $urlObj["appid"]      = config('appid');
         $urlObj["secret"]     = config('secret');
         $urlObj["code"]       = $code;
@@ -307,7 +308,11 @@ class FreeMode extends Controller
         $data                 = httpRequest($url, 'POST');// 获取网页授权access_token和用户openid
         $data                 = json_decode($data, true);
         $openid               = $data['openid'];
-        $password_url         = "http://{$_SERVER['HTTP_HOST']}/dist/index.html#/free_password?openid={$openid}";
+        if ($password) {
+            $password_url = "http://{$_SERVER['HTTP_HOST']}/dist/index.html#/free_password?openid={$openid}&password=$password";
+        } else {
+            $password_url = "http://{$_SERVER['HTTP_HOST']}/dist/index.html#/free_password?openid={$openid}";
+        }
         Header("Location: $password_url"); // 跳转到微信授权页面 需要用户确认登录的页面
         exit();
     }
