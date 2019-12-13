@@ -158,18 +158,11 @@ class FreeMode extends Controller
                     die("网络错误！！");
                 }
             } else {
-                IszmxwLog('iszmxw.txt', $ip);
-                if ($ip == "112.97.52.91" || $ip == "183.42.60.112") {
-                    // 没有免费的资源了，直接跳转到显示密码页面，并且携带上密码参数
-                    $password = self::create_password($number);
-                    $url      = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getOrderInfo?password=$password";
-                    Header("location:" . $url);
-                    die;
-                }
-                // 没有请求到二维码，获取二维码失败，返回默认页面
-                // 这里处理为，走默认的扫码支付模式
-                $url = "http://{$_SERVER['HTTP_HOST']}/index.php/api/Login/ChargeMode?number={$number}&index={$index}";
-                Header("location:" . $url); // 前往收费模式地址
+                // 没有请求到二维码，获取二维码失败，直接给用户返回密码
+                // 没有免费的资源了，直接跳转到显示密码页面，并且携带上密码参数
+                $password = self::create_password($number);
+                $url      = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getOrderInfo?password=$password";
+                Header("location:" . $url);
                 die;
             }
         }
