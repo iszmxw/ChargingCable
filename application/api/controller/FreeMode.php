@@ -107,21 +107,13 @@ class FreeMode extends Controller
             $nickname = $user_info['nickname'];
             $sex      = $user_info['sex'];
             $head_pic = $user_info['headimgurl'];
-            // 获取二维码前首先检查用户，是否已经有免费的订单了，有的话，直接查询历史订单并且返回该订单信息
+            // 获取二维码前首先检查用户，是否已经有免费的订单了，有的话，直接查询历史订单，直接过期掉
             $order_res = M("power_order_free")->where(['openid' => $openid])->order('id', 'desc')->find();
-            if (time() < ($order_res['create_time'] + ($order_res['time'] * 60))) {
-                // 用户还未使用该密码，可以更新设备密码
-                if ($order_res['pay_status'] == 1) {
-                    // 如果订单还在可使用状态下，那么可以继续获取密码
-                    $order_res['password'] = self::create_password($number); // 更新密码
-                    $res                   = M("power_order_free")->update($order_res);
-                    if ($res) {
-                        // 创建成功，跳转前端显示视图，前端获取二维码信息
-                        self::RedirectFreeQrCode($openid, $number);
-                    } else {
-                        die("网络错误！！");
-                    }
-                }
+            // 用户还未使用该密码，可以更新设备密码
+            if ($order_res['pay_status'] == 1) {
+                // 如果订单还在可使用状态下，那么可以继续获取密码
+                $order_res['pay_status'] = 3; // 过期处理
+                M("power_order_free")->update($order_res);
             }
             $QrCode = self::getQrcode($ip, $openid, $nickname, $sex); // 获取微信二维码
             $QrCode = json_decode($QrCode, true);
