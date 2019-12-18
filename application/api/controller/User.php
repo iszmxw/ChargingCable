@@ -794,10 +794,10 @@ class User extends Base
             return returnBad('未找到该手机号下的用户！');
         }
         $data['mobile'] = $post['mobile'];
-        if (empty($post['wx_number'])) {
-            return returnBad('微信号不能为空！');
-        }
-        $data['wx_number'] = $post['wx_number'];
+//        if (empty($post['wx_number'])) {
+//            return returnBad('微信号不能为空！');
+//        }
+//        $data['wx_number'] = $post['wx_number'];
         if (empty($post['hotel_name'])) {
             return returnBad('门店名称不能为空！');
         }
