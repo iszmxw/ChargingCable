@@ -534,6 +534,7 @@ class User extends Base
         // 查找所有的门店
         $hotel = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 3])->field("hotel_name,username,mobile,user_id")->select();
         $data  = array(
+            'user_id'          => $this->user_id,
             'distributor_list' => $trun,
             'hotel_list'       => $hotel,
         );
