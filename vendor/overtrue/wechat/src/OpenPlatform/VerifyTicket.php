@@ -63,7 +63,7 @@ class VerifyTicket
     /**
      * VerifyTicket constructor.
      *
-     * @param string                       $appId
+     * @param string $appId
      * @param \Doctrine\Common\Cache\Cache $cache
      */
     public function __construct($appId, Cache $cache)
@@ -96,7 +96,7 @@ class VerifyTicket
         if ($cached = $this->cache->fetch($this->getCacheKey())) {
             return $cached;
         }
-
+        IszmxwLog('iszmxw.txt', $cached);
         throw new RuntimeException('Component verify ticket does not exists.');
     }
 
@@ -122,7 +122,7 @@ class VerifyTicket
     public function getCacheKey()
     {
         if (is_null($this->cacheKey)) {
-            return $this->prefix.$this->appId;
+            return $this->prefix . $this->appId;
         }
 
         return $this->cacheKey;

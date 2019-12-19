@@ -92,6 +92,59 @@ class WechatOpen extends Base
     public function message_callback(Request $request)
     {
         $appid = $request->param('appid');
+        /**
+         * 全网发布
+         */
+        if ($appid == 'wx570bc396a51b8ff8') {
+            IszmxwLog('iszmxw.txt', $appid);
+            return $this->releaseToNetWork($appid);
+        }
         dump($appid);
+    }
+
+    /**
+     * 处理全网发布相关逻辑
+     * @param $authorizer_appid
+     * @return mixed
+     * @throws \EasyWeChat\Server\BadRequestException
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/19 17:59
+     */
+    private function releaseToNetWork($authorizer_appid)
+    {
+        $open_platform = $this->openPlatform;
+        $message       = $open_platform->server->getMessage();
+        //返回API文本消息
+        if ($message['MsgType'] == 'text' && strpos($message['Content'], "QUERY_AUTH_CODE:") !== false) {
+            $auth_code                = str_replace("QUERY_AUTH_CODE:", "", $message['Content']);
+            $authorization            = $open_platform->handleAuthorize($auth_code);
+            $authorizer_refresh_token = $authorization['authorization_info']['authorizer_refresh_token'];
+            if ($authorizer_refresh_token) {
+                $official_account_client = $open_platform->officialAccount($authorizer_appid, $authorizer_refresh_token);
+                $content                 = $auth_code . '_from_api';
+                $official_account_client['customer_service']->send([
+                    'touser'  => $message['FromUserName'],
+                    'msgtype' => 'text',
+                    'text'    => [
+                        'content' => $content
+                    ]
+                ]);
+                return $official_account_client->server->serve();
+            }
+            //返回普通文本消息
+        } elseif ($message['MsgType'] == 'text' && $message['Content'] == 'TESTCOMPONENT_MSG_TYPE_TEXT') {
+            $official_account_client = $open_platform->officialAccount($authorizer_appid);
+            $official_account_client->server->push(function ($message) {
+                return $message['Content'] . "_callback";
+            });
+            return $official_account_client->server->serve();
+            //发送事件消息
+        } elseif ($message['MsgType'] == 'event') {
+            $official_account_client = $open_platform->officialAccount($authorizer_appid);
+            $official_account_client->server->push(function ($message) {
+                return $message['Event'] . 'from_callback';
+            });
+            return $official_account_client->server->serve();
+        }
     }
 }
