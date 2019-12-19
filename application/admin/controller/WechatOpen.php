@@ -34,13 +34,12 @@ class WechatOpen extends Base
      */
     public function account_empower(Request $request)
     {
-        $user_id = $request->get('user_id');
+//        $appid         = config('WechatOpen.AppId');
+        $pre_auth_code = $this->openPlatform->pre_auth->getCode();
 
-        $config = $this->openPlatform;
-        dump($config);
+//        dump($appid);
+        dump($pre_auth_code);
         die();
-        $appid         = $config['app_id'];
-        $pre_auth_code = $this->openPlatform->createPreAuthorizationCode()['pre_auth_code'];
 
         $callback = config('app.url') . '/wechat/official_account/callback?user_id=' . $user_id;
 
