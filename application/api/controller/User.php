@@ -614,35 +614,8 @@ class User extends Base
         }
 
         // 根据当前店铺的上级总代理模式来设置设备的模式
-        if ('183.13.189.134' === $ip) {
-            $daili_user_id = null;
-            // 查找该店铺的添加人是谁
-            $entry_uid = M("lc_apply")->where(['user_id' => $data['j_user_id']])->value('entry_uid');
-            $type      = M("lc_apply")->where(['user_id' => $entry_uid])->value('type');
-            // 如果店铺添加人是总代理
-            if (5 == $type) {
-                $daili_user_id = $entry_uid;
-            }
-            // 如果店铺添加人是分销商 ，那么查询分销商的总代理是谁
-            if (4 == $type) {
-                // 查找该分销商的添加人是谁
-                $entry_uid = M("lc_apply")->where(['user_id' => $entry_uid])->value('entry_uid');
-                $type      = M("lc_apply")->where(['user_id' => $entry_uid])->value('type');
-                if (5 == $type) {
-                    $daili_user_id = $entry_uid;
-                }
-            }
-            // 如果查找不到该店铺所属的总代理
-            if (is_null($daili_user_id)) {
-                $mode_type = 0;
-            }else{
-                dump($daili_user_id);
-            }
-            $entry_uid   = M("lc_apply")->where(['user_id' => $data['j_user_id']])->value('entry_uid');
-            $lc_apply_id = M("lc_apply")->where(['entry_uid' => $entry_uid])->value('id');
-            IszmxwLog('iszmxw.txt', $ip);
-        }
-
+        $mode_type               = self::user_mode_type($data['j_user_id']);
+        $data['mode_type']       = $mode_type;
         $data['f_user_id']       = I('agent_user_id');
         $data['hotel_name']      = I('hotel_name');
         $data['secret_key']      = 'JDX888';
@@ -684,6 +657,44 @@ class User extends Base
             exit;
         }
 
+    }
+
+
+    /**
+     * 根据当前选择用户的id查询到所属的总代理，然后返回总代理的mode_type模式
+     * @param $user_id
+     * @return int
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/19 11:18
+     */
+    public static function user_mode_type($user_id)
+    {
+        $daili_user_id = null;
+        // 查找该店铺的添加人是谁
+        $entry_uid = M("lc_apply")->where(['user_id' => $user_id])->value('entry_uid');
+        $type      = M("lc_apply")->where(['user_id' => $entry_uid])->value('type');
+        if (5 == $type) {// 如果店铺添加人是总代理
+            $daili_user_id = $entry_uid;
+        } else if (4 == $type) {// 如果店铺添加人是分销商 ，那么查询分销商的总代理是谁
+            // 查找该分销商的添加人是谁
+            $entry_uid = M("lc_apply")->where(['user_id' => $entry_uid])->value('entry_uid');
+            $type      = M("lc_apply")->where(['user_id' => $entry_uid])->value('type');
+            if (5 == $type) {
+                $daili_user_id = $entry_uid;
+            }
+        }
+        // 如果查找不到该店铺所属的总代理
+        if (is_null($daili_user_id)) {
+            $mode_type = 0;
+        } else {
+            $mode_type = M('lc_apply')->where(['user_id' => $daili_user_id])->value('mode_type');
+        }
+        // 检测mode_type是否存在
+        if ($mode_type) {
+            return $mode_type;
+        } else {
+            return 0;
+        }
     }
 
 
