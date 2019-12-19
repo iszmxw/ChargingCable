@@ -34,7 +34,7 @@ return [
     // 注册的根命名空间
     'root_namespace'         => [],
     // 扩展函数文件
-    'extra_file_list'        => [THINK_PATH . 'helper' . EXT,APP_PATH.'function.php'],
+    'extra_file_list'        => [THINK_PATH . 'helper' . EXT, APP_PATH . 'function.php'],
     // 默认输出类型
     'default_return_type'    => 'html',
     // 默认AJAX 数据返回格式,可选json xml ...
@@ -126,7 +126,7 @@ return [
     // | 模板设置
     // +----------------------------------------------------------------------
 
-    'template'               => [
+    'template'              => [
         // 模板引擎类型 支持 php think 支持扩展
         'type'         => 'Think',
         // 模板路径
@@ -146,39 +146,39 @@ return [
     ],
 
     // 视图输出字符串内容替换
-    'view_replace_str'       => [],
+    'view_replace_str'      => [],
     // 默认跳转页面对应的模板文件
-    'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
-    'dispatch_error_tmpl'    => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
+    'dispatch_success_tmpl' => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
+    'dispatch_error_tmpl'   => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
 
     // +----------------------------------------------------------------------
     // | 异常及错误设置
     // +----------------------------------------------------------------------
 
     // 异常页面的模板文件 
-    'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
+    'exception_tmpl'        => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
     // errorpage 错误页面
-    'error_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_error.tpl', 
-    
+    'error_tmpl'            => THINK_PATH . 'tpl' . DS . 'think_error.tpl',
+
 
     // 错误显示信息,非调试模式有效
-    'error_message'          => '页面错误！请稍后再试～',
+    'error_message'         => '页面错误！请稍后再试～',
     // 显示错误信息
-    'show_error_msg'         => false,
+    'show_error_msg'        => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
-    'exception_handle'       => 'app\common\util\TpshopException',
+    'exception_handle'      => 'app\common\util\TpshopException',
 
     // +----------------------------------------------------------------------
     // | 日志设置
     // +----------------------------------------------------------------------
 
-    'log'                    => [
+    'log'   => [
         // 日志记录方式，内置 file socket 支持扩展
-        'type'  => 'File',
+        'type'   => 'File',
         // 日志保存目录
-        'path'  => LOG_PATH,
+        'path'   => LOG_PATH,
         // 日志记录级别
-        'level' => [],
+        'level'  => [],
         // 日志开关  1 开启 0 关闭
         'switch' => 1,
     ],
@@ -186,7 +186,7 @@ return [
     // +----------------------------------------------------------------------
     // | Trace设置 开启 app_trace 后 有效
     // +----------------------------------------------------------------------
-    'trace'                  => [
+    'trace' => [
         // 内置Html Console 支持扩展
         'type' => 'Html',
     ],
@@ -194,8 +194,8 @@ return [
     // +----------------------------------------------------------------------
     // | 缓存设置
     // +----------------------------------------------------------------------
-/**/   
-    'cache'                  => [
+    /**/
+    'cache' => [
         // 驱动方式
         'type'   => 'File',
         // 缓存保存目录
@@ -205,19 +205,19 @@ return [
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
     ],
-   
-/*   
-    'cache'                  => [
-        // 驱动方式
-        'type'   => 'redis',        
-        'host'       => '192.168.0.201', // 指定redis的地址  
-    ],    
-*/ 
+
+    /*
+        'cache'                  => [
+            // 驱动方式
+            'type'   => 'redis',
+            'host'       => '192.168.0.201', // 指定redis的地址
+        ],
+    */
     // +----------------------------------------------------------------------
     // | 会话设置
     // +----------------------------------------------------------------------
 
-    'session'                => [
+    'session'   => [
         'id'             => '',
         // SESSION_ID的提交变量,解决flash上传跨域
         'var_session_id' => '',
@@ -232,7 +232,7 @@ return [
     // +----------------------------------------------------------------------
     // | Cookie设置
     // +----------------------------------------------------------------------
-    'cookie'                 => [
+    'cookie'    => [
         // cookie 名称前缀
         'prefix'    => '',
         // cookie 保存时间
@@ -250,7 +250,7 @@ return [
     ],
 
     //分页配置
-    'paginate'               => [
+    'paginate'  => [
         'type'      => 'bootstrap',
         'var_page'  => 'page',
         'list_rows' => 15,
@@ -258,7 +258,7 @@ return [
     // 密码加密串
     'AUTH_CODE' => "TPSHOP", //安装完毕之后不要改变，否则所有密码都会出错
 
-    'MEMBER_STATUS' =>[
+    'MEMBER_STATUS' => [
         1 => '会员',
         2 => '经销商',
         3 => '市代理',
@@ -267,11 +267,11 @@ return [
         6 => '战略伙伴',
     ],
 
-    'LEVEL_STATUS' =>[
+    'LEVEL_STATUS'  => [
         1 => '一级佣金',
         2 => '二级佣金',
     ],
-    'REBATE_STATUS' =>[
+    'REBATE_STATUS' => [
         0 => '未付款',
         1 => '已付款',
         2 => '等待分成',
@@ -279,96 +279,96 @@ return [
         4 => '已取消',
     ],
 
-    'REBATES_STATUS' =>[
+    'REBATES_STATUS' => [
         0 => '未付款',
         1 => '已付款',
         2 => '已完成',
         3 => '无效',
     ],
-    
-    'ORDER_STATUS' =>[
+
+    'ORDER_STATUS'       => [
         0 => '待确认',
         1 => '已确认',
         2 => '已收货',
-        3 => '已取消',                
+        3 => '已取消',
         4 => '已完成',//评价完
         5 => '已作废',
     ],
-    'SHIPPING_STATUS' => array(
+    'SHIPPING_STATUS'    => array(
         0 => '未发货',
         1 => '已发货',
         2 => '部分发货'
     ),
-    'PAY_STATUS' => array(
+    'PAY_STATUS'         => array(
         0 => '未支付',
         1 => '已支付',
         2 => '部分支付',
         3 => '已退款',
         4 => '拒绝退款'
     ),
-    'SEX' => [
+    'SEX'                => [
         0 => '保密',
         1 => '男',
         2 => '女'
     ],
-    'COUPON_TYPE' => [
-    	0 => '下单赠送',
+    'COUPON_TYPE'        => [
+        0 => '下单赠送',
         1 => '指定发放',
         2 => '免费领取',
         3 => '线下发放',
         4 => '注册赠送',
     ],
-	'PROM_TYPE' => [
-		0 => '默认',
-		1 => '抢购',
-		2 => '团购',
-		3 => '优惠'			
-	],
-    'TEAM_FOUND_STATUS' => array(
-        '0'=>'待开团',
-        '1'=>'已开团',
-        '2'=>'拼团成功',
-        '3'=>'拼团失败',
+    'PROM_TYPE'          => [
+        0 => '默认',
+        1 => '抢购',
+        2 => '团购',
+        3 => '优惠'
+    ],
+    'TEAM_FOUND_STATUS'  => array(
+        '0' => '待开团',
+        '1' => '已开团',
+        '2' => '拼团成功',
+        '3' => '拼团失败',
     ),
     'TEAM_FOLLOW_STATUS' => array(
-        '0'=>'待拼单',
-        '1'=>'拼单成功',
-        '2'=>'成团成功',
-        '3'=>'成团失败',
+        '0' => '待拼单',
+        '1' => '拼单成功',
+        '2' => '成团成功',
+        '3' => '成团失败',
     ),
     //用户消息类型
-    'CATEGORY'=>['系统通知','物流通知', '优惠促销','商品提醒','我的资产'],
-    'TEAM_TYPE' => [0 => '分享团', 1 => '佣金团', 2 => '抽奖团'],
-    'FREIGHT_TYPE' => [0 => '件数', 1 => '重量', 2 => '体积'],
+    'CATEGORY'           => ['系统通知', '物流通知', '优惠促销', '商品提醒', '我的资产'],
+    'TEAM_TYPE'          => [0 => '分享团', 1 => '佣金团', 2 => '抽奖团'],
+    'FREIGHT_TYPE'       => [0 => '件数', 1 => '重量', 2 => '体积'],
     // 订单用户端显示状态
-    'WAITPAY'=>' AND pay_status = 0 AND order_status = 0 AND pay_code !="cod" ', //订单查询状态 待支付
-    'WAITSEND'=>' AND (pay_status=1 OR pay_code="cod") AND shipping_status !=1 AND order_status in(0,1) ', //订单查询状态 待发货
-    'WAITRECEIVE'=>' AND shipping_status=1 AND order_status = 1 ', //订单查询状态 待收货    
-    'WAITCCOMMENT'=> ' AND order_status=2 ', // 待评价 确认收货     //'FINISHED'=>'  AND order_status=1 ', //订单查询状态 已完成 
+    'WAITPAY'            => ' AND pay_status = 0 AND order_status = 0 AND pay_code !="cod" ', //订单查询状态 待支付
+    'WAITSEND'           => ' AND (pay_status=1 OR pay_code="cod") AND shipping_status !=1 AND order_status in(0,1) ', //订单查询状态 待发货
+    'WAITRECEIVE'        => ' AND shipping_status=1 AND order_status = 1 ', //订单查询状态 待收货
+    'WAITCCOMMENT'       => ' AND order_status=2 ', // 待评价 确认收货     //'FINISHED'=>'  AND order_status=1 ', //订单查询状态 已完成
     //'FINISH'=> ' AND order_status = 4 ', // 已完成
-    'FINISH'=> ' AND order_status = 2 AND shipping_status = 1 AND pay_status = 1 ', // 已完成 暂时没有待评价状态，确认订单后就是已完成
-    'CANCEL'=> ' AND order_status = 3 ', // 已取消
-    'CANCELLED'=> 'AND order_status = 5 ',//已作废
-    'PAYED'=>' AND (order_status=2 OR (order_status=1 AND pay_status=1) ) ', //虚拟订单状态:已付款
+    'FINISH'             => ' AND order_status = 2 AND shipping_status = 1 AND pay_status = 1 ', // 已完成 暂时没有待评价状态，确认订单后就是已完成
+    'CANCEL'             => ' AND order_status = 3 ', // 已取消
+    'CANCELLED'          => 'AND order_status = 5 ',//已作废
+    'PAYED'              => ' AND (order_status=2 OR (order_status=1 AND pay_status=1) ) ', //虚拟订单状态:已付款
 
     //设备用户端显示状态
-    'NOTACTIVE' => ' e_status = 0',//设备未绑定状态
-    'NORMAL' => 'e_status = 1',//设备正常状态
-    'REPAIR' => ' e_status = 2',//设备维修状态
+    'NOTACTIVE'          => ' e_status = 0',//设备未绑定状态
+    'NORMAL'             => 'e_status = 1',//设备正常状态
+    'REPAIR'             => ' e_status = 2',//设备维修状态
 
     'ORDER_STATUS_DESC' => [
-        'WAITPAY' => '待支付',
-        'WAITSEND'=>'待发货',
-        'PORTIONSEND'=>'部分发货',
-        'WAITRECEIVE'=>'待收货',
-        'WAITCCOMMENT'=> '已完成',
-        'CANCEL'=> '已取消',
-        'FINISH'=> '已完成', //
-        'CANCELLED'=> '已作废',
-        'CANCEL_REFUND'=>'已取消(已退款)'
+        'WAITPAY'       => '待支付',
+        'WAITSEND'      => '待发货',
+        'PORTIONSEND'   => '部分发货',
+        'WAITRECEIVE'   => '待收货',
+        'WAITCCOMMENT'  => '已完成',
+        'CANCEL'        => '已取消',
+        'FINISH'        => '已完成', //
+        'CANCELLED'     => '已作废',
+        'CANCEL_REFUND' => '已取消(已退款)'
     ],
 
-    'REFUND_STATUS'=>array(
+    'REFUND_STATUS' => array(
         -2 => '服务单取消',//会员取消
         -1 => '审核失败',//不同意
         0  => '待审核',//卖家审核
@@ -381,85 +381,91 @@ return [
     /**
      * 售后类型
      */
-    'RETURN_TYPE'=>array(
-        0=>'仅退款',
-        1=>'退货退款',
-        2=>'换货',
+    'RETURN_TYPE'   => array(
+        0 => '仅退款',
+        1 => '退货退款',
+        2 => '换货',
     ),
     //短信使用场景
-    'SEND_SCENE' => array(
-        '1'=>array('用户注册','验证码${code}，用户注册新账号, 请勿告诉他人，感谢您的支持!','regis_sms_enable'),
-        '2'=>array('用户找回密码','验证码${code}，用于密码找回，如非本人操作，请及时检查账户安全','forget_pwd_sms_enable'),
-        '3'=>array('客户下单','您有新订单，收货人：${consignee}，联系方式：${phone}，请您及时查收.','order_add_sms_enable'),
-        '4'=>array('客户支付','客户下的单(订单ID:${orderId})已经支付，请及时发货.','order_pay_sms_enable'),
-        '5'=>array('商家发货','尊敬的${userName}用户，您的订单已发货，收货人${consignee}，请您及时查收','order_shipping_sms_enable'),
-        '6'=>array('身份验证','尊敬的用户，您的验证码为${code}, 请勿告诉他人.','bind_mobile_sms_enable'),
-        '7'=>array('购买虚拟商品通知','尊敬的用户，您购买的虚拟商品${goodsName}兑换码已生成,请注意查收.','virtual_goods_sms_enable'),
+    'SEND_SCENE'    => array(
+        '1' => array('用户注册', '验证码${code}，用户注册新账号, 请勿告诉他人，感谢您的支持!', 'regis_sms_enable'),
+        '2' => array('用户找回密码', '验证码${code}，用于密码找回，如非本人操作，请及时检查账户安全', 'forget_pwd_sms_enable'),
+        '3' => array('客户下单', '您有新订单，收货人：${consignee}，联系方式：${phone}，请您及时查收.', 'order_add_sms_enable'),
+        '4' => array('客户支付', '客户下的单(订单ID:${orderId})已经支付，请及时发货.', 'order_pay_sms_enable'),
+        '5' => array('商家发货', '尊敬的${userName}用户，您的订单已发货，收货人${consignee}，请您及时查收', 'order_shipping_sms_enable'),
+        '6' => array('身份验证', '尊敬的用户，您的验证码为${code}, 请勿告诉他人.', 'bind_mobile_sms_enable'),
+        '7' => array('购买虚拟商品通知', '尊敬的用户，您购买的虚拟商品${goodsName}兑换码已生成,请注意查收.', 'virtual_goods_sms_enable'),
     ),
-    
-    'APP_TOKEN_TIME' => 60 * 60 * 24 , //App保持token时间 , 此处为1天
-    
+
+    'APP_TOKEN_TIME'          => 60 * 60 * 24, //App保持token时间 , 此处为1天
+
     /**
-     *  订单用户端显示按钮     
-        去支付     AND pay_status=0 AND order_status=0 AND pay_code ! ="cod"
-        取消按钮  AND pay_status=0 AND shipping_status=0 AND order_status=0 
-        确认收货  AND shipping_status=1 AND order_status=0 
-        评价      AND order_status=1 
-        查看物流  if(!empty(物流单号))   
-        退货按钮（联系客服）  所有退换货操作， 都需要人工介入   不支持在线退换货
+     *  订单用户端显示按钮
+     * 去支付     AND pay_status=0 AND order_status=0 AND pay_code ! ="cod"
+     * 取消按钮  AND pay_status=0 AND shipping_status=0 AND order_status=0
+     * 确认收货  AND shipping_status=1 AND order_status=0
+     * 评价      AND order_status=1
+     * 查看物流  if(!empty(物流单号))
+     * 退货按钮（联系客服）  所有退换货操作， 都需要人工介入   不支持在线退换货
      */
 
     /*分页每页显示数*/
-    'PAGESIZE' => 10,
-    'finally_pay_time'=>1*24*3600,
-    'WX_PAY2' => 1,
+    'PAGESIZE'                => 10,
+    'finally_pay_time'        => 1 * 24 * 3600,
+    'WX_PAY2'                 => 1,
 
-    /**假设这个访问地址是 www.tpshop.cn/home/goods/goodsInfo/id/1.html 
-     *就保存名字为 home_goods_goodsinfo_1.html     
-     *配置成这样, 指定 模块 控制器 方法名 参数名      
+    /**假设这个访问地址是 www.tpshop.cn/home/goods/goodsInfo/id/1.html
+     *就保存名字为 home_goods_goodsinfo_1.html
+     *配置成这样, 指定 模块 控制器 方法名 参数名
      */
-    'HTML_CACHE_ARR'=> [
-    ['mca'=>'home_Goods_goodsInfo','p'=>['id']],  
-    ['mca'=>'home_Index_index'],  // 缓存首页静态页面
-    ['mca'=>'home_Goods_ajaxComment','p'=>['goods_id','commentType','p']],  // 缓存评论静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajaxComment&goods_id=142&commentType=1&p=1
-    ['mca'=>'home_Goods_ajax_consult','p'=>['goods_id','consult_type','p']],  // 缓存咨询静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajax_consult&goods_id=142&consult_type=0&p=2
+    'HTML_CACHE_ARR'          => [
+        ['mca' => 'home_Goods_goodsInfo', 'p' => ['id']],
+        ['mca' => 'home_Index_index'],  // 缓存首页静态页面
+        ['mca' => 'home_Goods_ajaxComment', 'p' => ['goods_id', 'commentType', 'p']],  // 缓存评论静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajaxComment&goods_id=142&commentType=1&p=1
+        ['mca' => 'home_Goods_ajax_consult', 'p' => ['goods_id', 'consult_type', 'p']],  // 缓存咨询静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajax_consult&goods_id=142&consult_type=0&p=2
     ],
 
     /*订单操作*/
-    'CONVERT_ACTION'=>[
-        'pay'=> '付款',
-        'pay_cancel'=>'取消付款',
-        'confirm'=>'确认订单',
-        'cancel'=>'取消确认',
-        'invalid'=>'作废订单',
-        'remove'=>'删除订单',
-        'delivery'=>'确认发货',
-        'delivery_confirm'=>'确认收货',
+    'CONVERT_ACTION'          => [
+        'pay'              => '付款',
+        'pay_cancel'       => '取消付款',
+        'confirm'          => '确认订单',
+        'cancel'           => '取消确认',
+        'invalid'          => '作废订单',
+        'remove'           => '删除订单',
+        'delivery'         => '确认发货',
+        'delivery_confirm' => '确认收货',
     ],
-    'WITHDRAW_STATUS'=>[
-        '-1'=>'拒绝提现',
-        '0'=>'申请中',
-        '1'=>'打款成功',
+    'WITHDRAW_STATUS'         => [
+        '-1' => '拒绝提现',
+        '0'  => '申请中',
+        '1'  => '打款成功',
     ],
-    'RECHARGE_STATUS'=>[
-        '0'=>'待支付',
-        '1'=>'支付成功',
-        '2'=>'交易关闭',
+    'RECHARGE_STATUS'         => [
+        '0' => '待支付',
+        '1' => '支付成功',
+        '2' => '交易关闭',
     ],
-    'erasable_type' =>['.gif','.jpg','.jpeg','.bmp','.png','.mp4','.3gp','.flv','.avi','.wmv'],
-    'COUPON_USER_TYPE'=>['全店通用','指定商品可用','指定分类商品可用'],
-    'INVOUCE_TYPE'=>['普通发票','电子发票','增值税发票'],
-    'image_upload_limit_size'=>1024 * 1024 * 5,//上传图片大小限制
-    "APPID"=>"wx9b04ac5aa5c4cc6a",
-    "SECRET"=>"c11af7bf248d6647128fcb3816492980",//"6fec0ef7ee0b4c22920a0ee884881776",
-    "MCHID"=>"1533376191",
-    "APIKEY"=>"15998c70d2d3ee19be34d53e0df87d9c",
-    "APPID_AP"=>"wx71092b65dead0d5e", //小程序
-    "SECRET_AP"=>"ed41edb01b4f133c36a9a14858fb5ac3",//小程序
+    'erasable_type'           => ['.gif', '.jpg', '.jpeg', '.bmp', '.png', '.mp4', '.3gp', '.flv', '.avi', '.wmv'],
+    'COUPON_USER_TYPE'        => ['全店通用', '指定商品可用', '指定分类商品可用'],
+    'INVOUCE_TYPE'            => ['普通发票', '电子发票', '增值税发票'],
+    'image_upload_limit_size' => 1024 * 1024 * 5,//上传图片大小限制
+    "APPID"                   => "wx9b04ac5aa5c4cc6a",
+    "SECRET"                  => "c11af7bf248d6647128fcb3816492980",//"6fec0ef7ee0b4c22920a0ee884881776",
+    "MCHID"                   => "1533376191",
+    "APIKEY"                  => "15998c70d2d3ee19be34d53e0df87d9c",
+    "APPID_AP"                => "wx71092b65dead0d5e", //小程序
+    "SECRET_AP"               => "ed41edb01b4f133c36a9a14858fb5ac3",//小程序
     "FSWS"                    => [// 粉丝万岁平台参数
         "APPID"      => "jbh200163e0488d6",
         "APP_SECRET" => "c94ad41343d65888b7f0770b46495573",
         "URL"        => "https://api.fensiwansui.com/open/commercial/get_qrcode",
         "KEY"        => "24bc832a05ee11ea88f600163e0a5c35"
+    ],
+    "WechatOpen"              => [// 微信开放平台参数
+        "AppId"     => "wx677b80512f812c82",
+        "AppSecret" => "b98a2b814fb7e3a548d42367c81abd2e",
+        "Token"     => "iszmxw",
+        "Aes_Key"   => "ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf"
     ]
 ];

@@ -16,10 +16,10 @@ class WechatOpen extends Base
     {
         parent::__construct();
         $config             = [
-            'app_id'  => config('product.WeChatOpen.AppId'),
-            'secret'  => config('product.WeChatOpen.AppSecret'),
-            'token'   => config('product.WeChatOpen.Token'),
-            'aes_key' => config('product.WeChatOpen.Aes_Key')
+            'app_id'  => config('WechatOpen.AppId'),
+            'secret'  => config('WeChatOpen.AppSecret'),
+            'token'   => config('WeChatOpen.Token'),
+            'aes_key' => config('WeChatOpen.Aes_Key')
         ];
         $app                = new Application($config);
         $this->openPlatform = $app->open_platform;
@@ -28,13 +28,17 @@ class WechatOpen extends Base
     /**
      * 授权跳转链接
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \think\response\Redirect
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/19 17:09
      */
     public function account_empower(Request $request)
     {
         $user_id = $request->get('user_id');
 
-        $config        = $this->openPlatform->getConfig();
+        $config = $this->openPlatform;
+        dump($config);
+        die();
         $appid         = $config['app_id'];
         $pre_auth_code = $this->openPlatform->createPreAuthorizationCode()['pre_auth_code'];
 
