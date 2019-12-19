@@ -72,8 +72,7 @@ class WechatOpen extends Base
             // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
             switch ($event->InfoType) {
                 case 'authorized':
-                    // ...
-//                    IszmxwLog('iszmxw', json_encode($event));
+
                 case 'unauthorized':
                     // ...
                 case 'updateauthorized':
@@ -82,14 +81,6 @@ class WechatOpen extends Base
                     // ...
             }
         });
-//        $server->server->push(function ($message) {
-//            $appid = $message['AuthorizerAppid'];
-//            // 软删除当前公众号数据,以及公众号相关的任务
-//            $official_id = OfficialAccount::getValue(['appid' => $appid], 'id');
-//            OfficialAccount::EditData(['appid' => $appid], ['status' => 0]);
-//            OfficialAccount::selected_delete(['appid' => $appid]);
-//            PlanTask::selected_delete(['official_id' => $official_id]);
-//        }, Guard::EVENT_UNAUTHORIZED);
         return $openPlatform->server->serve();
     }
 
