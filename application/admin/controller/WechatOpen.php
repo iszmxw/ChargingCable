@@ -36,7 +36,7 @@ class WechatOpen extends Base
     {
         $user_id = $request->get('user_id');
 
-        $config = $this->openPlatform->getAuthorizerOption();
+        $config = $this->openPlatform->getAuthorizerInfo();
         dump($config);
         die();
         $appid         = $config['app_id'];
