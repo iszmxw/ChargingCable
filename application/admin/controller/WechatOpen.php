@@ -32,7 +32,7 @@ class WechatOpen extends Base
      */
     public function message_callback(Request $request)
     {
-        $appid = $request->input('appid');
+        $appid = $request->param('appid');
         dump($appid);
     }
 }
