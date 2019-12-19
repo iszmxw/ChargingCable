@@ -1,4 +1,4 @@
-<include file="public/layout" />
+<include file="public/layout"/>
 <script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
 <body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
 <div id="append_parent"></div>
@@ -13,7 +13,8 @@
         </div>
     </div>
     <!-- 操作说明 -->
-    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="explanation" class="explanation"
+         style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
         <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
             <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
             <span title="收起提示" id="explanationZoom" style="display: block;"></span>
@@ -29,7 +30,8 @@
                 <h5>(共{$pager->totalRows}条记录)</h5>
             </div>
             <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-            <form class="navbar-form form-inline" id="search-form" action="" method="post" onsubmit="return check_form();">
+            <form class="navbar-form form-inline" id="search-form" action="" method="post"
+                  onsubmit="return check_form();">
                 <input type="hidden" name="timegap" id="timegap" value="{$timegap}">
                 <div class="sDiv">
                     <div class="sDiv2" style="margin-right: 10px;">
@@ -40,20 +42,21 @@
                         <input type="text" size="30" id="end_time" value="{$end}" placeholder="截止时间" class="qsbox">
                         <input type="button" class="btn" value="截止时间">
                     </div>
-                    <input type="text" size="30" name="bank" value="{$bank}" id='bank' placeholder="设备号|酒店名" class="qsbox">
-                    <input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
+                    <input type="text" size="30" name="bank" value="{$bank}" id='bank' placeholder="设备号|酒店名"
+                           class="qsbox">
+                    <input type="button" onclick="clickSearch(this,'search-form')" class="btn" value="搜索">
                 </div>
             </form>
 
-          <!--  <div class="tDiv2">
-                <div class="fbutton">
-                    <a href="javascript:;" onclick="exportUser()">
-                        <div class="add" title="导出设备编号">
-                            <span><i class="fa fa-share"></i>导出设备编号</span>
-                        </div>
-                    </a>
-                </div>
-            </div>-->
+            <!--  <div class="tDiv2">
+                  <div class="fbutton">
+                      <a href="javascript:;" onclick="exportUser()">
+                          <div class="add" title="导出设备编号">
+                              <span><i class="fa fa-share"></i>导出设备编号</span>
+                          </div>
+                      </a>
+                  </div>
+              </div>-->
         </div>
 
         <div class="hDiv">
@@ -174,7 +177,9 @@
                             </td>
                             <td align="center" class="handle">
                                 <div style="text-align: center; width: 170px; max-width:170px;">
-                                    <a class="btn red"  href="javascript:void(0)" data-url="{:U('Subcommission/delete_shebei')}" data-id="{$list.id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+                                    <a class="btn red" href="javascript:void(0)"
+                                       data-url="{:U('Subcommission/delete_shebei')}" data-id="{$list.id}"
+                                       onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
                                 </div>
                             </td>
                             <td align="" class="" style="width: 100%;">
@@ -189,19 +194,20 @@
             <div class="iDiv" style="display: none;"></div>
         </div>
         <!--分页位置-->
-        {$page} </div>
+        {$page}
+    </div>
 </div>
 <script>
 
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         // 表格行点击选中切换
-        $('#flexigrid > table>tbody >tr').click(function(){
+        $('#flexigrid > table>tbody >tr').click(function () {
             $(this).toggleClass('trSelected');
         });
 
         // 点击刷新数据
-        $('.fa-refresh').click(function(){
+        $('.fa-refresh').click(function () {
             location.href = location.href;
         });
         // $('#start_time').layDate();
@@ -217,10 +223,11 @@
             elem: "#end_time"
         })
     });
+
     function exportUser() {
         var vals = $('#bank').val();
         var timegap = $('#timegap').val();
-        $('#search-form').attr('action',"{:U('Subcommission/export_user')}?bank="  + vals + '&timegap=' + timegap)
+        $('#search-form').attr('action', "{:U('Subcommission/export_user')}?bank=" + vals + '&timegap=' + timegap)
         $('#search-form').submit();
     }
 
@@ -232,7 +239,7 @@
             $.ajax({
                 type: 'post',
                 url: $(obj).attr('data-url'),
-                data : {act:'del',id:$(obj).attr('data-id')},
+                data: {act: 'del', id: $(obj).attr('data-id')},
                 dataType: 'json',
                 success: function (data) {
                     layer.closeAll();
@@ -247,21 +254,23 @@
             layer.closeAll();
         });
     }
-    function check_form(){
+
+    function check_form() {
         var start_time = $.trim($('#start_time').val());
-        var end_time =  $.trim($('#end_time').val());
-        if(start_time == '' ^ end_time == ''){
+        var end_time = $.trim($('#end_time').val());
+        if (start_time == '' ^ end_time == '') {
             layer.alert('请选择完整的时间间隔', {icon: 2});
             return false;
         }
-        if(start_time !== '' && end_time !== ''){
-            $('#timegap').val(start_time+","+end_time);
+        if (start_time !== '' && end_time !== '') {
+            $('#timegap').val(start_time + "," + end_time);
         }
-        if(start_time == '' && end_time == ''){
+        if (start_time == '' && end_time == '') {
             $('#timegap').val('');
         }
         return true;
     }
+
     // 获取设备的模式页面
     function get_device_mode(number, mode_type, obj) {
         var url = window.location.origin + $(obj).data('url');

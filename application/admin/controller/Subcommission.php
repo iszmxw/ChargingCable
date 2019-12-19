@@ -207,7 +207,7 @@ class Subcommission extends Base
 
     }
 
-    //设备编号列表
+    // 设备编号列表
     public function code_list()
     {
         $admin_id = session('admin_id');
