@@ -55,9 +55,9 @@
                 <if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 0) or ($list['order_status'] eq 5)">
                     <a class="btn red" href="javascript:void(0);" data-order-id="{$list['order_id']}" onclick="del(this)"><i class="fa fa-trash-o"></i>删除</a>
                 </if>
-                <!--<if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 1)">
-                    <a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
-                </if>-->
+                <if condition="$list[pay_status] eq 1">
+                    <a class="btn red"  onclick="refundWx(this)" href="javascript:;" data-url="{:U('Admin/order/refundWx')}" data-id="{$list['order_id']}"><i class="fa fa-send-o"></i>立即退款</a>
+                </if>
             </div>
         </td>
       </tr>
@@ -74,6 +74,31 @@
         var page = $(this).data('p');
         ajax_get_table('search-form2',page);
     });
+
+
+    /*退款方法*/
+    function refundWx(obj){
+        layer.confirm('确认退款？,确定后不可返回', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: 'post',
+                url: $(obj).attr('data-url'),
+                data : {act:'not_rufer',id:$(obj).attr('data-id')},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status==1) {
+                        layer.alert('金额已全额退款', {icon: 2});
+                        $(obj).parent().parent().parent().remove();
+                    } else {
+                        layer.alert(data.msg, {icon: 2});  //alert('删除失败');
+                    }
+                }
+            })
+        }, function () {
+            layer.closeAll();
+        });
+    }
     
  // 删除操作
     function del(obj) {
@@ -101,4 +126,6 @@
 	}
     
     $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+
+
 </script>

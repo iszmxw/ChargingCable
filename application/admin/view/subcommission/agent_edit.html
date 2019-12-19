@@ -43,6 +43,23 @@
 
             <dl class="row">
                 <dt class="tit">
+                    <label>设置上级城市运营商（非必选）</label>
+                </dt>
+                <dd class="opt">
+                    <select id="city_id" name="entry_uid">
+                        <option value="">请选择上级城市运营商</option>
+                        <volist id="applys" name="apply">
+                            <option value="{$applys['user_id']}" <if condition="$list['entry_uid'] eq $applys['user_id']">selected=""</if>>{$applys['username']}</option>
+                        </volist>
+
+
+                    </select>
+                </dd>
+                <p>更改的总分成不能小于酒店的分成</p>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
                     <label>总代理拥有<font style="color: #2eff70">默认模式</font>分成</label>
                 </dt>
                 <dd class="opt">
@@ -99,7 +116,7 @@
         $.ajax({
             type:'post',
             data:$('#delivery-form').serialize(),
-            url: "{:U('Admin/Subcommission/distributor_edit')}",
+            url: "{:U('Admin/Subcommission/agent_edit')}",
             dataType:'JSON',
             success: function(data) {
                 if(data.status == 1){

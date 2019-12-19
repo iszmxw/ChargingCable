@@ -45,18 +45,6 @@
 
             <!--<dl class="row">
                 <dt class="tit">
-                    <label for="reg_integral">手续费比例</label>
-                </dt>
-                <dd class="opt">
-                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="service_ratio" name="service_ratio" value="{$config.service_ratio}" class="input-txt" type="text"> %
-                    <span class="err">只能输入整数</span>
-
-                    <p class="notic">（注：默认是百分比，如填1就是 代表每笔提现，收取提现金额1%的手续费）</p>
-                </dd>
-            </dl>-->
-
-            <!--<dl class="row">
-                <dt class="tit">
                     <label for="reg_integral">最低手续费</label>
                 </dt>
                 <dd class="opt">
@@ -77,16 +65,26 @@
                     <p class="notic">（注：单笔手续费计算出来大于该值时，则取该值,为0时则不限）</p>
                 </dd>
             </dl>-->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="distribut_min">首次允许最低提现金额</label>
+                </dt>
+                <dd class="opt">
+                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="cash_open" id="cash_open" value="{$config.cash_open}" class="input-txt" type="text">
+                    元
+                    <p class="notic">只限第一次提现</p>
+                </dd>
+            </dl>
 
             <dl class="row">
                 <dt class="tit">
-                    <label for="distribut_min">最低提现额</label>
+                    <label for="distribut_min">第二次及以上每笔提现最低金额</label>
                 </dt>
                 <dd class="opt">
                     <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="min_cash" id="min_cash" value="{$config.min_cash}" class="input-txt" type="text">
                     <span class="err">只能输入整数</span>
 
-                    <p class="notic">（注：单笔最低提现额）</p>
+                    <p class="notic">（注：单笔最低提现额，适用于提现次数大于1次时）</p>
                 </dd>
             </dl>
             <!--<dl class="row">
@@ -112,9 +110,39 @@
                     <p class="notic">（注：单人每日累计提现额达到该值时，本日将不支持继续提现,为0时则不限）</p>
                 </dd>
             </dl>-->
+
+
+
+
+
+            <dl class="row">
+               <dt class="tit">
+                   <label for="distribut_min">收手续费条件，每笔提现金额小于</label>
+               </dt>
+               <dd class="opt">
+                   <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="count_card" id="count_card" value="{$config.count_card}" class="input-txt" type="text">
+                  元
+
+                   <p class="notic">（注：第二次及以上每笔提现金额小于此数时需收取手续费）</p>
+               </dd>
+           </dl>
+
+
             <dl class="row">
                 <dt class="tit">
-                    <label for="distribut_min">每日累计提现次数</label>
+                    <label for="reg_integral">第二次及以上每笔提现需收取的手续费比例</label>
+                </dt>
+                <dd class="opt">
+                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="count_cash" name="count_cash" value="{$config.count_cash}" class="input-txt" type="text"> %
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">（注：默认是百分比，如填1就是 代表每笔提现满足条件，收取提现金额1%的手续费）</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="distribut_min">每天累计提现次数</label>
                 </dt>
                 <dd class="opt">
                     <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="cash_times" id="cash_times" value="{$config.cash_times}" class="input-txt" type="text">

@@ -64,6 +64,7 @@ class System extends Base
     public function cash()
     {
         $config = tpCache('cash');
+    
         $this->assign('config',$config);//当前配置项
         return $this->fetch();
     }

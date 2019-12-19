@@ -77,11 +77,19 @@
                             <div style="text-align: center; width: 100px;" class="">微信号</div>
                         </th>
                         <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">所属城市运营商</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
                             <div style="text-align: center; width: 120px;" class="">默认模式分成比例</div>
                         </th>
 
                         <th align="center" abbr="article_show" axis="col5" class="">
                             <div style="text-align: center; width: 120px;" class="">免费模式分成比例</div>
+                        </th>
+                        <th align="center" abbr="is_on_sale" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="" onClick="sort('is_on_sale');">
+                                是否设为城市运营商
+                            </div>
                         </th>
 
                         <th align="center" abbr="article_show" axis="col5" class="">
@@ -147,6 +155,11 @@
                                 </div>
                             </td>
                             <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$list.city}
+                                </div>
+                            </td>
+                            <td align="center" class="">
                                 <div style="text-align: center; width: 120px;color: #1fff8e">
                                     {$list.one_level}%
                                 </div>
@@ -154,6 +167,20 @@
                             <td align="center" class="">
                                 <div style="text-align: center; width: 120px;color: #f00">
                                     {$list.one_level_free}%
+                                </div>
+                            </td>
+
+                            <td align="center" axis="col0">
+                                <div style="text-align: center; width: 150px;">
+                                    <if condition='$list[is_on_sale] eq 1'>
+                                <span class="yes"
+                              onClick="changeTableVal('lc_apply','id','{$list.id}','is_on_sale',this)"><i
+                                class="fa fa-check-circle"></i>是</span>
+                                        <else/>
+                                        <span class="no"
+                                              onClick="changeTableVal('lc_apply','id','{$list.id}','is_on_sale',this)"><i
+                                                class="fa fa-ban"></i>否</span>
+                                    </if>
                                 </div>
                             </td>
                             <td align="center" class="">

@@ -38,9 +38,10 @@ class Base extends Controller {
         //校验权限，需要登录
         if($user){
             $this->user = $user;
-          /*  if($user['user_id'] == 138){
-                $user['user_id'] = 13;
-            }
+           /*if($user['user_id'] == 281){
+                $user['user_id'] = 10;
+            }*/
+            /*
             if($user['user_id'] == 6){
                 $user['user_id'] = 27;
             }*/

@@ -992,6 +992,23 @@ class User extends Base
    public function wxtixian($id){
         $withdrawals = M("withdrawals")->where('id',$id)->find();
         $openid = M("users")->where('user_id',$withdrawals['user_id'])->value("openid");
+       //判断用户是否为第一次提现
+       $withdrawals_num = M("withdrawals")->where(['user_id'=>$withdrawals['user_id'],'status'=>['neq',-1]])->count();
+       //查询提现条件
+       $config = tpCache('cash');
+       $free = 0;
+       $max_money = $config['count_card'];//满足小于
+       $count_cash = $config['count_cash'];//手续费比例
+       if($withdrawals_num>0){
+           //收取手续费
+
+            if($withdrawals['money'] < $max_money){
+               $free = ($count_cash*0.01) * $withdrawals['money'];
+               $free = number_format($free,2);
+                $withdrawals['money'] = $withdrawals['money'] - $free;
+            }
+       }
+
         $appid = 'wx9b04ac5aa5c4cc6a';//商户账号appid
         $mch_id = "1533376191";//商户号
         $arr = array();
@@ -1011,6 +1028,7 @@ class User extends Base
         $arr['sign'] = $this->MakeSign($arr);//签名
 
         $var = $this->arrayToXml($arr);
+
         $xml = $this->curl_post_ssl('https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers', $var, 30, array(), 1);
         $rdata = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         $return_code = (string)$rdata->return_code;
@@ -1019,7 +1037,7 @@ class User extends Base
         $result_code = trim(strtoupper($result_code));
 
         if ($return_code == 'SUCCESS' && $result_code == 'SUCCESS') {
-            return array('status'=>'succen','trade_no'=> $arr['partner_trade_no']);
+            return array('status'=>'succen','trade_no'=> $arr['partner_trade_no'],'count_cash'=>$count_cash,'free'=>$free);
         } else {
             $returnmsg = (string)$rdata->return_msg;
             if($returnmsg=='NO_AUTH'){
@@ -1033,7 +1051,6 @@ class User extends Base
 
     function curl_post_ssl($url, $vars, $second = 30, $aHeader = array())
     {
-        $isdir = "../vendor/wx/cert/";//证书位置
 
         $ch = curl_init();//初始化curl
 
@@ -1043,11 +1060,11 @@ class User extends Base
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// 终止从服务端进行验证
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);//
         curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');//证书类型
-        curl_setopt($ch, CURLOPT_SSLCERT, $isdir . 'apiclient_cert.pem');//证书位置
+        curl_setopt($ch, CURLOPT_SSLCERT, getcwd() . '/vendor/cert/apiclient_cert.pem');//证书位置
         curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');//CURLOPT_SSLKEY中规定的私钥的加密类型
-        curl_setopt($ch, CURLOPT_SSLKEY, $isdir . 'apiclient_key.pem');//证书位置
-        curl_setopt($ch, CURLOPT_CAINFO, 'PEM');
-        curl_setopt($ch, CURLOPT_CAINFO, $isdir . 'rootca.pem');
+        curl_setopt($ch, CURLOPT_SSLKEY,  getcwd() . '/vendor/cert/apiclient_key.pem');//证书位置
+      //  curl_setopt($ch, CURLOPT_CAINFO, 'PEM');
+       // curl_setopt($ch, CURLOPT_CAINFO, $isdir . 'rootca.pem');
         if (count($aHeader) >= 1) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $aHeader);//设置头部
         }
@@ -1055,6 +1072,7 @@ class User extends Base
         curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);//全部数据使用HTTP协议中的"POST"操作来发送
 
         $data = curl_exec($ch);//执行回话
+
         if ($data) {
             curl_close($ch);
             return $data;
@@ -1104,7 +1122,7 @@ class User extends Base
         ksort($params);
         $string = $this->ToUrlParams($params);
         //签名步骤二：在string后加入KEY
-        $string = $string . "&key="."qwertyuioAA125447854878578945685";
+        $string = $string . "&key="."15998c70d2d3ee19be34d53e0df87d9c";
         //签名步骤三：MD5加密
         $string = md5($string);
         //签名步骤四：所有字符转为大写
@@ -1295,24 +1313,27 @@ class User extends Base
         }
 
         $log = M('withdrawals')->where('id','in',$id)->select();
+
         foreach ($log as $key => $value) {
             //判断冻结金额是否充足
-            $dj_money = M("users")->where(['user_id'=>$value['user_id']])->value("frozen_money");
+
+            $dj_money = M("users")->where(['user_id'=>$value['user_id']])->getField("frozen_money");
+
             if($dj_money<$value['money']){
                 $this->ajaxReturn(['status' => 0, 'msg' => '提现金额有误！！' ]);
             }
 
-         //   $object = $this->wxtixian($val['id']);
-         //   if ($object['status'] == 'succen') {//提现成功
+            $object = $this->wxtixian($value['id']);
+            if ($object['status'] == 'succen') {//提现成功
                 M("users")->where(['user_id'=>$value['user_id']])->setDec('frozen_money', $value['money']);
-                $data = array('status' => 1, 'remark' => '提现成功', 'trade_no' => $object['status']);
+                $data = array('status' => 1, 'remark' => '提现成功', 'trade_no' => $object['status'],'count_cash'=>$object['count_cash'].'%','taxfee'=>$object['free']);
                 M('withdrawals')->where(array('id' => $value['id']))->save($data);
                 $this->ajaxReturn(array('status' => 0, 'msg' => "打款成功"), 'JSON');
 
-         //   } else {
-           //     $this->ajaxReturn(['status' => 0, 'msg' =>$object['msg'] ]);
-              //  $this->error($object['msg']);
-          //  }
+            } else {
+                $this->ajaxReturn(['status' => 0, 'msg' =>$object['msg'] ]);
+                $this->error($object['msg']);
+            }
         }
 
 

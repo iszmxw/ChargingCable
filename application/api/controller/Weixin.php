@@ -482,6 +482,26 @@ class Weixin extends Controller{
 
                             }
                         }
+                        //判断总代理上面是否有城市运营商
+                       $entry_uid = M("lc_apply")->where(['user_id'=>$lc_equipment_number['f_user_id']])->value("entry_uid");
+                        if($entry_uid){
+                            $entry_level = M("lc_apply")->where(['user_id'=>$entry_uid])->field("type,is_on_sale")->find();
+                            if($entry_level['type']==5 && $entry_level['is_on_sale']==1){//如果上级是城市运营商
+                                //1.获取城市运营商的分润比例
+                                $city_agents = M("lc_subcommission")->where(['id'=>1])->value("city_agent");
+                                if($city_agents > 0){
+                                    $city_agent = number_format($city_agents/100,2);//总代理可得分润比例
+                                    $zcity_agent = number_format($money * $city_agent,2);//总代理可获得分润金额
+                                    if($zcity_agent>0){
+                                        M("users")->where(['user_id'=>$entry_uid])->setInc('user_money',$zcity_agent);//往总代理零钱添加分润金额
+                                        //添加分润记录(收入记录)
+                                        $earrayss = ['user_id'=>$entry_uid,'money'=>$money,'allf_money'=>$zcity_agent,'pay_user_id'=>$order['user_id'],'time'=>time(),'type'=>5,'order_sn'=>$order_sn,'subcommission'=>$city_agents,'number'=>$number];
+                                        M("shou_log")->add($earrayss);
+                                    }
+                                }
+                            }
+                        }
+
                     }else{//不是总代理身份
                         //查找分销商分成比例
                         $f_fcbili = M('lc_apply')->where(['user_id'=>$lc_equipment_number['f_user_id']])->value("one_level");
@@ -523,6 +543,26 @@ class Weixin extends Controller{
                                 }
                             }
 
+                        }
+
+                        //判断总代理上面是否有城市运营商
+                        $entry_uids = M("lc_apply")->where(['user_id'=>$entry_uid])->value("entry_uid");
+                        if($entry_uids){
+                            $entry_level = M("lc_apply")->where(['user_id'=>$entry_uids])->field("type,is_on_sale")->find();
+                            if($entry_level['type']==5 && $entry_level['is_on_sale']==1){//如果上级是城市运营商
+                                //1.获取城市运营商的分润比例
+                                $city_agents = M("lc_subcommission")->where(['id'=>1])->value("city_agent");
+                                if($city_agents > 0){
+                                    $city_agent = number_format($city_agents/100,2);//总代理可得分润比例
+                                    $zcity_agent = number_format($money * $city_agent,2);//总代理可获得分润金额
+                                    if($zcity_agent>0){
+                                        M("users")->where(['user_id'=>$entry_uids])->setInc('user_money',$zcity_agent);//往总代理零钱添加分润金额
+                                        //添加分润记录(收入记录)
+                                        $earrayss = ['user_id'=>$entry_uids,'money'=>$money,'allf_money'=>$zcity_agent,'pay_user_id'=>$order['user_id'],'time'=>time(),'type'=>5,'order_sn'=>$order_sn,'subcommission'=>$city_agents,'number'=>$number];
+                                        M("shou_log")->add($earrayss);
+                                    }
+                                }
+                            }
                         }
 
                     }
