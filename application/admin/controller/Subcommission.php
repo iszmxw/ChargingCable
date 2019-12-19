@@ -989,14 +989,14 @@ class Subcommission extends Base
                 if ($v['one_level_free'] == 0) {
                     $lists[$k]['one_level_free'] = $agent_free;
                 }
-                if($v['entry_uid']){
-                    $city = M("lc_apply")->where(['user_id'=>$v['entry_uid'],'type' => 5,'status'=>2,'is_on_sale'=>1])->getField('username');
-                    if($city){
+                if ($v['entry_uid']) {
+                    $city = M("lc_apply")->where(['user_id' => $v['entry_uid'], 'type' => 5, 'status' => 2, 'is_on_sale' => 1])->getField('username');
+                    if ($city) {
                         $lists[$k]['city'] = $city;
-                    }else{
+                    } else {
                         $lists[$k]['city'] = '无';
                     }
-                }else{
+                } else {
                     $lists[$k]['city'] = '无';
                 }
             }
@@ -1011,9 +1011,9 @@ class Subcommission extends Base
     //修改代理
     public function agent_edit()
     {
-        $id   = I('get.id');
-        $list = M("lc_apply")->where(['id' => $id])->find();
-        $apply = M("lc_apply")->where(['type' => 5,'status'=>2,'is_on_sale'=>1])->field('user_id,username')->select();
+        $id    = I('get.id');
+        $list  = M("lc_apply")->where(['id' => $id])->find();
+        $apply = M("lc_apply")->where(['type' => 5, 'status' => 2, 'is_on_sale' => 1])->field('user_id,username')->select();
         if ($list['one_level'] == 0) {
             //公共可分润比例
             $subcommission     = M("lc_subcommission")->where(['id' => 1])->value("agent");
@@ -1027,13 +1027,13 @@ class Subcommission extends Base
                 $this->ajaxReturn(['status' => 1, 'msg' => "修改失败，代理总分成不能小于分销商拥有最低分成~" . $hotel_fc . '%']);
             }
 
-            if($date['entry_uid']){
+            if ($date['entry_uid']) {
 
-                $date['entry_level'] = M("users")->where(['user_id'=>$date['entry_uid']])->value('level');
+                $date['entry_level'] = M("users")->where(['user_id' => $date['entry_uid']])->value('level');
 
-            }else{
-                $date['entry_uid'] = '';
-                $date['entry_level']='';
+            } else {
+                $date['entry_uid']   = '';
+                $date['entry_level'] = '';
             }
             $result = M('lc_apply')->where(['id' => $date['id']])->save($date);
             $this->ajaxReturn(['status' => 1, 'msg' => "修改成功~"]);
@@ -1086,22 +1086,22 @@ class Subcommission extends Base
         $total_money = M('power_order')->where("pay_status=2 AND pay_price>0")->sum("pay_price");
         //免费充电订单金额
         $total_moneys = M('power_order_free')->where("pay_status=2 AND pay_price>0")->sum("pay_price");
-        $total_money = $total_money+$total_moneys;
+        $total_money  = $total_money + $total_moneys;
         //分出去总金额
         $total_money_f  = M('shou_log')->sum("allf_money");
         $total_money_fs = M('shou_log')->where('type=4')->sum("allf_money");
         $total_money_f  = $total_money_f - $total_money_fs;
 
 
-        $total_count = M('power_order')->where("pay_status=2 AND pay_price>0")->count();
+        $total_count  = M('power_order')->where("pay_status=2 AND pay_price>0")->count();
         $total_counts = M('power_order_free')->where("pay_status=2 AND pay_price>0")->count();
-        $total_count = $total_count + $total_counts;
+        $total_count  = $total_count + $total_counts;
         //总退款金额
         $today_money_tuik = M('power_order')->where("pay_status=2 AND pay_price>0 AND status=1")->sum("pay_price");
 
         //平台总收益
         $total_moneyab      = M('power_order')->where("pay_status=2 AND pay_price>0 AND status<1")->sum("pay_price");
-        $total_moneyab = $total_moneyab + $total_moneys;
+        $total_moneyab      = $total_moneyab + $total_moneys;
         $total_money_system = $total_moneyab - $total_money_f;
         $this->assign('total_money', $total_money);
         $this->assign('total_money_f', $total_money_f);
@@ -1113,10 +1113,10 @@ class Subcommission extends Base
         $endToday   = mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')) - 1;
         //查找今日总订单金额
         $today_money   = M('power_order')->where("pay_time>$beginToday AND pay_time<$endToday AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $today_moneyy   = M('power_order_free')->where("pay_time>$beginToday AND pay_time<$endToday AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $today_money = $today_money + $today_moneyy;
+        $today_moneyy  = M('power_order_free')->where("pay_time>$beginToday AND pay_time<$endToday AND pay_status=2 AND pay_price>0")->sum("pay_price");
+        $today_money   = $today_money + $today_moneyy;
         $today_moneys  = M('power_order')->where("pay_time>$beginToday AND pay_time<$endToday AND pay_status=2 AND pay_price>0 AND status<1")->sum("pay_price");
-        $today_moneys = $today_moneyy + $today_moneys;
+        $today_moneys  = $today_moneyy + $today_moneys;
         $today_moneyss = M('power_order')->where("pay_time>$beginToday AND pay_time<$endToday AND pay_status=2 AND pay_price>0 AND status=1")->sum("pay_price");
         //今日分出去金额
         $today_money_f  = M('shou_log')->where("time>$beginToday AND time<$endToday")->sum("allf_money");
@@ -1125,14 +1125,14 @@ class Subcommission extends Base
         //今日平台收益
         $today_money_system = $today_moneys - $today_money_f;
 
-      /*  $today_count = M('power_order')->where("pay_time>$beginToday AND pay_time<$endToday AND pay_status=2 AND pay_price>0")->count();*/
+        /*  $today_count = M('power_order')->where("pay_time>$beginToday AND pay_time<$endToday AND pay_status=2 AND pay_price>0")->count();*/
 
         $this->assign('today_money', $today_money);
         $this->assign('today_moneyss', $today_moneyss);
         $this->assign('today_money_tuik', $today_money_tuik);
         $this->assign('today_money_f', $today_money_f);
         $this->assign('today_money_system', $today_money_system);
-    /*    $this->assign('today_count', $today_count);*/
+        /*    $this->assign('today_count', $today_count);*/
 
 
         //php获取昨日起始时间戳和结束时间戳
@@ -1140,10 +1140,10 @@ class Subcommission extends Base
         $endYesterday   = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
         //查找昨日总订单金额
         $tow_money   = M('power_order')->where("pay_time>$beginYesterday AND pay_time<$endYesterday AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $tow_moneyy   = M('power_order_free')->where("pay_time>$beginYesterday AND pay_time<$endYesterday AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $tow_money = $tow_money + $tow_moneyy;
+        $tow_moneyy  = M('power_order_free')->where("pay_time>$beginYesterday AND pay_time<$endYesterday AND pay_status=2 AND pay_price>0")->sum("pay_price");
+        $tow_money   = $tow_money + $tow_moneyy;
         $tow_moneys  = M('power_order')->where("pay_time>$beginYesterday AND pay_time<$endYesterday AND pay_status=2 AND pay_price>0 AND status<1")->sum("pay_price");
-        $tow_moneys = $tow_moneys + $tow_moneyy;
+        $tow_moneys  = $tow_moneys + $tow_moneyy;
         $tow_moneyss = M('power_order')->where("pay_time>$beginYesterday AND pay_time<$endYesterday AND pay_status=2 AND pay_price>0 AND status=1")->sum("pay_price");
         //昨日分出去金额
         $tow_money_f  = M('shou_log')->where("time>$beginYesterday AND time<$endYesterday")->sum("allf_money");
@@ -1152,13 +1152,13 @@ class Subcommission extends Base
         //昨日平台收益
         $tow_money_system = $tow_moneys - $tow_money_f;
 
-       /* $tow_count = M('power_order')->where("pay_time>$beginYesterday AND pay_time<$endYesterday AND pay_status=2 AND pay_price>0")->count();*/
+        /* $tow_count = M('power_order')->where("pay_time>$beginYesterday AND pay_time<$endYesterday AND pay_status=2 AND pay_price>0")->count();*/
 
         $this->assign('tow_money', $tow_money);
         $this->assign('tow_moneyss', $tow_moneyss);
         $this->assign('tow_money_f', $tow_money_f);
         $this->assign('tow_money_system', $tow_money_system);
-    /*    $this->assign('tow_count', $tow_count);*/
+        /*    $this->assign('tow_count', $tow_count);*/
 
         //php获取上周起始时间戳和结束时间戳
 
@@ -1166,12 +1166,12 @@ class Subcommission extends Base
         $endLastweek   = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
 
         //查找上周总订单金额
-        $week_money   = M('power_order')->where("pay_time>$beginLastweek AND pay_time<$endLastweek AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $week_moneyy   = M('power_order_free')->where("pay_time>$beginLastweek AND pay_time<$endLastweek AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $week_money = $week_moneyy + $week_money;
+        $week_money  = M('power_order')->where("pay_time>$beginLastweek AND pay_time<$endLastweek AND pay_status=2 AND pay_price>0")->sum("pay_price");
+        $week_moneyy = M('power_order_free')->where("pay_time>$beginLastweek AND pay_time<$endLastweek AND pay_status=2 AND pay_price>0")->sum("pay_price");
+        $week_money  = $week_moneyy + $week_money;
 
         $week_moneys  = M('power_order')->where("pay_time>$beginLastweek AND pay_time<$endLastweek AND pay_status=2 AND pay_price>0 AND status<1")->sum("pay_price");
-        $week_moneys = $week_moneys + $week_moneyy;
+        $week_moneys  = $week_moneys + $week_moneyy;
         $week_moneyss = M('power_order')->where("pay_time>$beginLastweek AND pay_time<$endLastweek AND pay_status=2 AND pay_price>0 AND status=1")->sum("pay_price");
         //上周分出去金额
         $week_money_f  = M('shou_log')->where("time>$beginLastweek AND time<$endLastweek")->sum("allf_money");
@@ -1196,9 +1196,9 @@ class Subcommission extends Base
         //查找本月总订单金额
         $smonth_money   = M('power_order')->where("pay_time>$beginThismonth AND pay_time<$endThismonth AND pay_status=2 AND pay_price>0")->sum("pay_price");
         $smonth_moneyy  = M('power_order_free')->where("pay_time>$beginThismonth AND pay_time<$endThismonth AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $smonth_money = $smonth_moneyy+$smonth_money;
+        $smonth_money   = $smonth_moneyy + $smonth_money;
         $smonth_moneys  = M('power_order')->where("pay_time>$beginThismonth AND pay_time<$endThismonth AND pay_status=2 AND pay_price>0 AND status<1")->sum("pay_price");
-        $smonth_moneys = $smonth_moneys + $smonth_moneyy;
+        $smonth_moneys  = $smonth_moneys + $smonth_moneyy;
         $smonth_moneyss = M('power_order')->where("pay_time>$beginThismonth AND pay_time<$endThismonth AND pay_status=2 AND pay_price>0 AND status=1")->sum("pay_price");
         //本月分出去金额
         $smonth_money_f  = M('shou_log')->where("time>$beginThismonth AND time<$endThismonth")->sum("allf_money");
@@ -1221,10 +1221,10 @@ class Subcommission extends Base
         $lastend_time   = strtotime(date("Y-m-d 23:59:59", strtotime(-date('d') . 'day')));
         //查找上个月总订单金额
         $last_money   = M('power_order')->where("pay_time>$lastbegin_time AND pay_time<$lastend_time AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $last_moneyy   = M('power_order_free')->where("pay_time>$lastbegin_time AND pay_time<$lastend_time AND pay_status=2 AND pay_price>0")->sum("pay_price");
-        $last_money = $last_moneyy+$last_money;
+        $last_moneyy  = M('power_order_free')->where("pay_time>$lastbegin_time AND pay_time<$lastend_time AND pay_status=2 AND pay_price>0")->sum("pay_price");
+        $last_money   = $last_moneyy + $last_money;
         $last_moneys  = M('power_order')->where("pay_time>$lastbegin_time AND pay_time<$lastend_time AND pay_status=2 AND pay_price>0 AND status<1")->sum("pay_price");
-        $last_moneys = $last_moneys + $last_moneyy;
+        $last_moneys  = $last_moneys + $last_moneyy;
         $last_moneyss = M('power_order')->where("pay_time>$lastbegin_time AND pay_time<$lastend_time AND pay_status=2 AND pay_price>0 AND status=1")->sum("pay_price");
         //上个月分出去金额
         $last_money_f  = M('shou_log')->where("time>$lastbegin_time AND time<$lastend_time")->sum("allf_money");
