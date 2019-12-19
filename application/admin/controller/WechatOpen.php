@@ -26,6 +26,31 @@ class WechatOpen extends Base
     }
 
     /**
+     * 授权跳转链接
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function account_empower(Request $request)
+    {
+        $user_id = $request->get('user_id');
+
+        $config        = $this->openPlatform->getConfig();
+        $appid         = $config['app_id'];
+        $pre_auth_code = $this->openPlatform->createPreAuthorizationCode()['pre_auth_code'];
+
+        $callback = config('app.url') . '/wechat/official_account/callback?user_id=' . $user_id;
+
+        if (isMobile()) {
+            // 移动端授权链接
+            $url = "https://mp.weixin.qq.com/safe/bindcomponent?action=bindcomponent&auth_type=1&no_scan=1&component_appid={$appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$callback}#wechat_redirect";
+        } else {
+            // pc端授权链接
+            $url = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid={$appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$callback}";
+        }
+        return redirect($url);
+    }
+
+    /**
      * 授权事件接收URL
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -45,7 +70,7 @@ class WechatOpen extends Base
             switch ($event->InfoType) {
                 case 'authorized':
                     // ...
-                    IszmxwLog('iszmxw', json_encode($event));
+//                    IszmxwLog('iszmxw', json_encode($event));
                 case 'unauthorized':
                     // ...
                 case 'updateauthorized':
