@@ -190,19 +190,19 @@ class User extends Base
         if ($user['user_money'] < 0) {
             $user['user_money'] = 0;
         }
-        if($user['level']==5){
-            $is_on_sale = Db::name("lc_apply")->where(['user_id'=>$this->user_id,'type'=>5])->getField("is_on_sale");
-            if($is_on_sale==1){
-                $user['is_city']=1;
-            }else{
-                $user['is_city']=0;
+        if ($user['level'] == 5) {
+            $is_on_sale = Db::name("lc_apply")->where(['user_id' => $this->user_id, 'type' => 5])->getField("is_on_sale");
+            if ($is_on_sale == 1) {
+                $user['is_city'] = 1;
+            } else {
+                $user['is_city'] = 0;
             }
-        }else{
-            $user['is_city']=0;
+        } else {
+            $user['is_city'] = 0;
         }
-        $user['user_money'] = number_format($user['user_money'],2);
-        $money = Db::name("shou_log")->where(['user_id'=>$this->user_id,'type'=>['neq',4]])->sum("money");
-        $data = array(
+        $user['user_money'] = number_format($user['user_money'], 2);
+        $money              = Db::name("shou_log")->where(['user_id' => $this->user_id, 'type' => ['neq', 4]])->sum("money");
+        $data               = array(
             'user_detail'    => $user,
             'use_num'        => $num,
             'orderarr'       => $orderarr,
@@ -216,7 +216,7 @@ class User extends Base
         return returnOk($data);
     }
 
-       // 提现规则接口
+    // 提现规则接口
     public function wendit_system()
     {
         if (empty($this->user_id)) {
@@ -224,17 +224,17 @@ class User extends Base
         }
         $user_id = $this->user_id;
         //判断用户是否为第一次提现
-        $withdrawals_num = M("withdrawals")->where(['user_id'=>$user_id,'status'=>['neq',-1]])->count();
+        $withdrawals_num = M("withdrawals")->where(['user_id' => $user_id, 'status' => ['neq', -1]])->count();
         //查询提现条件
         $config = tpCache('cash');
-        if($withdrawals_num > 0){
+        if ($withdrawals_num > 0) {
             $min_cash = $config['min_cash'];
-        }else{
+        } else {
             $min_cash = $config['cash_open'];
         }
 
 
-        $data   = array(
+        $data = array(
             'min_cash'   => $min_cash,
             'cash_times' => $config['cash_times']
         );
@@ -251,28 +251,28 @@ class User extends Base
         $user_id = $this->user_id;
         $post    = I('post.');
         //微信账号，姓名，金额
-       /* $werchat = $post['werchat'];
-        if (empty($werchat)) {
-            return returnBad('微信账号不能为空！！', 302);
-        }
-        $username = $post['username'];
-        if (empty($username)) {
-            return returnBad('姓名不能为空！！', 302);
-        }*/
+        /* $werchat = $post['werchat'];
+         if (empty($werchat)) {
+             return returnBad('微信账号不能为空！！', 302);
+         }
+         $username = $post['username'];
+         if (empty($username)) {
+             return returnBad('姓名不能为空！！', 302);
+         }*/
         $money      = $post['money'];
         $user_money = M("users")->where(['user_id' => $user_id])->value("user_money");
         if ($user_money < $money) {
             return returnBad('可提现额度不足！！', 302);
         }
         //判断用户是否为第一次提现
-        $withdrawals_num = M("withdrawals")->where(['user_id'=>$user_id,'status'=>['neq',-1]])->count();
+        $withdrawals_num = M("withdrawals")->where(['user_id' => $user_id, 'status' => ['neq', -1]])->count();
         //查询提现条件
         $config = tpCache('cash');
-        if($withdrawals_num > 0){
+        if ($withdrawals_num > 0) {
             if ($money < $config['min_cash']) {
                 return returnBad('最低提现额度不能小于' . $config['min_cash'], 302);
             }
-        }else{
+        } else {
             if ($money < $config['cash_open']) {
                 return returnBad('最低提现额度不能小于' . $config['cash_open'], 302);
             }
@@ -559,34 +559,34 @@ class User extends Base
         }
         // 查找所有的分销商
         $trun = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 4])->field("username,mobile,user_id")->select();
-        $arr = [];
-        if($trun){
+        $arr  = [];
+        if ($trun) {
             //查找分销商下面的门店
-            foreach($trun as $k=>$v){
+            foreach ($trun as $k => $v) {
                 $men = M("lc_apply")->where(['entry_uid' => $v['user_id'], 'type' => 3])->field("hotel_name,username,mobile,user_id")->select();
-                if($men){
-                    foreach($men as $key=>$val){
-                        $men[$key]['hotel_name'] = $val['hotel_name'].'(团队的门店)';
+                if ($men) {
+                    foreach ($men as $key => $val) {
+                        $men[$key]['hotel_name'] = $val['hotel_name'] . '(团队的门店)';
                     }
                 }
-                if(empty($arr)){
+                if (empty($arr)) {
                     $arr = $men;
-                }else{
-                   $arr = array_merge($arr,$men);
+                } else {
+                    $arr = array_merge($arr, $men);
                 }
             }
         }
         // 查找所有的门店
         $hotel = M("lc_apply")->where(['entry_uid' => $this->user_id, 'type' => 3])->field("hotel_name,username,mobile,user_id")->select();
-        if($hotel){
-            foreach($hotel as $ks=>$vs){
-                $hotel[$ks]['hotel_name'] = $vs['hotel_name'].'(自己的门店)';
+        if ($hotel) {
+            foreach ($hotel as $ks => $vs) {
+                $hotel[$ks]['hotel_name'] = $vs['hotel_name'] . '(自己的门店)';
             }
-            $hotel =array_merge($hotel,$arr);
-        }else{
+            $hotel = array_merge($hotel, $arr);
+        } else {
             $hotel = $arr;
         }
-        $data  = array(
+        $data = array(
             'distributor_list' => $trun,
             'hotel_list'       => $hotel,
         );
@@ -848,9 +848,9 @@ class User extends Base
             return returnBad('未找到该手机号下的用户！');
         }
         $data['mobile'] = $post['mobile'];
-      /*  if (empty($post['wx_number'])) {
-            return returnBad('微信号不能为空！');
-        }*/
+        /*  if (empty($post['wx_number'])) {
+              return returnBad('微信号不能为空！');
+          }*/
         $data['wx_number'] = $post['wx_number'];
         if (empty($post['hotel_name'])) {
             return returnBad('门店名称不能为空！');
@@ -965,9 +965,6 @@ class User extends Base
     }
 
 
-
-
-
     //门店申请列表
     public function apply_hotel()
     {
@@ -990,10 +987,10 @@ class User extends Base
             return returnBad('手机号码格式错误！');
         }
         // 查找是否有这个手机号的用户
-     /*   $member = M("users")->where(['mobile' => $post['mobile']])->find();
-        if (!$member) {
-            return returnBad('未找到该手机号下的用户！');
-        }*/
+        /*   $member = M("users")->where(['mobile' => $post['mobile']])->find();
+           if (!$member) {
+               return returnBad('未找到该手机号下的用户！');
+           }*/
         $data['mobile'] = $post['mobile'];
 
         $data['wx_number'] = $post['wx_number'];
@@ -1027,22 +1024,22 @@ class User extends Base
         if (empty($post['entry_uid'])) {
             return returnBad('请填写上级代理商ID编号！');
         }
-        $entry_uid = M("users")->where(['user_no'=>$post['entry_uid']])->getField("user_id");
+        $entry_uid = M("users")->where(['user_no' => $post['entry_uid']])->getField("user_id");
 
         //判断代理商是否存在
         $members = M("lc_apply")->where(['user_id' => $entry_uid])->find();
-        if(!$members || $members['type']<4){
+        if (!$members || $members['type'] < 4) {
             return returnBad('上级代理身份不存在！');
         }
         $data['admin']       = $members['username'];
         $data['entry_uid']   = $entry_uid;
         $data['entry_level'] = M("users")->where(['user_id' => $entry_uid])->value('level');
-        $data['one_hour']   = $post['one_hour'];
-        $data['three_hour'] = $post['three_hour'];
-        $data['ten_hour']   = $post['ten_hour'];
-        $data['user_id']   = $this->user_id;
-        $data['type']   = 3;
-        $res                = M("lc_apply")->add($data);
+        $data['one_hour']    = $post['one_hour'];
+        $data['three_hour']  = $post['three_hour'];
+        $data['ten_hour']    = $post['ten_hour'];
+        $data['user_id']     = $this->user_id;
+        $data['type']        = 3;
+        $res                 = M("lc_apply")->add($data);
         if ($res) {
             return returnOk('资料提交成功！！');
         } else {
@@ -1561,9 +1558,9 @@ class User extends Base
 
         $result['result']["level_name"] = Db::name("user_level")->where(["level_id" => $result["result"]["level"]])->getField('level_name');
         $sign                           = Db::name("user_sign")->where(["user_id" => $this->user_id])->getField('sign_total');
-        if($result["result"]["level"]==5){
-            $is_on_sale = Db::name("lc_apply")->where(['user_id'=>$this->user_id,'type'=>5,'status'=>2])->getField("is_on_sale");
-            if($is_on_sale==1){
+        if ($result["result"]["level"] == 5) {
+            $is_on_sale = Db::name("lc_apply")->where(['user_id' => $this->user_id, 'type' => 5, 'status' => 2])->getField("is_on_sale");
+            if ($is_on_sale == 1) {
                 $result['result']["level_name"] = "城市运营商";
             }
         }
@@ -2902,9 +2899,9 @@ class User extends Base
             return returnBad('手机号码不能为空！');
         }
         $data['mobile'] = $post['mobile'];
-       /* if (empty($post['wx_number'])) {
-            return returnBad('微信号不能为空！');
-        }*/
+        /* if (empty($post['wx_number'])) {
+             return returnBad('微信号不能为空！');
+         }*/
         $data['wx_number'] = $post['wx_number'];
         if (empty($post['code_id'])) {
             return returnBad('身份证号码不能为空！');
@@ -2915,22 +2912,22 @@ class User extends Base
         }
         $data['region'] = $post['region'];
 
-        $data['type'] = 5;
+        $data['type']      = 5;
         $data['entry_uid'] = $post['entry_uid'];
-        $data['user_id'] = $this->user_id;
+        $data['user_id']   = $this->user_id;
         //判断用户是否已经提交过审核
         $apply = M("lc_apply")->where(['user_id' => $data['user_id']])->field("status,id")->find();
         if ($apply['status'] == 1) {
             return returnBad('请耐心等待管理员审核吧！');
         }
-        if($data['entry_uid']){
+        if ($data['entry_uid']) {
             //查找用户邀请人user_id
-            $member = M("users")->where(['user_no'=>$data['entry_uid']])->field('user_id,level')->find();
-            if($member['user_id']){
-                $data['entry_uid'] =$member['user_id'];
-                $data['entry_level'] =$member['level'];
-            }else{
-                $data['entry_uid'] ='';
+            $member = M("users")->where(['user_no' => $data['entry_uid']])->field('user_id,level')->find();
+            if ($member['user_id']) {
+                $data['entry_uid']   = $member['user_id'];
+                $data['entry_level'] = $member['level'];
+            } else {
+                $data['entry_uid'] = '';
             }
 
 
@@ -2994,107 +2991,112 @@ class User extends Base
 
 
     /*门店待审核数据列表查询*/
-    public function city_shop_list(){
+    public function city_shop_list()
+    {
         if (!$this->user_id) {
             return returnBad("请登录", 302);
         }
-        $user_id = $this->user_id;
-        $apply = M("lc_apply")->where(['entry_uid'=>$user_id,'type'=>5,'status'=>2])->field("user_id,username,create_time")->select();
-        $count = count($apply);
+        $user_id         = $this->user_id;
+        $apply           = M("lc_apply")->where(['entry_uid' => $user_id, 'type' => 5, 'status' => 2])->field("user_id,username,create_time")->select();
+        $count           = count($apply);
         $all_achievement = 0;
-        if($apply){
-            foreach($apply as $k=>$v){
-                $apply[$k]['create_time']= date('Y-m-d H:i:s',$v['create_time']);
-                $member = M("users")->where(['user_id'=>$v['user_id']])->field("nickname,head_pic")->find();
-                $apply[$k]['nickname'] = $member['nickname'];
-                $apply[$k]['head_pic'] = $member['head_pic'];
-                $apply[$k]['achievement'] = M("shou_log")->where(['user_id'=>$v['user_id'],'type'=>['neq',4]])->sum("money");
-                $all_achievement = $all_achievement + $apply[$k]['achievement'];
+        if ($apply) {
+            foreach ($apply as $k => $v) {
+                $apply[$k]['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
+                $member                   = M("users")->where(['user_id' => $v['user_id']])->field("nickname,head_pic")->find();
+                $apply[$k]['nickname']    = $member['nickname'];
+                $apply[$k]['head_pic']    = $member['head_pic'];
+                $apply[$k]['achievement'] = M("shou_log")->where(['user_id' => $v['user_id'], 'type' => ['neq', 4]])->sum("money");
+                $all_achievement          = $all_achievement + $apply[$k]['achievement'];
 
             }
         }
-        $data = array('list' => $apply,'count'=>$count,'all_achievement'=>$all_achievement);
+        $data = array('list' => $apply, 'count' => $count, 'all_achievement' => $all_achievement);
         return returnOk($data);
     }
 
 
     /*门店待审核数据列表查询*/
-    public function store_examine_list(){
+    public function store_examine_list()
+    {
         if (!$this->user_id) {
             return returnBad("请登录", 302);
         }
         $user_id = $this->user_id;
-        $apply = M("lc_apply")->where(['entry_uid'=>$user_id,'type'=>3,'status'=>1])->field("id,username,user_id,hotel_name,create_time")->select();
-        $count = count($apply);
-        if($apply){
-            foreach($apply as $k=>$v){
-                $apply[$k]['create_time']= date('Y-m-d H:i:s',$v['create_time']);
-                $member = M("users")->where(['user_id'=>$v['user_id']])->field("nickname,head_pic")->find();
-                $apply[$k]['nickname'] = $member['nickname'];
-                $apply[$k]['head_pic'] = $member['head_pic'];
+        $apply   = M("lc_apply")->where(['entry_uid' => $user_id, 'type' => 3, 'status' => 1])->field("id,username,user_id,hotel_name,create_time")->select();
+        $count   = count($apply);
+        if ($apply) {
+            foreach ($apply as $k => $v) {
+                $apply[$k]['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
+                $member                   = M("users")->where(['user_id' => $v['user_id']])->field("nickname,head_pic")->find();
+                $apply[$k]['nickname']    = $member['nickname'];
+                $apply[$k]['head_pic']    = $member['head_pic'];
 
             }
         }
-        $data = array('list' => $apply,'count'=>$count);
+        $data = array('list' => $apply, 'count' => $count);
         return returnOk($data);
     }
 
     //获取当前用户可分配的充电分成比例和免费充电比例
-    public function store_power(){
+    public function store_power()
+    {
         if (!$this->user_id) {
             return returnBad("请登录", 302);
         }
         $user_id = $this->user_id;
-        $apply = M("lc_apply")->where(['user_id'=>$user_id])->field("one_level,one_level_free")->find();
-        if(!$apply['one_level'] || $apply['one_level']==0){
+        $apply   = M("lc_apply")->where(['user_id' => $user_id])->field("one_level,one_level_free")->find();
+        if (!$apply['one_level'] || $apply['one_level'] == 0) {
             // 公共门店收费可分润比例
             $apply['one_level'] = M("lc_subcommission")->where(['id' => 1])->value("agent");
         }
-        if(!$apply['one_level_free']){
-        // 公共免费可分润比例
+        if (!$apply['one_level_free']) {
+            // 公共免费可分润比例
             $apply['one_level_free'] = M("lc_subcommission")->where(['id' => 1])->value("agent_free");
         }
         return returnOk($apply);
     }
 
     //删除门店审核操作
-    public function store_del(){
+    public function store_del()
+    {
         $id = I('post.id');
         if (!$id) {
             return returnBad("门店编号参数缺失！！", 302);
         }
-        $apply = M("lc_apply")->where(['id'=>$id])->delete();
-       if($apply){
-           return returnOk('删除成功！！');
-       }else{
-           return returnBad("删除失败！！", 302);
-       }
+        $apply = M("lc_apply")->where(['id' => $id])->delete();
+        if ($apply) {
+            return returnOk('删除成功！！');
+        } else {
+            return returnBad("删除失败！！", 302);
+        }
 
     }
 
     //门店审核通过数据提交接口
-    public function store_ok(){
+    public function store_ok()
+    {
 
         $post = I('post.');
-        $id  = $post['id'];
+        $id   = $post['id'];
         if (!$id) {
             return returnBad("门店编号参数缺失！！", 302);
         }
-        $one_level  = $post['one_level'];
+        $one_level = $post['one_level'];
         if (!$one_level) {
             return returnBad("门店收费分成比例参数缺失！！", 302);
         }
-        $one_level_free  = $post['one_level_free'];
+        $one_level_free = $post['one_level_free'];
         if (!$one_level_free) {
             return returnBad("门店免费分成比例！！", 302);
         }
-        $apply = M("lc_apply")->where(['id'=>$id])->save(['one_level'=>$one_level,'one_level_free'=>$one_level_free,'status'=>2]);
+        $apply = M("lc_apply")->where(['id' => $id])->save(['one_level' => $one_level, 'one_level_free' => $one_level_free, 'status' => 2]);
 
-        if($apply){
-            $user_id = M('lc_apply')->where(['id'=>$id])->getField('user_id');
-            M("users")->where(['user_id'=>$user_id])->save(['level'=>3]);
+        if ($apply) {
+            $user_id = M('lc_apply')->where(['id' => $id])->getField('user_id');
+            M("users")->where(['user_id' => $user_id])->save(['level' => 3]);
             return returnOk('审核成功！！');
-        }else{
+        } else {
             return returnBad("审核失败！！", 302);
         }
     }
