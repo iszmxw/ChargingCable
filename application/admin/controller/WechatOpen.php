@@ -5,13 +5,8 @@
 
 namespace app\admin\controller;
 
-use app\common\logic\AdminLogic;
-use app\common\logic\ModuleLogic;
-use think\Page;
+
 use think\Request;
-use think\Verify;
-use think\Loader;
-use think\Db;
 
 class WechatOpen extends Base
 {
