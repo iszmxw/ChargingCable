@@ -267,6 +267,20 @@ class Subcommission extends Base
         return view('get_device_mode', ['number' => $number, 'mode_type' => $mode_type]);
     }
 
+    /**
+     * 异步获取代理模式信息
+     * @return \think\response\View
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/19 11:42
+     */
+    public function get_agent_mode()
+    {
+        $data      = I('post.');
+        $id        = $data['id'];
+        $mode_type = $data['mode_type'];
+        return view('get_agent_mode', ['id' => $id, 'mode_type' => $mode_type]);
+    }
+
 
     // 免费扫码充电订单表
     public function power_order_free()
@@ -330,6 +344,51 @@ class Subcommission extends Base
 
         if ($model_type == 1) {
             $res = M('lc_equipment_number')->where($where)->update(['mode_type' => 1]);
+            if ($res) {
+                return json([
+                    'code' => 200,
+                    'msg'  => '操作成功'
+                ]);
+            }
+        }
+        return json([
+            'code' => 200,
+            'msg'  => '未做任何修改操作'
+        ]);
+
+    }
+
+
+    /**
+     * 切换代理收费模式
+     * @param Request $request
+     * @return array|\think\response\Json
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/11/15 18:00
+     */
+    public function agent_mode()
+    {
+        $param      = I('post.');
+        $admin_id   = session('admin_id');
+        $id         = $param['id'];
+        $model_type = $param['model_type'];
+        $where      = ['id' => $id];
+        if ($admin_id != 1) {
+            return json(['code' => 500, 'msg' => '操作失败，仅限超级管理员操作！']);
+        }
+
+        if ($model_type == 0) {
+            $res = M('lc_apply')->where($where)->update(['mode_type' => 0]);
+            if ($res) {
+                return json([
+                    'code' => 200,
+                    'msg'  => '操作成功'
+                ]);
+            }
+        }
+
+        if ($model_type == 1) {
+            $res = M('lc_apply')->where($where)->update(['mode_type' => 1]);
             if ($res) {
                 return json([
                     'code' => 200,
@@ -966,6 +1025,8 @@ class Subcommission extends Base
     //代理商列表
     public function agent_list()
     {
+        $admin_id = session('admin_id');
+        $this->assign('admin_id', $admin_id);
         $key_word = trim(I('key_word'));
 
         $map = array();
