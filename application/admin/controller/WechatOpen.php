@@ -8,6 +8,7 @@ namespace app\admin\controller;
 use Doctrine\Common\Cache\RedisCache;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Server\Guard;
+use think\cache\driver\Redis;
 use think\Request;
 
 class WechatOpen extends Base
@@ -18,10 +19,6 @@ class WechatOpen extends Base
     {
         parent::__construct();
         $cacheDriver = new RedisCache();
-        $redis       = new \Redis();
-        $redis->connect('118.89.61.124', 4399);
-        $redis->auth('blog_54zm_com');              //密码验证
-        $cacheDriver->setRedis($redis);
         $options            = [
             'debug'   => true,
             'app_id'  => 'wx6590d39e4f1bf4a0',
