@@ -17,7 +17,12 @@ class WechatOpen extends Base
     public function __construct()
     {
         parent::__construct();
-        $cacheDriver        = new RedisCache();
+        $cacheDriver = new RedisCache();
+        $redis       = new \Redis();
+        $redis->connect('118.89.61.124', 4399);
+        $redis->auth('blog_54zm_com');              //密码验证
+        $redis->select(2);                          //选择数据库2
+        $cacheDriver->setRedis($redis);
         $options            = [
             'debug'   => true,
             'app_id'  => 'wx6590d39e4f1bf4a0',
