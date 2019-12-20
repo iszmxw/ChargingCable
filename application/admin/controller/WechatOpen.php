@@ -87,8 +87,13 @@ class WechatOpen extends Base
         }
         $openPlatform = $this->openPlatform;
         // 自定义处理
-        $openPlatform->server->setMessageHandler(function ($message) {
-            IszmxwLog('iszmxw.txt', json_encode('$message, true'));
+        // 其中 $event 变量里有微信推送事件本身的信息，也有授权方所有的信息。
+        $openPlatform->server->setMessageHandler(function ($event) {
+            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
+            switch ($event->InfoType) {
+                case 'component_verify_ticket':
+                    IszmxwLog('iszmxw.txt', 'component_verify_ticket');
+            }
         });
         $openPlatform->server->serve();
     }
