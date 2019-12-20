@@ -64,15 +64,16 @@ class WechatOpen extends Base
      */
     public function auth(Request $request)
     {
-        $content = file_get_contents("php://input");
-        IszmxwLog('iszmxw.txt', $content);
+//        $content = file_get_contents("php://input");
+//        IszmxwLog('iszmxw.txt', $content);
         $openPlatform = $this->openPlatform;
         // 默认处理方式
         $openPlatform->server->serve();
         // 自定义处理
-//        $openPlatform->server->setMessageHandler(function ($event) {
-//            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
-//            switch ($event->InfoType) {
+        $openPlatform->server->setMessageHandler(function ($message) {
+            IszmxwLog('iszmxw.txt', $message);
+            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
+//            switch ($message->InfoType) {
 //                case 'authorized':
 //                    IszmxwLog('iszmxw', 'authorized');
 //                    break;
@@ -89,7 +90,7 @@ class WechatOpen extends Base
 //                    IszmxwLog('iszmxw', 'default');
 //                    break;
 //            }
-//        });
+        });
         return $openPlatform->server->serve();
     }
 
