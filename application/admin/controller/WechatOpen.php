@@ -23,7 +23,7 @@ class WechatOpen extends Base
             'token'   => 'iszmxw',
             'aes_key' => 'ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf',
             'log'     => [
-                'level'      => 'debug',
+                'level'      => 'error',
                 'permission' => null,
                 'file'       => 'runtime/log/easywechat.log',
             ],
