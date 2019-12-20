@@ -25,7 +25,7 @@ class WechatOpen extends Base
             'log'     => [
                 'level'      => 'debug',
                 'permission' => null,
-                'file'       => '/runtime/log/easywechat.log',
+                'file'       => 'runtime/log/easywechat.log',
             ],
         ];
         $app                = new Application($options);
