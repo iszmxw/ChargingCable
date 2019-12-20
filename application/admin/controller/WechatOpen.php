@@ -95,6 +95,7 @@ class WechatOpen extends Base
             }
         });
         $openPlatform->server->serve()->send();
+        die;
     }
 
 
