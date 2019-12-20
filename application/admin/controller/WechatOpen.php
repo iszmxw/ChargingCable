@@ -94,7 +94,7 @@ class WechatOpen extends Base
                     IszmxwLog('iszmxw.txt', 'component_verify_ticket');
             }
         });
-        return $openPlatform->server->serve();
+        $openPlatform->server->serve()->send();
     }
 
 
