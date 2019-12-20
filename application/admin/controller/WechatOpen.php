@@ -17,10 +17,16 @@ class WechatOpen extends Base
     {
         parent::__construct();
         $options            = [
+            'debug'   => true,
             'app_id'  => 'wx6590d39e4f1bf4a0',
             'secret'  => 'd290f710854a122f7eebc11bb8bc2ec2',
             'token'   => 'iszmxw',
-            'aes_key' => 'ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf'
+            'aes_key' => 'ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf',
+            'log'     => [
+                'level'      => 'debug',
+                'permission' => 0777,
+                'file'       => '/runtime/log/easywechat.log',
+            ],
         ];
         $app                = new Application($options);
         $this->openPlatform = $app->open_platform;
