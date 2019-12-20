@@ -107,25 +107,13 @@ class FreeMode extends Controller
             $nickname = $user_info['nickname'];
             $sex      = $user_info['sex'];
             $head_pic = $user_info['headimgurl'];
-            // 获取二维码前首先检查用户，是否已经有免费的订单了，有的话，直接查询历史订单并且返回该订单信息
+            // 获取二维码前首先检查用户，是否已经有免费的订单了，有的话，直接查询历史订单，直接过期掉
             $order_res = M("power_order_free")->where(['openid' => $openid])->order('id', 'desc')->find();
-            if (time() < ($order_res['create_time'] + ($order_res['time'] * 60))) {
-                // 用户还未使用该密码，可以更新设备密码
-                if ($order_res['pay_status'] == 1) {
-                    // 如果订单还在可使用状态下，那么可以继续获取密码
-                    $charge_param['key']    = 4;        // TODO 设置密码第一位,四为免费模式的半小时,但是系统中老的旧板子，传输4可能密码无效, 添加上限此功能的时间为2019-11-21 17:11:00:00
-                    $charge_param['number'] = $number;  // 设置密码第一位
-                    $chargeLogic            = new ChargeLogic();
-                    $password               = $chargeLogic->getChargeCode($charge_param);
-                    $order_res['password']  = $password; // 更新密码
-                    $res                    = M("power_order_free")->update($order_res);
-                    if ($res) {
-                        // 创建成功，跳转前端显示视图，前端获取二维码信息
-                        self::RedirectFreeQrCode($openid, $number);
-                    } else {
-                        die("网络错误！！");
-                    }
-                }
+            // 用户还未使用该密码，可以更新设备密码
+            if ($order_res['pay_status'] == 1) {
+                // 如果订单还在可使用状态下，那么可以继续获取密码
+                $order_res['pay_status'] = 3; // 过期处理
+                M("power_order_free")->update($order_res);
             }
             $QrCode = self::getQrcode($ip, $openid, $nickname, $sex); // 获取微信二维码
             $QrCode = json_decode($QrCode, true);
@@ -134,11 +122,8 @@ class FreeMode extends Controller
                 // 创建唯一订单号
                 $order_sn = 'QR' . date('Ymd') . substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8) . rand(10000, 99000);
                 // 如果订单还在可使用状态下，那么可以继续获取密码
-                $charge_param['key']    = 4;        // TODO 设置密码第一位,四为免费模式的半小时,但是系统中老的旧板子，传输4可能密码无效, 添加上限此功能的时间为2019-11-21 17:11:00:00
-                $charge_param['number'] = $number;  // 设置密码第一位
-                $chargeLogic            = new ChargeLogic();
-                $password               = $chargeLogic->getChargeCode($charge_param);
-                $order                  = [ // 收集订单信息
+                $password  = self::create_password($number);
+                $order     = [ // 收集订单信息
                     'order_sn'    => $order_sn,
                     'openid'      => $openid,
                     'nickname'    => $nickname,
@@ -152,12 +137,12 @@ class FreeMode extends Controller
                     'price'       => $QrCode['data']['bidding'] / 100,
                     'pay_price'   => $QrCode['data']['bidding'] / 100,
                     'time'        => 60, // 单位为分钟
-                    'key'         => $charge_param['key'],
+                    'key'         => 4,
                     'password'    => $password,
                     'create_time' => time(),
                     'pay_status'  => 1,
                 ];
-                $order_res              = M("power_order_free")->add($order);
+                $order_res = M("power_order_free")->add($order);
                 if ($order_res) {
                     // 创建成功，跳转前端显示视图，前端获取二维码信息
                     self::RedirectFreeQrCode($openid, $number);
@@ -165,10 +150,12 @@ class FreeMode extends Controller
                     die("网络错误！！");
                 }
             } else {
-                // 没有请求到二维码，获取二维码失败，返回默认页面
-                // 这里处理为，走默认的扫码支付模式
-                $url = "http://{$_SERVER['HTTP_HOST']}/index.php/api/Login/ChargeMode?number={$number}&index={$index}";
-                Header("location:" . $url); // 前往收费模式地址
+                IszmxwLog('iszmxw.txt', $ip);
+                // 没有请求到二维码，获取二维码失败，直接给用户返回密码
+                // 没有免费的资源了，直接跳转到显示密码页面，并且携带上密码参数
+                $password = self::create_password($number);
+                $url      = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getOrderInfo?password=$password";
+                Header("location:" . $url);
                 die;
             }
         }
@@ -263,12 +250,18 @@ class FreeMode extends Controller
 
     /**
      * 获取充电订单信息
+     * @param Request $request
      * @author: iszmxw <mail@54zm.com>
-     * @Date：2019/11/14 18:05
+     * @Date：2019/12/13 15:34
      */
-    public function getOrderInfo()
+    public function getOrderInfo(Request $request)
     {
-        $redirectUrl             = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getPassword";
+        $password = $request->get('password');
+        if ($password) {
+            $redirectUrl = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getPassword?password=$password";
+        } else {
+            $redirectUrl = "http://{$_SERVER['HTTP_HOST']}/index.php/api/FreeMode/getPassword";
+        }
         $urlObj["appid"]         = config('APPID');
         $urlObj["redirect_uri"]  = "$redirectUrl";
         $urlObj["response_type"] = "code";
@@ -291,6 +284,7 @@ class FreeMode extends Controller
     {
         // 获取code
         $code                 = $request->get('code');
+        $password             = $request->get('password');
         $urlObj["appid"]      = config('appid');
         $urlObj["secret"]     = config('secret');
         $urlObj["code"]       = $code;
@@ -300,7 +294,11 @@ class FreeMode extends Controller
         $data                 = httpRequest($url, 'POST');// 获取网页授权access_token和用户openid
         $data                 = json_decode($data, true);
         $openid               = $data['openid'];
-        $password_url         = "http://{$_SERVER['HTTP_HOST']}/dist/index.html#/free_password?openid={$openid}";
+        if ($password) {
+            $password_url = "http://{$_SERVER['HTTP_HOST']}/dist/index.html#/free_password?openid={$openid}&password=$password";
+        } else {
+            $password_url = "http://{$_SERVER['HTTP_HOST']}/dist/index.html#/free_password?openid={$openid}";
+        }
         Header("Location: $password_url"); // 跳转到微信授权页面 需要用户确认登录的页面
         exit();
     }
@@ -486,6 +484,24 @@ class FreeMode extends Controller
         $chargeLogic            = new ChargeLogic();
         $password               = $chargeLogic->getChargeCode($charge_param);
         echo $password;
+    }
+
+
+    /**
+     * 生成密码
+     * @param $number
+     * @return string
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/13 15:45
+     */
+    public static function create_password($number)
+    {
+        // 如果订单还在可使用状态下，那么可以继续获取密码
+        $charge_param['key']    = 4;        // TODO 设置密码第一位,四为免费模式的半小时,但是系统中老的旧板子，传输4可能密码无效, 添加上限此功能的时间为2019-11-21 17:11:00:00
+        $charge_param['number'] = $number;  // 设置密码第一位
+        $chargeLogic            = new ChargeLogic();
+        $password               = $chargeLogic->getChargeCode($charge_param);
+        return $password;
     }
 }
 
