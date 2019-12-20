@@ -24,7 +24,7 @@ class WechatOpen extends Base
             'aes_key' => 'ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf',
             'log'     => [
                 'level'      => 'error',
-                'permission' => null,
+                'permission' => 0777,
                 'file'       => 'runtime/log/easywechat.log',
             ],
         ];
