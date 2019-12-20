@@ -17,10 +17,10 @@ class WechatOpen extends Base
     {
         parent::__construct();
         $options            = [
-            'app_id'  => config('WechatOpen2.AppId'),
-            'secret'  => config('WeChatOpen2.AppSecret'),
-            'token'   => config('WeChatOpen2.Token'),
-            'aes_key' => config('WeChatOpen2.Aes_Key')
+            'app_id'  => 'wx6590d39e4f1bf4a0',
+            'secret'  => 'd290f710854a122f7eebc11bb8bc2ec2',
+            'token'   => 'iszmxw',
+            'aes_key' => 'ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf'
         ];
         $app                = new Application($options);
         $this->openPlatform = $app->open_platform;
