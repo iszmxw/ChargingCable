@@ -87,7 +87,7 @@ class WechatOpen extends Base
                     IszmxwLog('iszmxw', 'updateauthorized');
                     break;
                 case 'component_verify_ticket':
-                    IszmxwLog('iszmxw', json_encode($event));
+                    IszmxwLog('iszmxw', 'component_verify_ticket');
                     break;
                 default:
                     IszmxwLog('iszmxw', 'default');
@@ -106,13 +106,6 @@ class WechatOpen extends Base
     public function message_callback(Request $request)
     {
         $appid = $request->param('appid');
-        /**
-         * 全网发布
-         */
-        if ($appid == 'wx570bc396a51b8ff8') {
-            IszmxwLog('iszmxw.txt', $appid);
-            return $this->releaseToNetWork($appid);
-        }
         dump($appid);
     }
 
