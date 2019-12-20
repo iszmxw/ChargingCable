@@ -64,37 +64,33 @@ class WechatOpen extends Base
      */
     public function auth(Request $request)
     {
-        $content = file_get_contents("php://input");
-        IszmxwLog('iszmxw.txt', $content);
+//        $content = file_get_contents("php://input");
+//        IszmxwLog('iszmxw.txt', $content);
         $openPlatform = $this->openPlatform;
-        // 处理授权取消事件
+        // 默认处理方式
+        $openPlatform->server->serve();
         // 自定义处理
-        $openPlatform->server->setMessageHandler(function ($event) {
-            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
-            switch ($event->InfoType) {
-                case 'authorized':
-                    // 授权信息，主要是 token 和授权域
-                    $info1 = $event->authorization_info;
-                    // 授权方信息，就是授权方公众号的信息了
-                    $info2 = $event->authorizer_info;
-                    IszmxwLog('iszmxw', json_encode($info1));
-                    IszmxwLog('iszmxw', json_encode($info2));
-                    break;
-                case 'unauthorized':
-                    IszmxwLog('iszmxw', 'unauthorized');
-                    break;
-                case 'updateauthorized':
-                    IszmxwLog('iszmxw', 'updateauthorized');
-                    break;
-                case 'component_verify_ticket':
-                    IszmxwLog('iszmxw', 'component_verify_ticket');
-                    break;
-                default:
-                    IszmxwLog('iszmxw', 'default');
-                    break;
-            }
-        });
-        return $openPlatform->server->serve();
+//        $openPlatform->server->setMessageHandler(function ($event) {
+//            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
+//            switch ($event->InfoType) {
+//                case 'authorized':
+//                    IszmxwLog('iszmxw', 'authorized');
+//                    break;
+//                case 'unauthorized':
+//                    IszmxwLog('iszmxw', 'unauthorized');
+//                    break;
+//                case 'updateauthorized':
+//                    IszmxwLog('iszmxw', 'updateauthorized');
+//                    break;
+//                case 'component_verify_ticket':
+//                    IszmxwLog('iszmxw', 'component_verify_ticket');
+//                    break;
+//                default:
+//                    IszmxwLog('iszmxw', 'default');
+//                    break;
+//            }
+//        });
+//        return $openPlatform->server->serve();
     }
 
 
