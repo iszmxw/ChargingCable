@@ -7,6 +7,7 @@ namespace app\admin\controller;
 
 use Doctrine\Common\Cache\RedisCache;
 use EasyWeChat\Foundation\Application;
+use EasyWeChat\OpenPlatform\Guard;
 use think\Request;
 
 class WechatOpen extends Base
@@ -85,16 +86,25 @@ class WechatOpen extends Base
         $ip           = $request->ip();
         $content      = file_get_contents("php://input");
         $openPlatform = $this->openPlatform;
-        // 自定义处理
-        // 其中 $event 变量里有微信推送事件本身的信息，也有授权方所有的信息。
-        $openPlatform->server->setMessageHandler(function ($event) {
-            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
+        $server       = $openPlatform->server;
+        $server->setMessageHandler(function ($event) use ($openPlatform) {
+// 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
             switch ($event->InfoType) {
-                case 'component_verify_ticket':
-                    IszmxwLog('iszmxw.txt', 'component_verify_ticket');
+                case Guard::EVENT_AUTHORIZED: // 授权成功
+//                    $authorizationInfo = $openPlatform->getAuthorizationInfo($event->AuthorizationCode);
+                    // 保存数据库操作等...
+                case Guard::EVENT_UPDATE_AUTHORIZED: // 更新授权
+                    // 更新数据库操作等...
+                case Guard::EVENT_UNAUTHORIZED: // 授权取消
+
+                case Guard::EVENT_COMPONENT_VERIFY_TICKET: // 授权取消
+                    // 更新数据库操作等...
             }
         });
-        $openPlatform->server->serve()->send();
+        // 打印日志
+        IszmxwLog('iszmxw.txt', $content);
+        $response = $server->serve();
+        $response->send(); // Laravel 里请使用：return $response;
         die;
     }
 
