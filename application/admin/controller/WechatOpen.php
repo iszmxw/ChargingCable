@@ -73,24 +73,6 @@ class WechatOpen extends Base
         // 自定义处理
         $openPlatform->server->setMessageHandler(function ($message) {
             IszmxwLog('iszmxw.txt', $message);
-            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
-//            switch ($message->InfoType) {
-//                case 'authorized':
-//                    IszmxwLog('iszmxw', 'authorized');
-//                    break;
-//                case 'unauthorized':
-//                    IszmxwLog('iszmxw', 'unauthorized');
-//                    break;
-//                case 'updateauthorized':
-//                    IszmxwLog('iszmxw', 'updateauthorized');
-//                    break;
-//                case 'component_verify_ticket':
-//                    IszmxwLog('iszmxw', 'component_verify_ticket');
-//                    break;
-//                default:
-//                    IszmxwLog('iszmxw', 'default');
-//                    break;
-//            }
         }, Guard::EVENT_COMPONENT_VERIFY_TICKET);
         return $openPlatform->server->serve();
     }
