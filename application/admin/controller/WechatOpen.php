@@ -5,6 +5,7 @@
 
 namespace app\admin\controller;
 
+use Doctrine\Common\Cache\RedisCache;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Server\Guard;
 use think\Request;
@@ -16,6 +17,7 @@ class WechatOpen extends Base
     public function __construct()
     {
         parent::__construct();
+        $cacheDriver        = new RedisCache();
         $options            = [
             'debug'   => true,
             'app_id'  => 'wx6590d39e4f1bf4a0',
@@ -27,6 +29,7 @@ class WechatOpen extends Base
                 'permission' => 0777,
                 'file'       => 'runtime/log/easywechat.log',
             ],
+            'cache'   => $cacheDriver,
         ];
         $app                = new Application($options);
         $this->openPlatform = $app->open_platform;
