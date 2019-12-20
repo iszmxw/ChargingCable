@@ -6,6 +6,7 @@
 namespace app\admin\controller;
 
 use EasyWeChat\Foundation\Application;
+use EasyWeChat\Server\Guard;
 use think\Request;
 
 class WechatOpen extends Base
@@ -90,7 +91,7 @@ class WechatOpen extends Base
 //                    IszmxwLog('iszmxw', 'default');
 //                    break;
 //            }
-        });
+        }, Guard::EVENT_COMPONENT_VERIFY_TICKET);
         return $openPlatform->server->serve();
     }
 
