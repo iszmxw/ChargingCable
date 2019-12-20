@@ -1900,7 +1900,7 @@ function IszmxwLog($file_name, $content)
     if (false === $init_txt) {
         $content_hr = chr(0xEF) . chr(0xBB) . chr(0xBF) . '时间：' . date('Y-m-d H:i:s') . "======>\r\n";// 时间换行
     } else {
-        $content_hr = "\r\n" . '时间：' . date('Y-m-d H:i:s') . "======>\r\n";// 时间换行
+        $content_hr = "\r\n" . 'time====>' . date('Y-m-d H:i:s') . "======>\r\n";// 时间换行
     }
     file_put_contents($file_name, $init_txt . $content_hr . $content);
 }
