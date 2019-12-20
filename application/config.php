@@ -467,5 +467,11 @@ return [
         "AppSecret" => "b98a2b814fb7e3a548d42367c81abd2e",
         "Token"     => "iszmxw",
         "Aes_Key"   => "ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf"
+    ],
+    "WechatOpen2"             => [// 微信开放平台参数
+        "AppId"     => "wx6590d39e4f1bf4a0",
+        "AppSecret" => "d290f710854a122f7eebc11bb8bc2ec2",
+        "Token"     => "iszmxw",
+        "Aes_Key"   => "ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf"
     ]
 ];
