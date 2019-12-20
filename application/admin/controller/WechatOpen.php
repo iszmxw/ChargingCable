@@ -98,8 +98,6 @@ class WechatOpen extends Base
     }
 
 
-
-
     /**
      * 消息与事件接收URL
      * @author: iszmxw <mail@54zm.com>
