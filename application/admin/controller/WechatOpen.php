@@ -37,13 +37,13 @@ class WechatOpen extends Base
     public function account_empower(Request $request)
     {
 //        $appid         = config('WechatOpen.AppId');
-        $pre_auth_code = $this->openPlatform->pre_auth->getCode();
+        $url = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account";
 
-//        dump($appid);
-        dump($pre_auth_code);
-        die();
+        $response = $this->openPlatform->pre_auth->redirect('https://domain.com/callback');
 
-        $callback = config('app.url') . '/wechat/official_account/callback?user_id=' . $user_id;
+        // 获取跳转的链接
+        $url = $response->getTargetUrl();
+        return $url;
 
         if (isMobile()) {
             // 移动端授权链接
@@ -66,6 +66,8 @@ class WechatOpen extends Base
      */
     public function auth(Request $request)
     {
+        $content = file_get_contents("php://input");
+        IszmxwLog('iszmxw.txt', $content);
         $openPlatform = $this->openPlatform;
         // 处理授权取消事件
         // 自定义处理
