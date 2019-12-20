@@ -18,6 +18,8 @@ class WechatOpen extends Base
     public function __construct()
     {
         parent::__construct();
+        // 使用自己写的缓存方案替代
+        $WechatCache        = new WechatCache();
         $options            = [
             'debug'   => true,
             'app_id'  => 'wx6590d39e4f1bf4a0',
@@ -28,7 +30,8 @@ class WechatOpen extends Base
                 'level'      => 'error',
                 'permission' => 0777,
                 'file'       => 'runtime/log/easywechat.log',
-            ]
+            ],
+            'cache'   => $WechatCache
         ];
         $app                = new Application($options);
         $this->openPlatform = $app->open_platform;
@@ -78,15 +81,8 @@ class WechatOpen extends Base
      */
     public function auths(Request $request)
     {
-        $ip      = $request->ip();
-        $content = file_get_contents("php://input");
-        try {
-            IszmxwLog('iszmxw.txt', $ip);
-            IszmxwLog('iszmxw.txt', $content);
-        } catch (\Exception $e) {
-            IszmxwLog('iszmxw.txt', $ip);
-            IszmxwLog('iszmxw.txt', '插入失败');
-        }
+        $ip           = $request->ip();
+        $content      = file_get_contents("php://input");
         $openPlatform = $this->openPlatform;
         // 自定义处理
         // 其中 $event 变量里有微信推送事件本身的信息，也有授权方所有的信息。
@@ -97,7 +93,7 @@ class WechatOpen extends Base
                     IszmxwLog('iszmxw.txt', 'component_verify_ticket');
             }
         });
-        $openPlatform->server->serve();
+        return $openPlatform->server->serve();
     }
 
 
