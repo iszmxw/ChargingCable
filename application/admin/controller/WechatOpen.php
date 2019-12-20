@@ -90,7 +90,7 @@ class WechatOpen extends Base
 //                    break;
 //            }
 //        });
-//        return $openPlatform->server->serve();
+        return $openPlatform->server->serve();
     }
 
 
