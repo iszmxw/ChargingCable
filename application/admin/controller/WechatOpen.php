@@ -33,6 +33,11 @@ class WechatOpen extends Base
     }
 
 
+    public function official_account()
+    {
+        return 1;
+    }
+
     /**
      * 授权跳转链接
      * @param Request $request
