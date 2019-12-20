@@ -16,10 +16,10 @@ class WechatOpen extends Base
     {
         parent::__construct();
         $options            = [
-            'app_id'  => config('WechatOpen.AppId'),
-            'secret'  => config('WeChatOpen.AppSecret'),
-            'token'   => config('WeChatOpen.Token'),
-            'aes_key' => config('WeChatOpen.Aes_Key')
+            'app_id'  => config('WechatOpen2.AppId'),
+            'secret'  => config('WeChatOpen2.AppSecret'),
+            'token'   => config('WeChatOpen2.Token'),
+            'aes_key' => config('WeChatOpen2.Aes_Key')
         ];
         $app                = new Application($options);
         $this->openPlatform = $app->open_platform;
@@ -36,10 +36,8 @@ class WechatOpen extends Base
      */
     public function account_empower(Request $request)
     {
-//        $appid         = config('WechatOpen.AppId');
-        $url = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account";
-
-        $response = $this->openPlatform->pre_auth->redirect('https://domain.com/callback');
+        $url      = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account";
+        $response = $this->openPlatform->pre_auth->redirect($url);
 
         // 获取跳转的链接
         $url = $response->getTargetUrl();
