@@ -97,8 +97,9 @@ class WechatOpen extends Base
                     // 更新数据库操作等...
                 case Guard::EVENT_UNAUTHORIZED: // 授权取消
 
-                case Guard::EVENT_COMPONENT_VERIFY_TICKET: // 授权取消
-                    // 更新数据库操作等...
+                case Guard::EVENT_COMPONENT_VERIFY_TICKET: // 推送 component_verify_ticket
+                    IszmxwLog('xwxw.txt', 'component_verify_ticket');
+                // 更新数据库操作等...
             }
         });
         // 打印日志
