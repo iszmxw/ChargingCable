@@ -72,7 +72,7 @@ class WechatOpen extends Base
         $openPlatform->server->serve();
         // 自定义处理
         $openPlatform->server->setMessageHandler(function ($message) {
-            IszmxwLog('iszmxw.txt', $message);
+            IszmxwLog('iszmxw.txt', json_encode($message, true));
         }, Guard::EVENT_COMPONENT_VERIFY_TICKET);
         return $openPlatform->server->serve();
     }
