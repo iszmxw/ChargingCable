@@ -18,7 +18,6 @@ class WechatOpen extends Base
     public function __construct()
     {
         parent::__construct();
-        $cacheDriver = new RedisCache();
         $options            = [
             'debug'   => true,
             'app_id'  => 'wx6590d39e4f1bf4a0',
@@ -29,8 +28,7 @@ class WechatOpen extends Base
                 'level'      => 'error',
                 'permission' => 0777,
                 'file'       => 'runtime/log/easywechat.log',
-            ],
-            'cache'   => $cacheDriver,
+            ]
         ];
         $app                = new Application($options);
         $this->openPlatform = $app->open_platform;
