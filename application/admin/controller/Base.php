@@ -59,7 +59,7 @@ class Base extends Controller
 //        if ("183.13.188.135" == $request->ip()) {
 //            IszmxwLog('iszmxw.txt', ACTION_NAME);
 //        }
-        //过滤不需要登陆的行为 
+        // 过滤不需要登陆的行为
         if (!in_array(ACTION_NAME, array('login', 'vertify', 'auth', 'account_empower', 'message_callback'))) {
             if (session('admin_id') > 0) {
                 $this->check_priv();//检查管理员菜单操作权限
