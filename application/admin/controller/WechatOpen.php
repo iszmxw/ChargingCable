@@ -97,6 +97,9 @@ class WechatOpen extends Base
         return $openPlatform->server->serve();
     }
 
+
+
+
     /**
      * 消息与事件接收URL
      * @author: iszmxw <mail@54zm.com>
