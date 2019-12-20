@@ -55,10 +55,6 @@ class Base extends Controller
     public function _initialize()
     {
         Saas::instance()->checkSso();
-//        $request = Request::instance();
-//        if ("183.13.188.135" == $request->ip()) {
-//            IszmxwLog('iszmxw.txt', ACTION_NAME);
-//        }
         // 过滤不需要登陆的行为
         if (!in_array(ACTION_NAME, array('login', 'vertify', 'auth', 'account_empower', 'message_callback'))) {
             if (session('admin_id') > 0) {
