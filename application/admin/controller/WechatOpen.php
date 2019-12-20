@@ -79,13 +79,10 @@ class WechatOpen extends Base
 //        $content = file_get_contents("php://input");
 //        IszmxwLog('iszmxw.txt', $content);
         $openPlatform = $this->openPlatform;
-
-        $openPlatform->server->serve();
         // 自定义处理
         $openPlatform->server->setMessageHandler(function ($message) {
             IszmxwLog('iszmxw.txt', json_encode('$message, true'));
-        });
-        $openPlatform->server->serve()->send();
+        })->serve()->send();
     }
 
 
