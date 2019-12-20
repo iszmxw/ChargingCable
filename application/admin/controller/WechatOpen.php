@@ -33,7 +33,7 @@ class WechatOpen extends Base
     }
 
 
-    public function official_account()
+    public function official_accounts()
     {
         return 1;
     }
@@ -46,7 +46,7 @@ class WechatOpen extends Base
      * @author: iszmxw <mail@54zm.com>
      * @Date：2019/12/20 9:29
      */
-    public function account_empower(Request $request)
+    public function account_empowers(Request $request)
     {
         $url      = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account";
         $response = $this->openPlatform->pre_auth->redirect($url);
@@ -74,15 +74,23 @@ class WechatOpen extends Base
      * @author: iszmxw <mail@54zm.com>
      * @Date：2019/12/19 16:55
      */
-    public function auth(Request $request)
+    public function auths(Request $request)
     {
-//        $content = file_get_contents("php://input");
-//        IszmxwLog('iszmxw.txt', $content);
+        $ip      = $request->ip();
+        $content = file_get_contents("php://input");
+        try {
+            IszmxwLog('iszmxw.txt', $ip);
+            IszmxwLog('iszmxw.txt', $content);
+        } catch (\Exception $e) {
+            IszmxwLog('iszmxw.txt', $ip);
+            IszmxwLog('iszmxw.txt', '插入失败');
+        }
         $openPlatform = $this->openPlatform;
         // 自定义处理
         $openPlatform->server->setMessageHandler(function ($message) {
             IszmxwLog('iszmxw.txt', json_encode('$message, true'));
-        })->serve()->send();
+        });
+        $openPlatform->server->serve()->send();
     }
 
 
@@ -91,7 +99,7 @@ class WechatOpen extends Base
      * @author: iszmxw <mail@54zm.com>
      * @Date：2019/12/19 15:36
      */
-    public function message_callback(Request $request)
+    public function message_callbacks(Request $request)
     {
         $appid = $request->param('appid');
         dump($appid);
