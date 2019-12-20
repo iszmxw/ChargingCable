@@ -37,7 +37,7 @@ class WechatOpen extends Base
     public function account_empower(Request $request)
     {
 //        $appid         = config('WechatOpen.AppId');
-        $pre_auth_code = $this->openPlatform->pre_auth;
+        $pre_auth_code = $this->openPlatform->pre_auth->getCode();
 
 //        dump($appid);
         dump($pre_auth_code);

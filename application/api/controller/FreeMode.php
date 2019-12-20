@@ -150,7 +150,6 @@ class FreeMode extends Controller
                     die("网络错误！！");
                 }
             } else {
-                IszmxwLog('iszmxw.txt', $ip);
                 // 没有请求到二维码，获取二维码失败，直接给用户返回密码
                 // 没有免费的资源了，直接跳转到显示密码页面，并且携带上密码参数
                 $password = self::create_password($number);
