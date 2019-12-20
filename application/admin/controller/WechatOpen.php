@@ -19,8 +19,7 @@ class WechatOpen extends Base
         // 使用自己写的缓存方案替代
         $cacheDriver = new RedisCache();
         $redis       = new \Redis();
-        $redis->connect('118.89.61.124', 4399);
-        $redis->auth('blog_54zm_com');              //密码验证
+        $redis->connect('127.0.0.1', 6379);
         $cacheDriver->setRedis($redis);
         $options            = [
             'debug'   => true,
