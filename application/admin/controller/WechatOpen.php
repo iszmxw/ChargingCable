@@ -5,10 +5,7 @@
 
 namespace app\admin\controller;
 
-use Doctrine\Common\Cache\RedisCache;
 use EasyWeChat\Foundation\Application;
-use EasyWeChat\Server\Guard;
-use think\cache\driver\Redis;
 use think\Request;
 
 class WechatOpen extends Base
