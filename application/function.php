@@ -1137,3 +1137,50 @@ function returnBads($msg, $errorCode = 10000, $data = [])
 {
     return md5(sha1('gyj_888'.$password));
 }*/
+
+
+/**
+ * 下载远程图片保存到本地
+ * @param $url // 远程图片地址
+ * @param string $save_dir 需要保存的地址
+ * @param string $filename 保存文件名
+ * @return array
+ * @author: iszmxw <mail@54zm.com>
+ * @Date：2019/12/21 16:34
+ */
+function download($url, $save_dir = './public/upload/iszmxw/', $filename = '')
+{
+    $ext = strrchr($url, '.');
+    if (trim($save_dir) == '')
+        $save_dir = './';
+
+    if (trim($filename) == '') {//保存文件名
+        $allowExt = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
+        if (!in_array($ext, $allowExt))
+            return array('file_name' => '', 'save_path' => '', 'error' => 3);
+
+        $filename = time() . $ext;
+    }
+    if (0 !== strrpos($save_dir, '/'))
+        $save_dir .= '/';
+
+    //创建保存目录
+    if (!file_exists($save_dir) && !mkdir($save_dir, 0777, true))
+        return array('file_name' => '', 'save_path' => '', 'error' => 5);
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 信任任何证书
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+    $file = curl_exec($ch);
+    curl_close($ch);
+    if (empty($filename)) {
+        $filename = pathinfo($url, PATHINFO_BASENAME);
+    }
+    $resource = fopen($save_dir . $filename, 'a');
+    fwrite($resource, $file);
+    fclose($resource);
+    unset($file, $url);
+    return ['file_name' => $filename, 'save_path' => $save_dir . $filename, 'error' => 0];
+}
