@@ -40,35 +40,6 @@ class WechatOpen extends Base
         $this->openPlatform = $app->open_platform;
     }
 
-
-    public function official_accounts()
-    {
-        return 1;
-    }
-
-    /**
-     * 授权跳转链接
-     * @param Request $request
-     * @return \think\response\Redirect
-     * @throws \EasyWeChat\Core\Exceptions\InvalidArgumentException
-     * @author: iszmxw <mail@54zm.com>
-     * @Date：2019/12/20 9:29
-     */
-    public function account_empowers(Request $request)
-    {
-        $callback      = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account_callback";
-        $appid         = config('WechatOpen.AppId');
-        $pre_auth_code = $this->openPlatform->pre_auth->getCode();
-        if (isMobile()) {
-            // 移动端授权链接
-            $url = "https://mp.weixin.qq.com/safe/bindcomponent?action=bindcomponent&auth_type=1&no_scan=1&component_appid={$appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$callback}#wechat_redirect";
-        } else {
-            // pc端授权链接
-            $url = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid={$appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$callback}";
-        }
-        return redirect($url);
-    }
-
     /**
      * 授权事件接收URL
      * @param Request $request
@@ -78,7 +49,7 @@ class WechatOpen extends Base
      * @author: iszmxw <mail@54zm.com>
      * @Date：2019/12/19 16:55
      */
-    public function auths(Request $request)
+    public function auth(Request $request)
     {
         $openPlatform = $this->openPlatform;
         $serve        = $openPlatform->server;
@@ -106,13 +77,42 @@ class WechatOpen extends Base
         die;
     }
 
+    /**
+     * 授权跳转链接
+     * @param Request $request
+     * @return \think\response\Redirect
+     * @throws \EasyWeChat\Core\Exceptions\InvalidArgumentException
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/20 9:29
+     */
+    public function account_empower(Request $request)
+    {
+        $callback      = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account_callback";
+        $appid         = config('WechatOpen.AppId');
+        $pre_auth_code = $this->openPlatform->pre_auth->getCode();
+        if (isMobile()) {
+            // 移动端授权链接
+            $url = "https://mp.weixin.qq.com/safe/bindcomponent?action=bindcomponent&auth_type=1&no_scan=1&component_appid={$appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$callback}#wechat_redirect";
+        } else {
+            // pc端授权链接
+            $url = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid={$appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$callback}";
+        }
+        return redirect($url);
+    }
+
+
+    public function official_account_callback()
+    {
+        return 1;
+    }
+
 
     /**
      * 消息与事件接收URL
      * @author: iszmxw <mail@54zm.com>
      * @Date：2019/12/19 15:36
      */
-    public function message_callbacks(Request $request)
+    public function message_callback(Request $request)
     {
         $appid = $request->param('appid');
         dump($appid);
