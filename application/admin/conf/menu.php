@@ -218,7 +218,7 @@ return array(
 //		)),
 //	)),
 
-    'data' => array('name' => '数据', 'child' => array(
+    'data'     => array('name' => '数据', 'child' => array(
         array('name' => '统计', 'child' => array(
             array('name' => '销售概况', 'act' => 'index', 'op' => 'Report'),
             /*array('name' => '销售排行', 'act'=>'saleTop', 'op'=>'Report'),
@@ -233,6 +233,14 @@ return array(
 //				array('name' => '安卓APP管理', 'act'=>'index', 'op'=>'MobileApp'),
 //                array('name' => '苹果APP管理', 'act'=>'ios_audit', 'op'=>'MobileApp'),
 //			))
+    )),
+    /**
+     * 公众号管理
+     */
+    'official' => array('name' => '公众号管理', 'child' => array(
+        array('name' => '公众号管理', 'child' => array(
+            array('name' => '公众号列表', 'act' => 'index', 'op' => 'WechatOpen')
+        )),
     )),
 
 
