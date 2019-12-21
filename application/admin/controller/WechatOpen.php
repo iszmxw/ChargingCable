@@ -199,4 +199,15 @@ class WechatOpen extends Base
         $appid = $request->param('appid');
         dump($appid);
     }
+
+
+    /**
+     * 公众号列表
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/21 17:46
+     */
+    public function official_list()
+    {
+        return view('official_list');
+    }
 }
