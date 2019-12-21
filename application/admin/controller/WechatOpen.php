@@ -7,7 +7,6 @@ namespace app\admin\controller;
 
 use Doctrine\Common\Cache\RedisCache;
 use EasyWeChat\Foundation\Application;
-use EasyWeChat\OpenPlatform\Guard;
 use think\Request;
 
 class WechatOpen extends Base
@@ -22,17 +21,20 @@ class WechatOpen extends Base
         $redis       = new \Redis();
         $redis->connect('127.0.0.1', 6379);
         $cacheDriver->setRedis($redis);
+        $config             = config('WechatOpen');// 获取配置参数
         $options            = [
-            'app_id'  => 'wx6590d39e4f1bf4a0',
-            'secret'  => 'd290f710854a122f7eebc11bb8bc2ec2',
-            'token'   => 'iszmxw',
-            'aes_key' => 'ckGPqhPfREgJZR6rC8rz3xqQcdmZRf8Xv9QMm5ym3Yf',
-            'log'     => [
-                'level'      => 'error',
-                'permission' => 0777,
-                'file'       => 'runtime/log/easywechat.log',
-            ],
-            'cache'   => $cacheDriver
+            'open_platform' => [
+                'app_id'  => $config['AppId'],
+                'secret'  => $config['AppSecret'],
+                'token'   => $config['Token'],
+                'aes_key' => $config['Aes_Key'],
+                'log'     => [
+                    'level'      => 'error',
+                    'permission' => 0777,
+                    'file'       => 'runtime/log/easywechat.log',
+                ],
+                'cache'   => $cacheDriver
+            ]
         ];
         $app                = new Application($options);
         $this->openPlatform = $app->open_platform;
@@ -82,27 +84,26 @@ class WechatOpen extends Base
      */
     public function auths(Request $request)
     {
-        $ip      = $request->ip();
-        $content = file_get_contents("php://input");
-        IszmxwLog('xwxw.txt', $content);
+        $ip = $request->ip();
+//        $content = file_get_contents("php://input");
+//        IszmxwLog('xwxw.txt', $content);
         $openPlatform = $this->openPlatform;
         // 默认处理方式
-        $openPlatform->server->serve();
-        // 自定义处理
-        $openPlatform->server->setMessageHandler(function ($event) {
-            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
-            switch ($event->InfoType) {
-                case 'authorized':
-                    // ...
-                case 'unauthorized':
-                    // ...
-                case 'updateauthorized':
-                    // ...
-                case 'component_verify_ticket':
-                    // ...
-            }
-        });
-        $openPlatform->server->serve();
+//        $openPlatform->server->serve();
+//        // 自定义处理
+//        $openPlatform->server->setMessageHandler(function ($event) {
+//            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
+//            switch ($event->InfoType) {
+//                case 'authorized':
+//                    // ...
+//                case 'unauthorized':
+//                    // ...
+//                case 'updateauthorized':
+//                    // ...
+//                case 'component_verify_ticket':
+//                    // ...
+//            }
+//        });
         // 打印日志
         $response = $openPlatform->server->serve();
         $response->send(); // Laravel 里请使用：return $response;
