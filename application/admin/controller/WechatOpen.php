@@ -159,7 +159,7 @@ class WechatOpen extends Base
             if ($isExist) {
                 unset($data['status']);
                 unset($data['user_id']);
-                $data['update_time'] = time(); // 更新时间
+                $data['updated_time'] = time(); // 更新时间
                 if (empty($isExist['deleted_time'])) {
                     $re = M('lc_official_account')->where($where)->update($data);
                     if ($re) {
@@ -175,7 +175,7 @@ class WechatOpen extends Base
                 }
             } else {
                 $data['created_time'] = time(); // 创建时间
-                $data['update_time']  = time(); // 更新时间
+                $data['updated_time'] = time(); // 更新时间
                 $re                   = M('lc_official_account')->add($data);
                 if ($re) {
                     return view('message', ['message' => '授权成功！' . $re]);
