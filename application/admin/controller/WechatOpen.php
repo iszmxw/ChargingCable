@@ -23,7 +23,6 @@ class WechatOpen extends Base
         $redis->connect('127.0.0.1', 6379);
         $cacheDriver->setRedis($redis);
         $options            = [
-            'debug'   => true,
             'app_id'  => 'wx6590d39e4f1bf4a0',
             'secret'  => 'd290f710854a122f7eebc11bb8bc2ec2',
             'token'   => 'iszmxw',
@@ -83,28 +82,29 @@ class WechatOpen extends Base
      */
     public function auths(Request $request)
     {
-        $ip           = $request->ip();
-        $content      = file_get_contents("php://input");
+        $ip      = $request->ip();
+        $content = file_get_contents("php://input");
+        IszmxwLog('xwxw.txt', $content);
         $openPlatform = $this->openPlatform;
-        $server       = $openPlatform->server;
-        $server->setMessageHandler(function ($event) use ($openPlatform) {
-// 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
+        // 默认处理方式
+        $openPlatform->server->serve();
+        // 自定义处理
+        $openPlatform->server->setMessageHandler(function ($event) {
+            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
             switch ($event->InfoType) {
-                case Guard::EVENT_AUTHORIZED: // 授权成功
-//                    $authorizationInfo = $openPlatform->getAuthorizationInfo($event->AuthorizationCode);
-                    // 保存数据库操作等...
-                case Guard::EVENT_UPDATE_AUTHORIZED: // 更新授权
-                    // 更新数据库操作等...
-                case Guard::EVENT_UNAUTHORIZED: // 授权取消
-
-                case Guard::EVENT_COMPONENT_VERIFY_TICKET: // 推送 component_verify_ticket
-                    IszmxwLog('xwxw.txt', 'component_verify_ticket');
-                // 更新数据库操作等...
+                case 'authorized':
+                    // ...
+                case 'unauthorized':
+                    // ...
+                case 'updateauthorized':
+                    // ...
+                case 'component_verify_ticket':
+                    // ...
             }
         });
+        $openPlatform->server->serve();
         // 打印日志
-        IszmxwLog('iszmxw.txt', $content);
-        $response = $server->serve();
+        $response = $openPlatform->server->serve();
         $response->send(); // Laravel 里请使用：return $response;
         die;
     }
