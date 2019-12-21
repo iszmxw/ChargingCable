@@ -56,7 +56,7 @@ class Base extends Controller
     {
         Saas::instance()->checkSso();
         // 过滤不需要登陆的行为
-        if (!in_array(ACTION_NAME, array('login', 'vertify', 'auth', 'account_empower', 'official_account_callback', 'message_callback'))) {
+        if (!in_array(ACTION_NAME, array('login', 'vertify', 'auth', 'authorization_jump', 'account_empower', 'official_account_callback', 'message_callback'))) {
             if (session('admin_id') > 0) {
                 $this->check_priv();//检查管理员菜单操作权限
                 $this->admin_id = session('admin_id');

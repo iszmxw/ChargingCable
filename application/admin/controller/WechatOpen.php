@@ -5,6 +5,8 @@
 
 namespace app\admin\controller;
 
+use App\Library\Upload;
+use App\Models\OfficialAccount;
 use Doctrine\Common\Cache\RedisCache;
 use EasyWeChat\Foundation\Application;
 use think\Request;
@@ -78,7 +80,17 @@ class WechatOpen extends Base
     }
 
     /**
-     * 授权跳转链接
+     * 授权跳转
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/21 16:19
+     */
+    public function authorization_jump()
+    {
+        return $this->fetch('authorization_jump');
+    }
+
+    /**
+     * 公众号授权跳转链接
      * @param Request $request
      * @return \think\response\Redirect
      * @throws \EasyWeChat\Core\Exceptions\InvalidArgumentException
@@ -101,9 +113,91 @@ class WechatOpen extends Base
     }
 
 
-    public function official_account_callback()
+    /**
+     * 公众号授权回调地址
+     * @param Request $request
+     * @return \think\response\View
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/21 16:11
+     */
+    public function official_account_callback(Request $request)
     {
-        return 1;
+        $get          = $request->param();
+        $openPlatform = $this->openPlatform;
+        // 第二次回调会带一个授权code
+        if (isset($get['auth_code'])) {
+            $auth_info = $openPlatform->getAuthorizationInfo($get['auth_code']);
+
+            $appid = $auth_info['authorization_info']['authorizer_appid'];
+            $info  = $openPlatform->getAuthorizerInfo($appid);
+
+            // 获取环境变量，检测是否开发版本
+//            $APP_ENV = env('APP_ENV');
+//            if ($APP_ENV != "develop") { // 如果不是开发版本，检测授权的公众号的是否认证了
+//                if ($info['authorizer_info']['verify_type_info']['id'] != 0) {
+//                    return view('message', ['message' => '授权失败！,您的公众号暂未通过微信认证，请您认证后，再来操作！']);
+//                }
+//            }
+
+
+            $qrcode_url = $info['authorizer_info']['qrcode_url'];
+            dd($qrcode_url);
+            $img = Upload::download($qrcode_url, "./uploads/wechat/{$appid}", date('YmdHis') . ".jpg");
+            if ($img['error'] == 0) {
+                $qrcode_path = $img['save_path'];
+            } else {
+                $qrcode_path = '';
+            }
+            // 处理空图像
+            $head_img = empty($info['authorizer_info']['head_img']) ? '' : $info['authorizer_info']['head_img'];
+            $data     = [
+                'user_id'           => $get['user_id'],
+                'appid'             => $info['authorization_info']['authorizer_appid'],
+                'refresh_token'     => $info['authorization_info']['authorizer_refresh_token'],
+                'name'              => $info['authorizer_info']['nick_name'],
+                'head_img'          => $head_img,
+                'service_type_info' => $info['authorizer_info']['service_type_info']['id'],
+                'verify_type_info'  => $info['authorizer_info']['verify_type_info']['id'],
+                'public_name'       => $info['authorizer_info']['user_name'],
+                'alias'             => $info['authorizer_info']['alias'],
+                'qrcode_url'        => $qrcode_url,
+                'qrcode_path'       => $qrcode_path,
+                'authorized'        => 1,
+                'status'            => 0,
+            ];
+            // 查询该appid是否存在系统中
+            $isExist = OfficialAccount::withTrashed()->where([
+                'appid' => $info['authorization_info']['authorizer_appid']
+            ])->first();
+            if ($isExist) {
+                $collection = collect($data);
+                $filtered   = $collection->except(['status', 'user_id'])->toArray();
+                if (empty($isExist['deleted_at'])) {
+                    $re = OfficialAccount::EditData(['appid' => $appid], $filtered);
+                    if ($re) {
+                        return view('message', ['message' => '重新授权到平台，公众号信息已经更新']);
+                    } else {
+                        return view('message', ['message' => '操作失败，请稍后再试']);
+                    }
+                } else {
+                    // 恢复系统中软删除的数据
+                    OfficialAccount::withTrashed()->where([
+                        'appid' => $info['authorization_info']['authorizer_appid']
+                    ])->restore();
+                    OfficialAccount::EditData(['appid' => $appid], $filtered);
+                    return view('message', ['message' => '欢迎您回来，授权成功啦！']);
+                }
+            } else {
+                $re = OfficialAccount::AddData($data);
+                if ($re) {
+                    return view('message', ['message' => '授权成功！']);
+                } else {
+                    return view('message', ['message' => '授权失败！']);
+                }
+            }
+        } else {
+            return view('message', ['message' => '授权失败！']);
+        }
     }
 
 
