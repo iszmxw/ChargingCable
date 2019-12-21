@@ -239,7 +239,7 @@ return array(
      */
     'official' => array('name' => '公众号管理', 'child' => array(
         array('name' => '公众号管理', 'child' => array(
-            array('name' => '公众号列表', 'act' => 'index', 'op' => 'WechatOpen')
+            array('name' => '公众号列表', 'act' => 'official_list', 'op' => 'WechatOpen')
         )),
     )),
 
