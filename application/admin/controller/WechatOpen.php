@@ -56,13 +56,9 @@ class WechatOpen extends Base
      */
     public function account_empowers(Request $request)
     {
-        $url      = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account";
-        $response = $this->openPlatform->pre_auth->redirect($url);
-
-        // 获取跳转的链接
-        $url = $response->getTargetUrl();
-        return $url;
-
+        $callback      = "http://{$_SERVER['HTTP_HOST']}/index.php/Admin/WechatOpen/official_account_callback";
+        $appid         = config('WechatOpen.AppId');
+        $pre_auth_code = $this->openPlatform->pre_auth->getCode();
         if (isMobile()) {
             // 移动端授权链接
             $url = "https://mp.weixin.qq.com/safe/bindcomponent?action=bindcomponent&auth_type=1&no_scan=1&component_appid={$appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$callback}#wechat_redirect";
@@ -84,29 +80,29 @@ class WechatOpen extends Base
      */
     public function auths(Request $request)
     {
-        $ip = $request->ip();
-//        $content = file_get_contents("php://input");
-//        IszmxwLog('xwxw.txt', $content);
         $openPlatform = $this->openPlatform;
-        // 默认处理方式
-//        $openPlatform->server->serve();
-//        // 自定义处理
-//        $openPlatform->server->setMessageHandler(function ($event) {
-//            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
-//            switch ($event->InfoType) {
-//                case 'authorized':
-//                    // ...
-//                case 'unauthorized':
-//                    // ...
-//                case 'updateauthorized':
-//                    // ...
-//                case 'component_verify_ticket':
-//                    // ...
-//            }
-//        });
-        // 打印日志
-        $response = $openPlatform->server->serve();
-        $response->send(); // Laravel 里请使用：return $response;
+        $serve        = $openPlatform->server;
+        // 自定义处理
+        $serve->setMessageHandler(function ($event) {
+            // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
+            switch ($event->InfoType) {
+                case 'authorized':
+                    IszmxwLog('iszmxw.txt', 'authorized');
+                    break;
+                case 'unauthorized':
+                    IszmxwLog('iszmxw.txt', 'unauthorized');
+                    break;
+                case 'updateauthorized':
+                    IszmxwLog('iszmxw.txt', 'updateauthorized');
+                    break;
+                case 'component_verify_ticket':
+                    IszmxwLog('iszmxw.txt', 'component_verify_ticket');
+                    break;
+                default:
+                    break;
+            }
+        });
+        $serve->serve()->send(); // Laravel 里请使用：return $response;
         die;
     }
 
