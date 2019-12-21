@@ -139,7 +139,7 @@ class WechatOpen extends Base
             // 处理空图像
             $head_img = empty($info['authorizer_info']['head_img']) ? '' : $info['authorizer_info']['head_img'];
             $data     = [
-                'user_id'           => $get['user_id'],
+                'user_id'           => 0,
                 'appid'             => $appid,
                 'refresh_token'     => $info['authorization_info']['authorizer_refresh_token'],
                 'name'              => $info['authorizer_info']['nick_name'],
