@@ -86,7 +86,7 @@ class WechatOpen extends Base
      */
     public function authorization_jump()
     {
-        return $this->fetch('authorization_jump');
+        return view('authorization_jump');
     }
 
     /**
