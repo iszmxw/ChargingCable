@@ -60,16 +60,17 @@ class WechatOpen extends Base
             // 事件类型常量定义在 \EasyWeChat\OpenPlatform\Guard 类里
             switch ($event->InfoType) {
                 case 'authorized':
-                    IszmxwLog('iszmxw.txt', 'authorized');
+//                    IszmxwLog('iszmxw.txt', 'authorized');
                     break;
                 case 'unauthorized':
-                    IszmxwLog('iszmxw.txt', 'unauthorized');
+                    // 软删除已经取消授权的公众号
+                    M('lc_official_account')->where(['appid' => $event->AuthorizerAppid])->save(['deleted_time' => time()]);
                     break;
                 case 'updateauthorized':
                     IszmxwLog('iszmxw.txt', 'updateauthorized');
                     break;
                 case 'component_verify_ticket':
-                    IszmxwLog('iszmxw.txt', 'component_verify_ticket');
+//                    IszmxwLog('iszmxw.txt', 'component_verify_ticket');
                     break;
                 default:
                     break;
