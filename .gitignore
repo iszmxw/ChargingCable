@@ -1,4 +1,11 @@
 .idea
 dist
+dist_back
 dist_yuan
+public/upload
+public/plugins/ffmpeg
 runtime
+gmp-6.1.2.tar.bz2
+hgzb.ttf
+jdx.tar.gz
+jdx_thirmen_com.sql
