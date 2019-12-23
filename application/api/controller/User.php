@@ -261,9 +261,9 @@ class User extends Base
              return returnBad('姓名不能为空！！', 302);
          }*/
         $money      = $post['money'];
-        $user_money = M("users")->where(['user_id' => $user_id])->value("user_money");
+        $user_money = M("users")->where(['user_id' => $user_id])->getField("user_money");
         if ($user_money < $money) {
-            return returnBad('可提现额度不足！！', 302);
+            return returnBad('可提现额度不足！！', 302);exit;
         }
         //判断用户是否为第一次提现
         $withdrawals_num = M("withdrawals")->where(['user_id' => $user_id, 'status' => ['neq', -1]])->count();
@@ -271,11 +271,11 @@ class User extends Base
         $config = tpCache('cash');
         if ($withdrawals_num > 0) {
             if ($money < $config['min_cash']) {
-                return returnBad('最低提现额度不能小于' . $config['min_cash'], 302);
+                return returnBad('最低提现额度不能小于' . $config['min_cash'], 302);exit;
             }
         } else {
             if ($money < $config['cash_open']) {
-                return returnBad('最低提现额度不能小于' . $config['cash_open'], 302);
+                return returnBad('最低提现额度不能小于' . $config['cash_open'], 302);exit;
             }
 
         }
@@ -298,9 +298,9 @@ class User extends Base
         );
         if (M("withdrawals")->add($arr)) {
             //用余额减提现金额
-            M("users")->where(['user_id' => $user_id])->setDec("user_money", $money);
+            M("users")->where(['user_id' => $user_id])->setDec("user_money",$money);
             //冻结金额加提现金额
-            M("users")->where(['user_id' => $user_id])->setInc("frozen_money", $money);
+            M("users")->where(['user_id' => $user_id])->setInc("frozen_money",$money);
             return returnOk("提现提交成功！");
         } else {
             return returnBad('网络错误', 302);
@@ -711,7 +711,7 @@ class User extends Base
             return false;
         }
         //return preg_match('#^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^19[0,6,7,8]{1}\d{8}$|^18[\d]{9}$#', $mobile) ? true : false;
-        return preg_match('#^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$|^19[\d]{9}$#', $mobile) ? true : false;
+        return preg_match('#^13[\d]{9}$|^14[\d]{9}$|^15[\d]{9}$|^16[\d]{9}$|^17[\d]{9}$|^18[\d]{9}$|^19[\d]{9}$#', $mobile) ? true : false;
     }
 
     // 添加代理
