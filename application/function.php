@@ -1184,3 +1184,15 @@ function download($url, $save_dir = './public/upload/iszmxw/', $filename = '')
     unset($file, $url);
     return ['file_name' => $filename, 'save_path' => $save_dir . $filename, 'error' => 0];
 }
+
+/**
+ * 返回完整url地址
+ * @param $path
+ * @return string
+ * @author: iszmxw <mail@54zm.com>
+ * @Date：2019/12/23 12:41
+ */
+function asset($path)
+{
+    return "http://{$_SERVER['HTTP_HOST']}/{$path}";
+}

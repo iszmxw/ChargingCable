@@ -208,6 +208,29 @@ class WechatOpen extends Base
      */
     public function official_list()
     {
-        return view('official_list');
+        // 初始化搜索条件，默认只显示没有软删除的数据
+        $where = ['deleted_time' => null];
+        $list  = M('lc_official_account')->where($where)->select();
+        return view('official_list', ['list' => $list]);
+    }
+
+
+    /**
+     * 授权公众号修改操作
+     * @param Request $request
+     * @return \think\response\Json
+     * @author: iszmxw <mail@54zm.com>
+     * @Date：2019/12/23 14:22
+     */
+    public function official_edit(Request $request)
+    {
+        $param = $request->param();
+        $where = ['id' => $param['id']];
+        // 软删除操作
+        if ('delete' === $param['act']) {
+            $data = ['deleted_time' => time()];
+            M('lc_official_account')->where($where)->save($data);
+            return json(['code' => 200, 'message' => '操作成功', 'data' => []]);
+        }
     }
 }

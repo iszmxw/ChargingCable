@@ -54,28 +54,34 @@
                         <th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 50px;" class="">头像</div>
                         </th>
-                        <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 80px;" class="">公众号名称</div>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 50px;" class="">二维码</div>
                         </th>
                         <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 140px;" class="">公众号授权状态</div>
+                            <div style="text-align: center; width: 140px;" class="">公众号名称</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">公众号授权状态</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">公众号任务状态</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">公众号类型</div>
                         </th>
 
                         <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 180px;" class="">公众号类型</div>
-                        </th>
-
-                        <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 50px;" class="">起始关注人数</div>
+                            <div style="text-align: center; width: 120px;" class="">起始关注人数</div>
                         </th>
 
                         <th align="center" abbr="article_show" axis="col5" class="">
                             <div style="text-align: center; width: 120px;" class="">累积关注人数</div>
                         </th>
-
-
                         <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 60px;" class="">今日关注人数</div>
+                            <div style="text-align: center; width: 120px;" class="">今日关注人数</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">授权时间</div>
                         </th>
                         <th align="center" abbr="article_show" axis="col5" class="">
                             <div style="text-align: center; width: 170px;" class="">操作</div>
@@ -93,55 +99,71 @@
             <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
                 <table>
                     <tbody>
-                    <volist name="lists" id="list">
+                    <volist name="list" id="val">
                         <tr>
                             <td class="sign">
                                 <div style="width: 24px;"><i class="ico-check"></i></div>
                             </td>
                             <td align="left" class="">
-                                <div style="text-align: left; width: 50px;">{$list.id}</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 50px;">{$list.username}</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 50px;">{$list.username}</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">
-                                    {$list.wx_number}
-                                </div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 140px;">{$list.code_id}</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 180px;">{$list.region}</div>
+                                <div style="text-align: left; width: 50px;">{$val.id}</div>
                             </td>
                             <td align="center" class="">
                                 <div style="text-align: center; width: 50px;">
-                                    分销商
+                                    <a href="{$val.head_img}" target="_blank">
+                                        <img src="{$val.head_img}" style="height:25px;width:25px">
+                                    </a>
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 50px;">
+                                    <a href="{$val.qrcode_path|asset}" target="_blank">
+                                        <img src="{$val.qrcode_path|asset}" style="height:25px;width:25px">
+                                    </a>
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 140px;">{$val.name}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    {$val.authorized === 1 ? '已授权': '未授权'}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    {$val.status === 0 ? '待使用': '已使用'}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    {$val.service_type_info === 2 ? '服务号': '订阅号' }
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">0</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    0
                                 </div>
                             </td>
 
                             <td align="center" class="">
-                                <div style="text-align: center; width: 120px;">{$list.create_time|date="Y-m-d
-                                    H:i",###}
+                                <div style="text-align: center; width: 120px;">0
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    {$val.created_time|date="Y-m-d H:i",###}
                                 </div>
                             </td>
                             <td align="center" class="handle">
                                 <div style="text-align: center; width: 170px; max-width:170px;">
-                                    <a href="{:U('Subcommission/distributor_edit',array('id'=>$list.id))}"
-                                       class="btn blue"><i class="fa fa-pencil-square-o"></i>修改</a>
-                                    <a href="{:U('Subcommission/hotel_member_list',array('id'=>$list.user_id,'type'=>2))}"
-                                       class="btn green"><i class="fa fa-list-alt"></i>所有设备</a>
-                                    <a href="{:U('Subcommission/hotel_list',array('id'=>$list.user_id))}"
-                                       class="btn green"><i class="fa fa-list-alt"></i>所有酒店</a>
-                                    <a href="{:U('User/account_log',array('id'=>$list.user_id))}" class="btn green"><i
-                                            class="fa fa-list-alt"></i>分成记录列表</a>
-                                    <a class="btn red" onclick="delfun(this)" href="javascript:;"
-                                       data-url="{:U('Subcommission/distributor_del')}" data-id="{$list['id']}"><i
-                                            class="fa fa-trash-o"></i>删除</a>
+                                    <a href="javascript:;" class="btn red"
+                                       data-url="{:U('Admin/WechatOpen/official_edit')}" data-id="{$val.id}"
+                                       onclick="EditData(this,'delete')">
+                                        <i class="fa fa-trash-o"></i>删除
+                                    </a>
                                 </div>
                             </td>
 
@@ -179,37 +201,36 @@
             theme: "molv",
             type: "datetime",
             elem: "#start_time"
-        })
+        });
         laydate.render({
             theme: "molv",
             type: "datetime",
             elem: "#end_time"
-        })
+        });
     });
 
-    function exportUser() {
-        var vals = $('#bank').val();
-        var timegap = $('#timegap').val();
-        $('#search-form').attr('action', "{:U('Subcommission/export_user')}?bank=" + vals + '&timegap=' + timegap)
-        $('#search-form').submit();
-    }
-
-    function delfun(obj) {
-        // 删除按钮
-        layer.confirm('确认删除？同时会删除名下绑定的所有酒店和设备哦', {
+    // 编辑和删除操作
+    function EditData(obj, type) {
+        let tips;
+        if (type === 'delete') {
+            tips = '确认删除？该操作将会从系统中删除该公众号信息';
+        } else if (type === 'lock') {
+            tips = '您确定要这么做吗？，该操作会对公众号进行冻结和解冻操作！';
+        }
+        layer.confirm(tips, {
             btn: ['确定', '取消'] //按钮
         }, function () {
             $.ajax({
                 type: 'post',
                 url: $(obj).attr('data-url'),
-                data: {act: 'del', id: $(obj).attr('data-id')},
+                data: {act: type, id: $(obj).attr('data-id')},
                 dataType: 'json',
                 success: function (data) {
                     layer.closeAll();
-                    if (data) {
+                    if (data.code === 200) {
                         $(obj).parent().parent().parent().remove();
                     } else {
-                        layer.alert('删除失败', {icon: 2});  //alert('删除失败');
+                        layer.alert('删除失败', {icon: 2});
                     }
                 }
             })
@@ -218,6 +239,7 @@
         });
     }
 
+    // 检测搜索条件
     function check_form() {
         var start_time = $.trim($('#start_time').val());
         var end_time = $.trim($('#end_time').val());
