@@ -19,6 +19,8 @@ use think\Db;
 
 class Weixin extends Controller{
 
+    
+
     //根据code获取小程序openid
     public static function get_openid($code){
 
@@ -357,10 +359,15 @@ class Weixin extends Controller{
 
     //支付回调
     public function notify(){
-        $postXml = $GLOBALS["HTTP_RAW_POST_DATA"]; //接收微信参数
+      /*  $postXml = $GLOBALS["HTTP_RAW_POST_DATA"]; //接收微信参数
 
         if (empty($postXml)) {
             return ;
+        }*/
+
+        $postXml = file_get_contents('php://input');
+        if (empty($postXml)) {
+            return false;
         }
         $attr =xmlToArray($postXml);
         //M('order')->where(array('order_id' => $attr['out_trade_no']))->save(array('state'=>2, 'type' => 2));
@@ -409,11 +416,14 @@ class Weixin extends Controller{
 
     //充电支付回调
     public function power_notify(){
-        $postXml = $GLOBALS["HTTP_RAW_POST_DATA"]; //接收微信参数
-
+       // $postXml = $GLOBALS["HTTP_RAW_POST_DATA"]; //接收微信参数
+        $postXml = file_get_contents('php://input');
         if (empty($postXml)) {
-            return ;
+            return false;
         }
+       /* if (empty($postXml)) {
+            return ;
+        }*/
         $attr =xmlToArray($postXml);
         $sign1=$attr['sign'];    //签名
         unset($attr['sign']);
@@ -426,8 +436,11 @@ class Weixin extends Controller{
             $return_xml='<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
             return $return_xml;
         }else {
-
+            file_put_contents('pay.txt',$sign1);
+            file_put_contents('pay1.txt',$sign);
             if ($sign1 == $sign) { //验签通过
+                file_put_contents('pay2.txt',$attr['return_code']);
+                file_put_contents('pay3.txt',$attr['result_code']);
                 if ($attr['return_code'] == 'SUCCESS' && $attr['result_code'] == 'SUCCESS') { //支付成功
                     //1.更改订单状态
                     M("power_order")->where(['order_sn'=>$order_sn])->update(['pay_status'=>2,'pay_time'=>time()]);
